@@ -9,16 +9,16 @@
 \usepackage{caption}
 \usepackage{floatrow}
 \usepackage{amsmath}
-\usepackage{color}
+\usepackage[dvipsnames]{xcolor}
 \floatsetup[figure]{style=plain,subcapbesideposition=top}
 %\usepackage[margin=70mm]{geometry}
 
 %\usepackage{subfig}
 
-\title[\texttt{gji\_extra.sty} ]  
-  {\texttt{GLAD-M25} - global adjoint tomography model} 
-  
-\author[]  {Wenjie lei, Jeroen Tromp, ...}  
+\title[\texttt{gji\_extra.sty} ]
+  {\texttt{GLAD-M25} - global adjoint tomography model}
+
+\author[]  {Wenjie lei, Jeroen Tromp, ...}
 
 \newcommand{\btx}{\textsc{BibTeX}}
 
@@ -27,9 +27,9 @@
 \maketitle
 
 \section{Introduction}
-With the development of high performance computing and numerical methods, it is now possible to using adjoint method to image the interior the globe using thousands of earthquakes. 
+With the development of high performance computing and numerical methods, it is now possible to using adjoint method to image the interior the globe using thousands of earthquakes.
 
-There are few agreements about the earth model and yet many unknown to be resolved. There are quite a lot of global models exits however there is no such con-sense. 
+There are few agreements about the earth model and yet many unknown to be resolved. There are quite a lot of global models exits however there is no such con-sense.
 
 The GLAD-M25 is the first earth model that incorporate the P and S wave speed using full waveform inversion. Also, people are using specific set of phases in their inversion. For P models, people are using P phase and other body wave phases and for S models, people are using mostly S wave phases and surface waves to constrain the structure. Those two kinds of models usually reveals very different parts of the earth. For example, for P wave, people used it the image the subduction slabs and it is not very good at image lower mantle structures, such as plumes and lower mantle convections. For S waves, it is the verse verso.
 
@@ -37,127 +37,145 @@ There are many challenges coming along the way. First, the data volume is huge. 
 
 Here, we present our GLAD-M25 earth model, with significantly improvements on the plumes and subductions.
 
+test1 (\cite{zhu2012structure}, \cite{zhu2012structure})
+test2 \citep{zhu2015seismic, ekstrom2012global}
+test3 \citet{ekstrom2012global}
 
-\section{Starting Model}
 
-We used GLAD-M15 as our starting model. The GLAD-M15 is a 3D transverslty isotropic earth model which uses S362ani + CURST2.0 as its own starting model. It then uses 256 earthquakes and broad-band seismic data to do the 3D full-waveform inversion\cite{Ebru2015}. It uses 15 conjugate graident iterations to update the crust and mantle. The first 12 iterations of GLAD-M15 was performed under 27 secs and the last 3 under ~17 secs. In our inversion, we use the 17s resolution.
+\section{Starting Model GLAD--M15}
 
-It provides 6 model parameters, mass density($\rho$), two compressional wavespeeds($\alpha_v$ and $\alpha_h$), tws shear wavespeeds($\beta_v$ and $\beta_h$) and a dimenionless parameter($\eta$). We will discuss the model parametrization in detail in the following sections.
+As the continuation of our previous work, we used GLAD-M15 as our
+starting model\citep{bozdaug2016global}.
+The GLAD-M15 is a 3D transversly isotropic earth model. Its uses
+GLAD-M00, a combined 3-D mantle model S362ani \citep{kustowski2008anisotropic}
+with 3-D crust model CURST2.0 \citep{bassin2000current}, as its own starting model.
+Instead of relying to the "crust corrrection", SPECFEM mesher enables us to incoporate
+the 3D crustal model so we are able to update the crust and mantle structures at same
+time with any tradeoffs. Besides, the.
+
+GLAD-M15, same as  S362ANI, provides 6 model parameters, mass density($\rho$), two compressional
+wavespeeds($\alpha_v$ and $\alpha_h$), tws shear wavespeeds($\beta_v$
+and $\beta_h$) and a dimenionless parameter($\eta$). We will discuss
+the model parametrization in detail in the following sections.
+
+GLAD-M15 then uses 256 earthquakes and broad-band seismic data to do the 3D full-waveform
+inversion\citep{bozdaug2016global}. The first 12 iterations of GLAD-M15 was
+performed under 27 secs and the last 3 under 17 secs. We will keep our model
+resolution as 17s in our model. As shown in our later analysis,
+GLAD-M15 proven good enough improvements over S362ANI in both our inversion
+dataset and held-out test dataset. It also shows both significant misfit reduction
+in all measurement categories and and better behavior in statistic anlysis from distribution
+of the phase measurements, which will discussed in the following sections.
 
 \section{Earthquakes}
-We selected 1040 earthquakes from Global CMT catalog. The mangitudes ranges from 5.5 to 7.0. The lower band is set to ensure the signal-to-noise ratio at the global scale. The upper bound of magnitude, 7.0, is set because the minimal period of waveform is 17s. We also constrain the duration of CMT sources to be smaller than 17s.
+In addition to the 256 earthquakes used in the first generation model GLAD-M15, we
+carefully picked 784 more earthquakes from Global Centroid-Moment-Tensor catalog\citep{}
+and added them into our database, making the total number of earthquakes reach 1,040.
+The lower band of moment magnitude, is set at 5.5 to ensure the signal-to-noise ratio at
+the global scale. The upper bound of magnitude is set at 7.2 and duration of earthquakes
+is set at 9 secsince we can use point representation and gaussian source time function.
+We also constrain the duration of CMT sources to be smaller than 17s. The locations of 1040
+earthquakes is shown in fig.\ref{source_correction}a.
 
-We carefully inverted the source mechanism using our starting model, GLAD-M15. The seismic data was filtered into 50-100s to select body wave windows and 60-100s to select surface wave windows\cite{globalCMT}. The inverted parameters includes moment tensors, longitude, latitude and depth. A grid search for the scalar moment and origin time correction was applied directly after the waveform-type of inversion to future calibrate the sources since the first stage inversion algorithm is not very sensitive to those two parameters.
-On average, we observed ** km change in depth and ** km change in location. The moment tensor is not changed dramatically and the Global CMT provides good enough focal mechanism. The scalar moment, on the average, has **\% change.
+To ensure a even global coverage, we used the seismic stations mainly from serveral global
+seismic networks such as Global Seismic Network(II, IU, IC, US, CU and GT),
+GEOFON(GE), GEOSCOPE(G), and regional networks, such as MedNet(MN),
+, Brazilian Lithospheric Seismic Project(BL), Chilean National Seismic Network(C), Japan Meteorological
+Agency Seismic Network(JP) and etc. The number of seismic stations usuallay ranges
+from 150 to 500, denpending on the availablity of seismic stations when the earthquake
+happened. The distribution of seismic stations is in Fig.\ref{fig:source_correction}b and
+data is download from the Incorporated Research Institutions for Seismology(IRIS).
 
-In our 1st iteration, we used 520 earthquakes, as the first iteration is mainly to test our tools, to make sure software are robust and scalable. Starting from 2nd iteration, we double the number of earthquakes, further expanding our dataset to 1040 earthquakes. Starting from GLAD-M22, we added 440 earthquakes from GLobal CMT catelog, mainly in previously poorly covered regions. However, due to computational cost, we didn't implement the 1st stage source inversion in the newly added 440 earthquakes but only calibrate its origin time and scalar moment.
+We use the source inversion algorithm of \cite{liu2004spectral}. This algorithm set the
+target misfit function as the normalized waveform difference and envelope difference between
+observed data, \textbf{d} and synthetic data generated from GLAD-M15, \textbf{s}.
 
-include the earthquake map here.
+\begin{multline}
+  \chi = \sum\limits_{c=1}^{N_c} \omega_c \sum\limits_{r=1}^{N_r} \omega_{cr}
+       \sum\limits_{m=1}^{N_m} \omega_{crm}
+       \Big\{ \lambda {\frac
+              { \int \big[ \mathbf{d}_m(t) - \mathbf{s}_m(t - \Delta t, \mathbf{m}_{15}) \big]^2 dt }
+              {\int \big[ \mathbf{d}_m(t) \big]^2  dt } }\\
+         + (1 - \lambda) \frac
+              {\int \big[ e(\mathbf{d}_m(t)) - e(\mathbf{s}_m(t - \Delta t, \mathbf{m}_{15})) \big]^2 dt }
+              {\int \big[ e(\mathbf{d}_m(t)) \big]^2  dt} \Big\}
+\end{multline}
+
+Following \cite{ekstrom2012global}, seismograms were filtered into 50-100s
+to select 3-component body wave windows and 60-100s to select 3-component
+surface wave windows. Thus, the number of measurements categories $N_c$,
+is 6. To balance the contribution from each category, the weighting for each
+category $\omega_c$, is the reciprocal of the number of measurements in that
+category. The $N_r$ is the number of seismic stations in one category. $\omega_r$
+is the receiver weighting assigned to each individual stations, which we will discuss
+that in detail in the following sections. $N_m$ is the number of measurements for one
+seismic stations in one measurements category and $\omega_m$ is the measurements weightings
+, which is simply set to 1. The inverted parameters includes moment tensors, longitude,
+latitude and depth. In order to get the frechet derivatives for each parameter, there is
+one global-scale forward simulation needed to be done so the source inversion becomes a very expensive
+operation.
+
+Since we shifted the synthetic data based on the cross-correlation to its correspond observed
+data to the best match of the pair, our source inversion is not very sensitive to
+the origin time of earthquakes. In addition to prepare the future Q inversion,
+A grid search for the origin time and scalar moement correction was introduced
+directly to future calibrate the sources afterwards following \cite{zhu2012structure}.
+The grid-search calibration has a linear effect on the seismograms so it doesn't take extra
+simulation time.
+
+Fig.\ref{fig:source_correction} shows the source correction results.
+Most of the earthquakes shows a shallower depth after the source inversion
+(Fig.\ref{fig:source_correction}b and Fig.\ref{fig:source_correction}c),
+in consistent with \cite{hjorleifsdottir2010effects}.
+We observed $-2.62\pm2.49$km depth change compared with the global CMT solutions.
+The scalar moment, on the average, has $5.31\pm3.91$\% change and change of origin time
+is $-0.60\pm1.17$ sec.
+
+Starting from GLAD-M22, we added extra 440 earthquakes from GLobal CMT catelog,
+mainly in previously poorly covered regions. However, due to computational cost,
+we didn't implement the 1st stage source inversion in the newly added 440
+earthquakes but only calibrate its origin time and scalar moment.
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/events_1480.pdf}
-\caption{1480 earthquakes used in this study. (a) Distribution of earthquakes The color of beach ball denotes the depth range of earthquakes from Global CMT Catalog \cite{GlobalCMT}. {\color{Blue}Blue} is for shallow earthquake which are above 50km, {\color{Green}Green} is between 50 and 300km and {\color{Red}Red} is below 300km.}
-\centering
+  \centering
+  \includegraphics[width=\textwidth]{figures/events_1480.pdf}
+  \caption{1480 earthquakes used in this study. (a) Distribution of earthquakes. Colors of beach balls indicate the depth range of earthquakes from Global CMT Catalog \citep{ekstrom2012global}. {\textbf{\color{Blue} Blue}} is for shallow earthquakes above 50km, \textbf{{\color{ForestGreen} Green}} is between 50 and 300km and \textbf{{\color{Red} Red}} is below 300km. (b) and (c) Histograms of earthquake moement magnitudes and depths.}
+  \label{fig:event_1480}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{figures/source_corrections.pdf}
+  \caption{Source correction results for 1040 events used in the inversion. (a) Map views of depth changes. (b) Distribution of seismographic stations used in the source inversion stage.(c) depth change of CMT sources compared to its initial solution from the Global CMT Catalog. (d)-(f) Histograms of depth, origin time and scalar moment changes.}
+  \label{fig:source_correction}
 \end{figure}
 
 \section{Seismic Data}
 
-Seismic stations have been very carefully picked to ensure global converage and high data quality. There are global seismic networks which provides good global coverage, such as the Global Sesimic Netowork(GSN), GEOFON, GEOSCOPE. Regional networks, on the other hand, also becomes a significant part in our database and greatly improve the ray coverage at specific regions, such as US Array(TA), Africa Array(AF), Canadian National Seismograph Network (CN), Geoscience Australia (AU), Brazilian Lithospheric Seismic Project (BL), Antarctic Seismographic Argentinean Italian Network (AI), Caribbean Network (CU), the New Zealand National Seismograph Network (NZ) and etc. There are in total of *** seismic networks and 10,000 seismic stations used in our inversion.
+Seismic stations have been very carefully picked to ensure global converage and high data quality.
+Other than the networks we mentioned in the source inversion, we include all the data we can
+downloaded from IRIS data center. Regional and temporary networks has become a significant part
+in our database and greatly improve the ray coverage at specific regions, such as US Array(TA),
+Africa Array(AF), Canadian National Seismograph Network (CN), Geoscience Australia (AU),
+Brazilian Lithospheric Seismic Project (BL), Antarctic Seismographic Argentinean Italian Network (AI),
+the New Zealand National Seismograph Network (NZ) and etc.
 
-The data, associated with the earhtquakes, was downloaed from several data centers, including IRIS, ORFEUS, INGV, IPGP, ETH, GEONET, RESIF, GFZ and BGR. We only include broad-band seimometers and there in total of 10,000 seismic stations occurred in our database.
-
-include the station map here...
+The data, associated with the earthquakes, was downloaded from several data centers,
+including IRIS, ORFEUS, INGV, IPGP, ETH, GEONET, RESIF, GFZ and BGR.
+There are in total of 275 seismic networks (with individual network code) and 11,800
+seismic stations used in the strutrural inversion stage. Fig.\ref{fig:stations}
+shows the distribution of seismic stations.
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/station_map.pdf}
-\caption{Locations of 1480 earthquakes used in this study.}
-\centering
+  \includegraphics[width=0.8\textwidth]{figures/station_map.pdf}
+  \caption{Distribution of 11,800 seismographic stations on the globe. Colors denote the number of events which they contribute wavefroms to in the model inversion stage. Stations with event response < 400 are plotted in smaller size and they are usually temporary arrays which are deployed over a short period of time.}
+  \label{fig:stations}
+  \centering
 \end{figure}
 
-\section{Misfit function and Model Parametrization}
+\section{Misfit function and Model Parimetrization}
 
-\begin{table}[!htb]
-\caption{Measurement Categories. Seismic waves are categorized in terms of complementary period bands on three components of motion.}
-\label{tab:category}
-\begin{tabular}{|c|c|c|c|}
-\hline
-~          &  Vertical & Radial &  Transverse \\
-\hline
-17--40~s   &   P-SV body waves          & P-SV body waves           & SH body waves   \\
-40--100~s  &   P-SV body waves          & P-SV body waves           & SH body waves \\
-40--100~s  &   Rayleigh mantle waves    & Rayleigh mantle waves     & Love mantle waves \\
-90--250~s  &   Rayleigh surface waves   & Rayleigh surface waves    & Love surface waves \\
-\hline
-\end{tabular}\\
-\label{table:categories}
-\end{table}
-
-\begin{table}[!htb]
-\caption{Misfit Reduction from M00 to M25 for 1480 earthquakes used in the inversion}
-\label{tab:category}
-\begin{tabular}{|c|c|c|c|}
-\hline
-~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
-\hline
-17--40s                &   31.1    &       37.1 &       42.2 \\
-40--100s body waves    &    31.3   &       40.2 &       42.0 \\
-40--100s surface waves &   50.1    &       51.1 &       53.8 \\
-90--250s               &    36.2   &       38.8 &       38.6 \\
-\hline
-\end{tabular}\\
-\label{table:categories}
-\end{table}
-
-\begin{table}[!htb]
-\caption{Misfit Reduction from M00 to M25 for 360 earthquakes as held-out dataset}
-\label{tab:category}
-\begin{tabular}{|c|c|c|c|}
-\hline
-~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
-\hline
-17--40s                &         29.2 &       33.7 &       43.4 \\
-40--100s body waves    &         26.2 &       32.2 &       39.0 \\
-40--100s surface waves &         49.1 &       49.4 &       51.2 \\
-90--250s               &         30.9 &       34.8 &       34.9 \\
-\hline
-\end{tabular}\\
-\label{table:categories}
-\end{table}
-
-\begin{table}[!htb]
-\caption{Misfit Reduction from M15 to M25 for 1480 earthquakes used in the inversion}
-\label{tab:category}
-\begin{tabular}{|c|c|c|c|}
-\hline
-~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
-\hline
-17--40s                &   17.4   &       21.1 &       24.6 \\
-40--100s body waves    &   16.8   &       21.3 &       21.7 \\
-40--100s surface waves &   28.5   &       28.3 &       28.4 \\
-90--250s               &     14.5 &       13.4 &       25.7 \\
-\hline
-\end{tabular}\\
-\label{table:categories}
-\end{table}
-
-
-
-\begin{table}[!htb]
-\caption{Misfit Reduction from M15 to M25 for 360 earthquakes as held-out dataset}
-\label{tab:category}
-\begin{tabular}{|c|c|c|c|}
-\hline
-~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
-\hline
-17--40s                &          11.8 &       14.1 &       21.5 \\
-40--100s body waves    &          14.5 &       12.9 &       16.9 \\
-40--100s surface waves &          29.3 &       28.1 &       23.7 \\
-90--250s               &          10.9 &       14.3 &       24.0 \\
-\hline
-\end{tabular}\\
-\label{table:categories}
-\end{table}
-
+This sections will discuss how we define the the misfit fucntion and how we parametrize the model.
 The overall misfit, $\Phi$, is defined as follows:
 
 \begin{align}
@@ -166,20 +184,38 @@ The overall misfit, $\Phi$, is defined as follows:
 \quad ,
 \end{align}\\
 where~$S$ denotes the number of sources, $C$ the number of categories,
-$R_{sc}$ the number of receivers for source~$s$ and category~$c$, and~$N_{scr}$ the number of measurements for source~$s$,
-category~$c$ and receiver~$r$.
-The misfit for source~$s$,
-category~$c$, receiver~$r$, and window~$w$ is
+$R_{sc}$ the number of receivers for source~$s$ and category~$c$,
+and~$N_{scr}$ the number of measurements for source~$s$, category~$c$
+and receiver~$r$.
+
+The misfit for source~$s$, category~$c$, receiver~$r$, and window~$w$ is
 \begin{align}
-\chi_{scrw} = \left(\frac{\Delta m_{scrw}}{\sigma_{scrw}}\right)^2
+  \chi_{scrw} = \int \Big[ \frac {\Delta \tau_{scrw}} {\sigma_{scrw}} \Big]^2 d\omega
 \quad ,
 \end{align}
-where~$\Delta m_{scrw}$ denotes a measurement with associated standard deviation~$\sigma_{scrw}$.-
+is a frequency-dependent phase measurements using then multitaper technique.
+where $\Delta m_{scrw}$ denotes a measurement with associated standard deviation~$\sigma_{scrw}$.-
 
 \subsection{Weightings}
-Weighting is crucial to the global tompgraphy. Since most of the earthquakes happen in the in the plate boundaries and most of the seismic stations located in the continents(mostly in the northern hemisphere). Also, there are very dense seismic arrays, such as US array, deployed recently. All the factors mentioned above will lead to a really unevent distribution of ray paths. Our weighting strategy is developed to compensate such effects.
+Weighting is crucial to the global tomography to compensate the uneven distribution
+of earthquakes and seismic stations. First, most of the earthquakes happen in the
+in the plate boundaries. There are also several seismic active zoens, such as Japan,
+Fiji Tonoga and South America, where there are a lot of earthquakes clustered near
+the subduction slabs.
+Second, most of the seismic stations located in the continents(futuremore located in
+the northern hemisphere). Besides, there are quite a few dense seismic arrays,
+for example US array, deployed recently, which has hundred or thousands of instrument deployed
+at the regional scale, which will has a very strong footprint on the misfit gradients if no weighting
+been applied.
 
-Our weighting algorithm is used to determine the $\omega_{scr}$ and $\omega_s$. $\omega_{scr}$ is the receiver weightings given one source and one category and $\omega_s$ is the source weighting based on it locations. Both problems can be simplied as: given the distrubtion of points in the space to determine the weighting asssociated with each point. Here we introduce the exponential weightings to describe the density of points and mimic the behavior of point correlations.
+All the factors mentioned above will lead to a uneven distribution of
+ray paths and thus uneven sampling of the earth structure. Our weighting strategy
+is developed to compensate such effects. There are two terms in the misfit function
+receiver weightings, $\omega_{scr}$, and source weightings $\omega_{s}$.
+The calculation of both terms can be abstracted as: given the distrubtion of
+points determine the weighting asssociated with each point.
+Here we introduce the exponential weightings to describe the density of points and
+determine the point weightings.
 
 For more details for the weightings, please refer to the Appendix.
 
@@ -201,7 +237,7 @@ The density is hard to contain in our study due to the period band we are workin
 Based on the parametrization described above, the perturbations in misfit functions would be:
 
 \begin{equation*}
-    \delta \chi = \int_V (K_c\delta lnc + K_{\beta_v}\delta ln\beta_v + K_{\beta_h}\delta ln\beta_h + K\eta \delta ln\eta) dV 
+    \delta \chi = \int_V (K_c\delta lnc + K_{\beta_v}\delta ln\beta_v + K_{\beta_h}\delta ln\beta_h + K\eta \delta ln\eta) dV
 \end{equation*}
 
 \section{Adjoint Tomography Workflow}
@@ -216,7 +252,7 @@ We simulate 120min of seismigrams. It taks 384 Tesla K20 GPUs approximately 10 m
 The seismic data processing takes the raw observed and synthetic data as input, and generate s the adjoint sources as the output. The preprocessing includes: 1) signal processing that  filter into different period bands and rotate the seismograms from East and North to Radial and transverse.; 2) window selection that pick the time window on a pair of observed and synthetic seismigrams; 3) frequency-dependent measurement that generate travel-time measurements inside the windows; 4) measurements quality checks that throw out bad windows and associated measurements and only keep good ones; 5) calcualte the adjoint sources; 6) for each window calculate its weightings that will be applied to the overall misfit function; 7) construct the final adjoint sources by combining the measurements in different period bands.
 
 \subsection{Adjoint Simulation}
-The adjoint simulation takes the adjoint sources as input, and calculate the Frechet derivatives as output. The computation cost is twice as the forward simulation since it is both calculating the adjoint wavefiled and reconstruct the forward wavefield. Other than the adjoint sources, the adjoint simulation also reads in the saved forward wave. 
+The adjoint simulation takes the adjoint sources as input, and calculate the Frechet derivatives as output. The computation cost is twice as the forward simulation since it is both calculating the adjoint wavefiled and reconstruct the forward wavefield. Other than the adjoint sources, the adjoint simulation also reads in the saved forward wave.
 
 The Adjoint simulation nows takes about 20 mins for 17sec resolution and 120min simlulation, which about the twice the time of forwards simulation, since it needs to calculate both a forward and adjoint wavefield at the same time.
 
@@ -238,17 +274,17 @@ and \\
      \rho_k = \frac{1}{\Delta g^{T} \Delta m}
 \end{equation*}
 
-The L-BFGS iteration could be described below, at iteration k \cite{NumericalOptimization}:
+The L-BFGS iteration could be described below, at iteration k \citep{wright1999numerical}:
 
 \begin{align*}
 q = g_i \\
 for \quad i = k -1, k-2, ..., k-n \\
-\alpha_i = \rho_i \delta_m_i^{T}q \\
-q = q - \alpha_i \delta g_i \\
+    \alpha_i = \rho_i \delta m_{i}^{T} q \\
+    q = q - \alpha_i \delta g_i \\
 end for\\
 r = H_k^{0}q \\
 for i = k-n, k-n+1, ..., k-1 \\
-\beta = \rho_i \delta g_i^{T}r \\
+    \beta = \rho_i \delta g_i^{T}r \\
     r = r + \delta m_i(\alpha_i - \beta) \\
 end for \\
 \end{align*}
@@ -256,7 +292,7 @@ end for \\
 The search direction for L-BFGS is:
 $$d_i = -r$$
 
-The step length is choosen based upon line search along the search direction of the overall misfit function. 
+The step length is choosen based upon line search along the search direction of the overall misfit function.
 
 \subsection{Adapative Seismic Data Format}
 
@@ -268,17 +304,17 @@ There are five key issues the new data format should resolve:
     \item Data Organization: the container should be self-describing. It is preferrable that data, including waveform, sources and station information, are orgainzed into certain structures.
     \item Reproducibility: the container should help scientist keep track of what has been done to the data and others can easily reproduce the results.
     \item Efficiently: providing users with easy mechanism to parallel computation.
-    
+
 \end{itemize}
 
 The Adapative Seismic Data Format, ie ASDF, serves as a self-contained-and-explained data container while taking full adavantage of parallel computing. In our case, one ASDF file contained all the files need in data processing, including the seismic traces, quakeml files and station response files. The APIs were carefully designed for easy data extraction and parallel implementation. Each trace in the ASDF is associated with one speicific quakeml file and stationXML file, reducing the possibilities of making mistakes.
 
-\cite{ASDF2016}
-\cite{BookChapter}
+\citep{krischer2016adaptable}
+%\citep{BookChapter}
 
 \subsection{Workflow Management}
 
-There are more than 10 of small blocks contained in our workflow. Each blocks contains thousands of mini-tasks. For the forward and adjoint simulation, we have 1480 simluations which is both computational and I/O intensive at the different stages of simulations. For the data processing stage, we have million of traces, windows and measurements. It is crucial to catch the hardware and softeware failures, preventing them from containating our results. Given such a complex workflow, it is easily for humans to make mistakes. So we bring in the workflow management tools. 
+There are more than 10 of small blocks contained in our workflow. Each blocks contains thousands of mini-tasks. For the forward and adjoint simulation, we have 1480 simluations which is both computational and I/O intensive at the different stages of simulations. For the data processing stage, we have million of traces, windows and measurements. It is crucial to catch the hardware and softeware failures, preventing them from containating our results. Given such a complex workflow, it is easily for humans to make mistakes. So we bring in the workflow management tools.
 
 After invesgating a few existing tools, we choose the RADICAL-SAGA and RADICAL-ENTK as our workflow mangement engines. Combine with domain applications, we developed the seismic tomography workflow tools. It can automatiically detected job failures both from the system and user-defined fucntions. So we can keep tracks of all the tasks and resubmit if necessary.
 
@@ -287,24 +323,96 @@ Based on our measurements, for the forward and adjoint simulation, the ENTK will
 
 \section{Misfit and Histogram Improvements}
 
+\begin{table}[!htb]
+  \centering
+  \caption{Misfit Reduction from M00 to M25 for 1480 earthquakes used in the inversion}
+  \label{tab:category}
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+     ~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
+    \hline
+    17--40s                &    31.1    &       37.1 &       42.2 \\
+    40--100s body waves    &    31.3    &       40.2 &       42.0 \\
+    40--100s surface waves &    50.1    &       51.1 &       53.8 \\
+    90--250s               &    36.2    &       38.8 &       38.6 \\
+    \hline
+  \end{tabular}\\
+  \label{table:categories}
+\end{table}
+
+\begin{table}[!htb]
+  \centering
+  \caption{Misfit Reduction from M00 to M25 for 360 earthquakes as held-out dataset}
+  \label{tab:category}
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    ~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
+    \hline
+    17--40s                &         29.2 &       33.7 &       43.4 \\
+    40--100s body waves    &         26.2 &       32.2 &       39.0 \\
+    40--100s surface waves &         49.1 &       49.4 &       51.2 \\
+    90--250s               &         30.9 &       34.8 &       34.9 \\
+    \hline
+  \end{tabular}\\
+  \label{table:misfit_reduction_M00_M25_360}
+\end{table}
+
+\begin{table}[!htb]
+  \centering
+  \caption{Misfit Reduction from M15 to M25 for 1480 earthquakes used in the inversion}
+  \label{tab:category}
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    ~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
+    \hline
+    17--40s                &   17.4   &       21.1 &       24.6 \\
+    40--100s body waves    &   16.8   &       21.3 &       21.7 \\
+    40--100s surface waves &   28.5   &       28.3 &       28.4 \\
+    90--250s               &   14.5   &       13.4 &       25.7 \\
+    \hline
+  \end{tabular}\\
+  \label{table:misfit_reduction_M15_M25}
+\end{table}
+
+
+
+\begin{table}[!htb]
+  \centering
+  \caption{Misfit Reduction from M15 to M25 for 360 earthquakes as held-out dataset}
+  \label{tab:category}
+  \begin{tabular}{|c|c|c|c|}
+  \hline
+  ~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
+  \hline
+  17--40s                &          11.8 &       14.1 &       21.5 \\
+  40--100s body waves    &          14.5 &       12.9 &       16.9 \\
+  40--100s surface waves &          29.3 &       28.1 &       23.7 \\
+  90--250s               &          10.9 &       14.3 &       24.0 \\
+  \hline
+  \end{tabular}\\
+  \label{table:misfit_reduction_M15_M25_360}
+\end{table}
+
+
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/dt_histogram.pdf}
-\caption{Histogram of travel-time measurements from 1480 earthquakes.}
-\centering
+  \centering
+  \includegraphics[width=\textwidth]{figures/dt_histogram.pdf}
+  \caption{Histograms of phase measurements for S362ani(GLAD-M00, \textbf{Black}), GLAD-M15(\textbf{{\color{ForestGreen} Green}}) and GLAD-M25(\textbf{{\color{Red} Red}}) in the 12 measurement categories. Each columns is one comopnent and each row is one period band. The numbers on the top right is the number of measurements used in that category. The total number of measurements is around 18.2 million. Mean and standard deviations of phase measurements are also denoted in the top right of figures.}
+  \label{fig:phase_hist}
 \end{figure}
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/dlna_histogram.pdf}
-\caption{Histogram of travel-time measurements from 1480 earthquakes.}
-\centering
+  \centering
+  \includegraphics[width=\textwidth]{figures/dlna_histogram.pdf}
+  \caption{Same as Fig.\ref{fig:phase_hist} except for amplitude measurements.}
 \end{figure}
 
 Also include the P arrival measurements here.
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/misfit.pdf}
-\caption{Misfit Changes from GLAD-M15 to GLAD-M25}
-\centering
+  \centering
+  \includegraphics[width=\textwidth]{figures/misfit.pdf}
+  \caption{Evolution of phase misfits from GLAD-M15 to GLAD-M25. Each color denotes the different stages of inversions, between which we make changes to the inversion by either tuning the weighting strategies or adding more data. (a) Evolution of the total phase misfit. (b) - (j) Misfit in each period band and component. (e) - {g} From GLAD-M18, we future split the 40-100 sec period band into two measurement  catgories: body waves and surface waves.}
 \end{figure}
 
 
@@ -314,14 +422,14 @@ Also include the P arrival measurements here.
 
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/globe_vs.pdf}
-\caption{Map views of global $V_s$ perturbations at various depths for out model GLAD-M25(left column), S362ANI+M(middle column)\cite{} and S40RTS\cite{}. The perturbations are calculated based on each model's own 1D profile. The values(upper-left corner of each figure) denotes the minimum/maximum perturbations for each model at the corresponding depth. The green circles denotes the locations of hotspots\cite{}. The range of the colorbar is the same for each row and the range value is labeled on the most left, right after the depth.}
+  \caption{Map views of global $V_s$ perturbations at various depths for out model GLAD-M25(left column), S362ANI+M(middle column)\citep{moulik2014anisotropic} and S40RTS(right column)\citep{ritsema2011s40rts}. The perturbations are calculated based on each model's own 1D profile. The values(upper-left corner of each figure) denotes the minimum/maximum perturbations for each model at the corresponding depth. The green circles denotes the locations of hotspots\citep{montelli2006catalogue}. The range of the colorbar is the same for each row and the range value is labeled on the most left, right after the depth.}
 \label{fig:global-vs}
 \centering
 \end{figure}
 
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/globe_vp_S362ANI-LLNL.pdf}
-\caption{Map views of global $V_p$ variations at various depths for our model GLAD-M25(left column), S362ANI+M(middle column) and LLNL-G3Dv3\cite{}. For LLNL-G3Dv3, the depths is labeled on the right bottom due to its specific mesh spacing. Other plotting conventions are used similar as in Figure \ref{fig:global-vs}.}
+  \caption{Map views of global $V_p$ variations at various depths for our model GLAD-M25(left column), S362ANI+M(middle column) and LLNL-G3Dv3(right column)\citep{simmons2012llnl}. For LLNL-G3Dv3, the depths is labeled on the right bottom based on its own mesh spacing. Other plotting conventions are used similar as in Figure \ref{fig:global-vs}.}
 \label{fig:global-vp}
 \centering
 \end{figure}
@@ -329,14 +437,14 @@ Also include the P arrival measurements here.
 \begin{figure}
 \centering
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/america_vs.pdf}
-\caption{Map views of $V_s$ variations of North America at various depths for our model GLAD-M25(first column) and several global(S362ANI+M and S40RTS) and regional(US22 and SL2013NA) models. \ref{fig:global-vs}. Green circles denotes the locations of hotspots. For SL2013NA, we showed the 610km instead of 600km due to its own mesh grid.}
+  \caption{Map views of $V_s$ variations of North America at various depths for our model GLAD-M25(first column) and several global(S362ANI+M and S40RTS) and regional(US22\citep{zhu2017radial} and SL2013NA\citep{schaeffer2014imaging}) models. Green circles denotes the locations of hotspots. For SL2013NA, we showed the 610km instead of 600km due to its own mesh.}
 \label{fig:global-vp}
 
 \end{figure}
 
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/europe_vs.pdf}
-\caption{Map views of $V_s$ variations of Europe at various depths for our model GLAD-M25(first column) and global(S362ANI+M and S40RTS) and regional(EU60) models. For EU60, the range of color bar is 4\% for all depths, which is labeled in the right bottom corner of the figures.}
+  \caption{Map views of $V_s$ variations of Europe at various depths for our model GLAD-M25(first column) and global(S362ANI+M and S40RTS) and regional(EU60\citep{zhu2015seismic}) models. For EU60, the range of color bar is 4\% for all depths, which is labeled in the right bottom of the figures.}
 \label{fig:global-vp}
 \centering
 \end{figure}
@@ -344,7 +452,7 @@ Also include the P arrival measurements here.
 
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/asia_vs.pdf}
-\caption{Map views of $V_s$ variations of Asia at various depths for our model GLAD-M25(first column) and several global(S362ANI+M and S40RTS) and regional(EARA2014) models.}
+  \caption{Map views of $V_s$ variations of Asia at various depths for our model GLAD-M25(first column) and several global(S362ANI+M and S40RTS) and regional(EARA2014\citep{chen2015multiparameter}) models.}
 \label{fig:global-vp}
 \centering
 \end{figure}
@@ -352,7 +460,7 @@ Also include the P arrival measurements here.
 
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/south_america_vp.pdf}
-\caption{Map views of $V_p$ variations of Europe at various depths for our model GLAD-M25(first column) and several global models, including S362ANI+M, LLNL-G3Dv3 and GAP-P4.}
+  \caption{Map views of $V_p$ variations of South America at various depths for our model GLAD-M25(first column) and several global models, including S362ANI+M, LLNL-G3Dv3 and GAP-P4\citep{fukao2013subducted}.}
 \label{fig:global-vp}
 \centering
 \end{figure}
@@ -361,25 +469,25 @@ Also include the P arrival measurements here.
 
 \begin{figure}[h]
     \centering
-    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Afar.png}\label{fig:a}}\\[-1pt]
-    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Bermuda_Canary.png}\label{fig:b}}\\[-1pt]
-    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/CapeVerde_Hoggar.png}\label{fig:c}}\\[-1pt]
-    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Iceland_Eifel.png}\label{fig:d}}\\[-1pt]
-    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Canary_Iceland.png}\label{fig:e}}\\[-1pt]
-    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Hoggar_AFAR.png}\label{fig:f}}\\[-1pt]
-    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Marion3_Kerguelen.png}\label{fig:g}}\\
-    \caption{Vertical cross sections of perturbations of shear wave velocity Vs of plumes near the AFAR region.}
+%    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Afar.png}\label{fig:a}}\\[-1pt]
+%    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Bermuda_Canary.png}\label{fig:b}}\\[-1pt]
+%    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/CapeVerde_Hoggar.png}\label{fig:c}}\\[-1pt]
+%    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Iceland_Eifel.png}\label{fig:d}}\\[-1pt]
+%    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Canary_Iceland.png}\label{fig:e}}\\[-1pt]
+%    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Hoggar_AFAR.png}\label{fig:f}}\\[-1pt]
+%    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Marion3_Kerguelen.png}\label{fig:g}}\\
+%    \caption{Vertical cross sections of perturbations of shear wave velocity Vs of plumes near the AFAR region.}
 \end{figure}
 
 \begin{figure}[h]
     \centering
-    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Easter_Galapagos.png}\label{fig:a}}\\[-1pt]
-    \sidesubfloat[]{\includegraphics[width=1.0\textwidth]{figures/plumes/Macdonald_Yellowstone.png}\label{fig:b}}\\[-1pt]
-    \sidesubfloat[]{\includegraphics[width=1.0\textwidth]{figures/plumes/Pitcairn_Guadalupe.png}\label{fig:c}}\\[-1pt]
-    \sidesubfloat[]{\includegraphics[width=1.0\textwidth]{figures/plumes/Samoa_Hawaii.png}\label{fig:d}}\\[-1pt]
-    \sidesubfloat[]{\includegraphics[width=1.0\textwidth]{figures/plumes/Samoa_MarquesasS1.png}\label{fig:e}}\\[-1pt]
-    \sidesubfloat[]{\includegraphics[width=1.0\textwidth]{figures/plumes/Tahiti_Macdonald.png}\label{fig:f}}\\
-    \caption{Vertical cross sections of shear wave velocity perturbations of plumes in the pacific region.}
+%    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Easter_Galapagos.png}\label{fig:a}}\\[-1pt]
+%    \sidesubfloat[]{\includegraphics[width=1.0\textwidth]{figures/plumes/Macdonald_Yellowstone.png}\label{fig:b}}\\[-1pt]
+%    \sidesubfloat[]{\includegraphics[width=1.0\textwidth]{figures/plumes/Pitcairn_Guadalupe.png}\label{fig:c}}\\[-1pt]
+%    \sidesubfloat[]{\includegraphics[width=1.0\textwidth]{figures/plumes/Samoa_Hawaii.png}\label{fig:d}}\\[-1pt]
+%    \sidesubfloat[]{\includegraphics[width=1.0\textwidth]{figures/plumes/Samoa_MarquesasS1.png}\label{fig:e}}\\[-1pt]
+%    \sidesubfloat[]{\includegraphics[width=1.0\textwidth]{figures/plumes/Tahiti_Macdonald.png}\label{fig:f}}\\
+%    \caption{Vertical cross sections of shear wave velocity perturbations of plumes in the pacific region.}
 \end{figure}
 
 \subsection{Subductions}
@@ -388,17 +496,17 @@ Also include the P arrival measurements here.
 
 \subsection{Out-of-Sample Test}
 
-The goal is to picked unseen events and check the performance of our model using those events. We revisited the Global CMT catalogue, picked the events whose magnitude is between 6.3 and 7.0. There are in total of 360 earthquakes we choosed based. We calibrated the scalar moment and origin time in the GLAD-M25 and luanched forward simulations in variaous stage of GLAD models. 
+The goal is to picked unseen events and check the performance of our model using those events. We revisited the Global CMT catalogue, picked the events whose magnitude is between 6.3 and 7.0. There are in total of 360 earthquakes we choosed based. We calibrated the scalar moment and origin time in the GLAD-M25 and luanched forward simulations in variaous stage of GLAD models.
 
 \begin{figure}
 \includegraphics[width=\textwidth]{figures/events_360.pdf}
-\caption{Locations of 360 out-of-sample earthquakes used in the model assessment stage.}
+  \caption{Locations of 360 held-out earthquakes used to assess the traveltime misfit in the model asssessment stage. Theses events are not used in the structural inversion. (a) Beach balls of earthquakes. Same color conventions as used in the \ref{fig:} (b) and (c) Histograms of moment magnitude and depth.}
 \centering
 \end{figure}
 
 \begin{figure}
 \includegraphics[width=\textwidth]{figures/dt_histogram_360.pdf}
-\caption{Histogram of travel-time measurements from out-of-sample earthquakes.}
+  \caption{Histogram of phase measurements similar to \ref{fig:phase_hist} except for 360 held-out earthquakes.}
 \centering
 \end{figure}
 
@@ -412,44 +520,9 @@ The goal is to picked unseen events and check the performance of our model using
 thanks blabla...
 \end{acknowledgments}
 
-
 \newpage
+\bibliographystyle{gji}
+\bibliography{ref.bib}
 
-\begin{thebibliography}{}  
-  \bibitem[Butcher(1992)]{bu}  
-    Butcher J. 1992. {\it Copy-editing: The Cambridge  
-    Handbook}, 3rd edn, Cambridge Univ. Press, Cambridge.
-  \bibitem[The Chicago Manual(1982)]{cm}  
-    {\it The Chicago Manual of Style}, Univ.   
-    Chicago Press, Chicago, 1982.
-  \bibitem[Chao(1985)]{ch} 
-    Chao, B. F., 1985. Normal mode study of the Earth's rigid 
-     body motions, {\it Geophys. Res. Lett.}, {\bf 12}, 526-529.
-  \bibitem[Hinderer(1986)]{hi}  
-    Hinderer, J., 1986. Resonance effects of the earth's fluid
-    core in earth rotation, in {\it Solved and Unsolved 
-    Problems}, pp. 277-296, ed. Cazenave A., Reidel, 
-    Dordrecht.
-  \bibitem[Kopka \& Daly(1995)]{kd}  
-    Kopka H. \& Daly P.W., 1995, \textit{A guide to} \LaTeX2e,
-    Addison--Wesley, New York  
-  \bibitem[Lamport(1986)]{la}  
-    Lamport L., 1986,  \LaTeX: {\it A Document   
-    Preparation System}, Addison--Wesley, New York  
-  \bibitem[Lindberg (1986)]{bl}  
-    Lindberg, C., 1986.  Multiple taper harmonic analysis of 
-    terrestrial free oscillations, {\it PhD thesis}, 
-    University of California.
-  \bibitem[Maupin(1992)]{ma} 
-    Maupin, V., 1992. Modelling of laterally trapped surface 
-    waves with application to Rayleigh waves in the Hawaiian 
-    swell, {\it Geophys. J. Int.}. {\bf 110}, 553-570.     	
-  \bibitem[Rutherford \& Hawker(1981)]{rh}
-      Rutherford, S. R. \& Hawker, K. E., 1981, 
-    Consistent coupled mode theory of sound propagation for a 
-    class of non-separable problems, 
-   {\it J. acoust. Soc. Am.}, {\bf 71}, 554-564
-\end{thebibliography}  
-  
 \end{document}
 

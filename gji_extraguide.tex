@@ -75,7 +75,7 @@ The lower band of moment magnitude, is set at 5.5 to ensure the signal-to-noise 
 the global scale. The upper bound of magnitude is set at 7.2 and duration of earthquakes
 is set at 9 secsince we can use point representation and gaussian source time function.
 We also constrain the duration of CMT sources to be smaller than 17s. The locations of 1040
-earthquakes is shown in fig.\ref{source_correction}a.
+earthquakes is shown in fig.\ref{fig:source_correction}a.
 
 To ensure a even global coverage, we used the seismic stations mainly from serveral global
 seismic networks such as Global Seismic Network(II, IU, IC, US, CU and GT),
@@ -263,13 +263,15 @@ Conjugated gradient methds was used from M00 to M21. Then L-BFGS was used afterw
 
 \subsubsection{L-BFGS}
 
-Assuming the model is $m_i$ and gradient is $g_i$ at iteration i, we defined the change of model and gradient:\\
+Assuming the model is $m_i$ and gradient is $g_i$ at iteration i, we
+defined the change of model and gradient:
+
 \begin{equation*}
     \Delta m_i = m_{i+1} - m_i \quad
     \Delta g_i = g_{i+1} - g_i
 \end{equation*}
 
-and \\
+and
 \begin{equation*}
      \rho_k = \frac{1}{\Delta g^{T} \Delta m}
 \end{equation*}
@@ -325,8 +327,7 @@ Based on our measurements, for the forward and adjoint simulation, the ENTK will
 
 \begin{table}[!htb]
   \centering
-  \caption{Misfit Reduction from M00 to M25 for 1480 earthquakes used in the inversion}
-  \label{tab:category}
+  %\label{tab:misfit_reduction_M00_M25}
   \begin{tabular}{|c|c|c|c|}
     \hline
      ~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
@@ -337,13 +338,13 @@ Based on our measurements, for the forward and adjoint simulation, the ENTK will
     90--250s               &    36.2    &       38.8 &       38.6 \\
     \hline
   \end{tabular}\\
+  \caption{Misfit Reduction from M00 to M25 for 1480 earthquakes used in the inversion}
   \label{table:categories}
 \end{table}
 
 \begin{table}[!htb]
   \centering
-  \caption{Misfit Reduction from M00 to M25 for 360 earthquakes as held-out dataset}
-  \label{tab:category}
+  %\label{tag:misfit_reduction_M00_M25_360}
   \begin{tabular}{|c|c|c|c|}
     \hline
     ~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
@@ -354,13 +355,13 @@ Based on our measurements, for the forward and adjoint simulation, the ENTK will
     90--250s               &         30.9 &       34.8 &       34.9 \\
     \hline
   \end{tabular}\\
+  \caption{Misfit Reduction from M00 to M25 for 360 earthquakes as held-out dataset}
   \label{table:misfit_reduction_M00_M25_360}
 \end{table}
 
 \begin{table}[!htb]
   \centering
-  \caption{Misfit Reduction from M15 to M25 for 1480 earthquakes used in the inversion}
-  \label{tab:category}
+  %\label{tab:category}
   \begin{tabular}{|c|c|c|c|}
     \hline
     ~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
@@ -372,14 +373,14 @@ Based on our measurements, for the forward and adjoint simulation, the ENTK will
     \hline
   \end{tabular}\\
   \label{table:misfit_reduction_M15_M25}
+  \caption{Misfit Reduction from M15 to M25 for 1480 earthquakes used in the inversion}
 \end{table}
 
 
 
 \begin{table}[!htb]
   \centering
-  \caption{Misfit Reduction from M15 to M25 for 360 earthquakes as held-out dataset}
-  \label{tab:category}
+  %\label{tab:category}
   \begin{tabular}{|c|c|c|c|}
   \hline
   ~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
@@ -390,6 +391,7 @@ Based on our measurements, for the forward and adjoint simulation, the ENTK will
   90--250s               &          10.9 &       14.3 &       24.0 \\
   \hline
   \end{tabular}\\
+  \caption{Misfit Reduction from M15 to M25 for 360 earthquakes as held-out dataset}
   \label{table:misfit_reduction_M15_M25_360}
 \end{table}
 
@@ -438,14 +440,14 @@ Also include the P arrival measurements here.
 \centering
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/america_vs.pdf}
   \caption{Map views of $V_s$ variations of North America at various depths for our model GLAD-M25(first column) and several global(S362ANI+M and S40RTS) and regional(US22\citep{zhu2017radial} and SL2013NA\citep{schaeffer2014imaging}) models. Green circles denotes the locations of hotspots. For SL2013NA, we showed the 610km instead of 600km due to its own mesh.}
-\label{fig:global-vp}
+\label{fig:america-vs}
 
 \end{figure}
 
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/europe_vs.pdf}
   \caption{Map views of $V_s$ variations of Europe at various depths for our model GLAD-M25(first column) and global(S362ANI+M and S40RTS) and regional(EU60\citep{zhu2015seismic}) models. For EU60, the range of color bar is 4\% for all depths, which is labeled in the right bottom of the figures.}
-\label{fig:global-vp}
+\label{fig:europe-vs}
 \centering
 \end{figure}
 
@@ -453,7 +455,7 @@ Also include the P arrival measurements here.
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/asia_vs.pdf}
   \caption{Map views of $V_s$ variations of Asia at various depths for our model GLAD-M25(first column) and several global(S362ANI+M and S40RTS) and regional(EARA2014\citep{chen2015multiparameter}) models.}
-\label{fig:global-vp}
+\label{fig:asia-vs}
 \centering
 \end{figure}
 
@@ -461,7 +463,7 @@ Also include the P arrival measurements here.
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/south_america_vp.pdf}
   \caption{Map views of $V_p$ variations of South America at various depths for our model GLAD-M25(first column) and several global models, including S362ANI+M, LLNL-G3Dv3 and GAP-P4\citep{fukao2013subducted}.}
-\label{fig:global-vp}
+\label{fig:southamerica-vp}
 \centering
 \end{figure}
 
@@ -500,7 +502,7 @@ The goal is to picked unseen events and check the performance of our model using
 
 \begin{figure}
 \includegraphics[width=\textwidth]{figures/events_360.pdf}
-  \caption{Locations of 360 held-out earthquakes used to assess the traveltime misfit in the model asssessment stage. Theses events are not used in the structural inversion. (a) Beach balls of earthquakes. Same color conventions as used in the \ref{fig:} (b) and (c) Histograms of moment magnitude and depth.}
+  \caption{Locations of 360 held-out earthquakes used to assess the traveltime misfit in the model asssessment stage. Theses events are not used in the structural inversion. (a) Beach balls of earthquakes. Same color conventions as used in the \ref{fig:event_1480} (b) and (c) Histograms of moment magnitude and depth.}
 \centering
 \end{figure}
 

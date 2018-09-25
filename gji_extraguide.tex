@@ -31,9 +31,9 @@ With the development of high performance computing and numerical methods, it is 
 
 There are few agreements about the earth model and yet many unknown to be resolved. There are quite a lot of global models exits however there is no such con-sense.
 
-The GLAD-M25 is the first earth model that incorporate the P and S wave speed using full waveform inversion. Also, people are using specific set of phases in their inversion. For P models, people are using P phase and other body wave phases and for S models, people are using mostly S wave phases and surface waves to constrain the structure. Those two kinds of models usually reveals very different parts of the earth. For example, for P wave, people used it the image the subduction slabs and it is not very good at image lower mantle structures, such as plumes and lower mantle convections. For S waves, it is the verse verso.
+The GLAD-M25 is the first earth model that incorporate the P and S wave speed using full waveform inversion. Also, people are using specific set of phases in their inversion. For P models, people are using P phase and other body wave phases and for S models, people are using mostly S wave phases and surface waves to constrain the structure. Those two kinds of models usually reveals very different parts of the earth. For example, for P wave, people used it the image the subduction slabs and it is not very good at image lower mantle structures, such as plumes and lower mantle convection. For S waves, it is the verse verso.
 
-There are many challenges coming along the way. First, the data volume is huge.  There are in total of 1480 earthquakes used in the inversion stage, added into the database step by step. Second, workflow management is crucial dealing with such a large project. One factor is coming from the complex workflow. There are 4 major building blocks, forward simulation, seismic data processing, adjoint simulation and post-processing. Each blocks contains several small blocks. The other factor is coming from the number of earthquakes and high demands of computation. In each iteration, we are doing 1480 forward and adjoint simulation, generating a few Petabyes of wavefiled files and consuming 16 million of CPU hours on the supercomputer at Oak Ridge National Lab. There are yet more in data processing stages. How to deal with hardware failures is very important and prevent containmination into our inversion results.
+There are many challenges coming along the way. First, the data volume is huge.  There are in total of 1480 earthquakes used in the inversion stage, added into the database step by step. Second, workflow management is crucial dealing with such a large project. One factor is coming from the complex workflow. There are 4 major building blocks, forward simulation, seismic data processing, adjoint simulation and post-processing. Each blocks contains several small blocks. The other factor is coming from the number of earthquakes and high demands of computation. In each iteration, we are doing 1480 forward and adjoint simulation, generating a few Petabytes of wavefield files and consuming 16 million of CPU hours on the supercomputer at Oak Ridge National Lab. There are yet more in data processing stages. How to deal with hardware failures is very important and prevent contamination into our inversion results.
 
 Here, we present our GLAD-M25 earth model, with significantly improvements on the plumes and subductions.
 
@@ -46,15 +46,15 @@ test3 \citet{ekstrom2012global}
 
 As the continuation of our previous work, we used GLAD-M15 as our
 starting model\citep{bozdaug2016global}.
-The GLAD-M15 is a 3D transversly isotropic earth model. Its uses
-GLAD-M00, a combined 3-D mantle model S362ani \citep{kustowski2008anisotropic}
-with 3-D crust model CURST2.0 \citep{bassin2000current}, as its own starting model.
-Instead of relying to the "crust corrrection", SPECFEM mesher enables us to incoporate
+The GLAD-M15 is a 3D transversely isotropic earth model. Its uses
+GLAD-M00, a combined 3-D mantle model S362ANI \citep{kustowski2008anisotropic}
+with 3-D crust model CRUST2.0 \citep{bassin2000current}, as its own starting model.
+Instead of relying to the "crust correction", SPECFEM mesher enables us to incorporate
 the 3D crustal model so we are able to update the crust and mantle structures at same
-time with any tradeoffs. Besides, the.
+time with any trade-off. Besides, the.
 
 GLAD-M15, same as  S362ANI, provides 6 model parameters, mass density($\rho$), two compressional
-wavespeeds($\alpha_v$ and $\alpha_h$), tws shear wavespeeds($\beta_v$
+wavespeeds($\alpha_v$ and $\alpha_h$), two shear wavespeeds($\beta_v$
 and $\beta_h$) and a dimenionless parameter($\eta$). We will discuss
 the model parametrization in detail in the following sections.
 
@@ -64,7 +64,7 @@ performed under 27 secs and the last 3 under 17 secs. We will keep our model
 resolution as 17s in our model. As shown in our later analysis,
 GLAD-M15 proven good enough improvements over S362ANI in both our inversion
 dataset and held-out test dataset. It also shows both significant misfit reduction
-in all measurement categories and and better behavior in statistic anlysis from distribution
+in all measurement categories and and better behavior in statistic analysis from distribution
 of the phase measurements, which will discussed in the following sections.
 
 \section{Earthquakes}
@@ -73,16 +73,17 @@ carefully picked 784 more earthquakes from Global Centroid-Moment-Tensor catalog
 and added them into our database, making the total number of earthquakes reach 1,040.
 The lower band of moment magnitude, is set at 5.5 to ensure the signal-to-noise ratio at
 the global scale. The upper bound of magnitude is set at 7.2 and duration of earthquakes
-is set at 9 secsince we can use point representation and gaussian source time function.
-We also constrain the duration of CMT sources to be smaller than 17s. The locations of 1040
-earthquakes is shown in fig.\ref{fig:source_correction}a.
+is set at 9 sec since we can use point representation and Gaussian-type source
+time function.
+We also constrain the duration of CMT sources to be smaller than 17s.
+The locations of 1040 earthquakes is shown in fig.\ref{fig:source_correction}a.
 
-To ensure a even global coverage, we used the seismic stations mainly from serveral global
+To ensure a even global coverage, we used the seismic stations mainly from several global
 seismic networks such as Global Seismic Network(II, IU, IC, US, CU and GT),
 GEOFON(GE), GEOSCOPE(G), and regional networks, such as MedNet(MN),
 , Brazilian Lithospheric Seismic Project(BL), Chilean National Seismic Network(C), Japan Meteorological
-Agency Seismic Network(JP) and etc. The number of seismic stations usuallay ranges
-from 150 to 500, denpending on the availablity of seismic stations when the earthquake
+Agency Seismic Network(JP) and etc. The number of seismic stations usually ranges
+from 150 to 500, depending on the availability of seismic stations when the earthquake
 happened. The distribution of seismic stations is in Fig.\ref{fig:source_correction}b and
 data is download from the Incorporated Research Institutions for Seismology(IRIS).
 
@@ -118,7 +119,7 @@ operation.
 Since we shifted the synthetic data based on the cross-correlation to its correspond observed
 data to the best match of the pair, our source inversion is not very sensitive to
 the origin time of earthquakes. In addition to prepare the future Q inversion,
-A grid search for the origin time and scalar moement correction was introduced
+A grid search for the origin time and scalar moment correction was introduced
 directly to future calibrate the sources afterwards following \cite{zhu2012structure}.
 The grid-search calibration has a linear effect on the seismograms so it doesn't take extra
 simulation time.
@@ -131,7 +132,7 @@ We observed $-2.62\pm2.49$km depth change compared with the global CMT solutions
 The scalar moment, on the average, has $5.31\pm3.91$\% change and change of origin time
 is $-0.60\pm1.17$ sec.
 
-Starting from GLAD-M22, we added extra 440 earthquakes from GLobal CMT catelog,
+Starting from GLAD-M22, we added extra 440 earthquakes from GLobal CMT catalog,
 mainly in previously poorly covered regions. However, due to computational cost,
 we didn't implement the 1st stage source inversion in the newly added 440
 earthquakes but only calibrate its origin time and scalar moment.
@@ -139,7 +140,7 @@ earthquakes but only calibrate its origin time and scalar moment.
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{figures/events_1480.pdf}
-  \caption{1480 earthquakes used in this study. (a) Distribution of earthquakes. Colors of beach balls indicate the depth range of earthquakes from Global CMT Catalog \citep{ekstrom2012global}. {\textbf{\color{Blue} Blue}} is for shallow earthquakes above 50km, \textbf{{\color{ForestGreen} Green}} is between 50 and 300km and \textbf{{\color{Red} Red}} is below 300km. (b) and (c) Histograms of earthquake moement magnitudes and depths.}
+  \caption{1480 earthquakes used in this study. (a) Distribution of earthquakes. Colors of beach balls indicate the depth range of earthquakes from Global CMT Catalog \citep{ekstrom2012global}. {\textbf{\color{Blue} Blue}} is for shallow earthquakes above 50km, \textbf{{\color{ForestGreen} Green}} is between 50 and 300km and \textbf{{\color{Red} Red}} is below 300km. (b) and (c) Histograms of earthquake moment magnitudes and depths.}
   \label{fig:event_1480}
 \end{figure}
 
@@ -152,30 +153,31 @@ earthquakes but only calibrate its origin time and scalar moment.
 
 \section{Seismic Data}
 
-Seismic stations have been very carefully picked to ensure global converage and high data quality.
+Seismic stations have been very carefully picked to ensure global coverage and high data quality.
 Other than the networks we mentioned in the source inversion, we include all the data we can
 downloaded from IRIS data center. Regional and temporary networks has become a significant part
 in our database and greatly improve the ray coverage at specific regions, such as US Array(TA),
 Africa Array(AF), Canadian National Seismograph Network (CN), Geoscience Australia (AU),
-Brazilian Lithospheric Seismic Project (BL), Antarctic Seismographic Argentinean Italian Network (AI),
+Brazilian Lithospheric Seismic Project (BL),
+Antarctic Seismographic Argentinean Italian Network (AI),
 the New Zealand National Seismograph Network (NZ) and etc.
 
 The data, associated with the earthquakes, was downloaded from several data centers,
-including IRIS, ORFEUS, INGV, IPGP, ETH, GEONET, RESIF, GFZ and BGR.
+including IRIS, ORFEUS, INGV, IPGP, ETH, GEONET and etc.
 There are in total of 275 seismic networks (with individual network code) and 11,800
-seismic stations used in the strutrural inversion stage. Fig.\ref{fig:stations}
+seismic stations used in the structural inversion stage. Fig.\ref{fig:stations}
 shows the distribution of seismic stations.
 
 \begin{figure}
   \includegraphics[width=0.8\textwidth]{figures/station_map.pdf}
-  \caption{Distribution of 11,800 seismographic stations on the globe. Colors denote the number of events which they contribute wavefroms to in the model inversion stage. Stations with event response < 400 are plotted in smaller size and they are usually temporary arrays which are deployed over a short period of time.}
+  \caption{Distribution of 11,800 seismographic stations on the globe. Colors denote the number of events which they contribute waveforms to in the model inversion stage. Stations with event response < 400 are plotted in smaller size and they are usually temporary arrays which are deployed over a short period of time.}
   \label{fig:stations}
   \centering
 \end{figure}
 
-\section{Misfit function and Model Parimetrization}
+\section{Misfit function and Model Parametrization}
 
-This sections will discuss how we define the the misfit fucntion and how we parametrize the model.
+This sections will discuss how we define the the misfit function and how we parameterize the model.
 The overall misfit, $\Phi$, is defined as follows:
 
 \begin{align}
@@ -199,11 +201,11 @@ where $\Delta m_{scrw}$ denotes a measurement with associated standard deviation
 \subsection{Weightings}
 Weighting is crucial to the global tomography to compensate the uneven distribution
 of earthquakes and seismic stations. First, most of the earthquakes happen in the
-in the plate boundaries. There are also several seismic active zoens, such as Japan,
-Fiji Tonoga and South America, where there are a lot of earthquakes clustered near
+in the plate boundaries. There are also several seismic active zones, such as Japan,
+Fiji Tonga and South America, where there are a lot of earthquakes clustered near
 the subduction slabs.
-Second, most of the seismic stations located in the continents(futuremore located in
-the northern hemisphere). Besides, there are quite a few dense seismic arrays,
+Second, most of the seismic stations located in the continents, especially located in
+the northern hemisphere. Besides, there are quite a few dense seismic arrays,
 for example US array, deployed recently, which has hundred or thousands of instrument deployed
 at the regional scale, which will has a very strong footprint on the misfit gradients if no weighting
 been applied.
@@ -212,8 +214,8 @@ All the factors mentioned above will lead to a uneven distribution of
 ray paths and thus uneven sampling of the earth structure. Our weighting strategy
 is developed to compensate such effects. There are two terms in the misfit function
 receiver weightings, $\omega_{scr}$, and source weightings $\omega_{s}$.
-The calculation of both terms can be abstracted as: given the distrubtion of
-points determine the weighting asssociated with each point.
+The calculation of both terms can be abstracted as: given the distribution of
+points determine the weighting associated with each point.
 Here we introduce the exponential weightings to describe the density of points and
 determine the point weightings.
 
@@ -221,7 +223,7 @@ For more details for the weightings, please refer to the Appendix.
 
 \subsection{Model parametrization}
 
-Transversly isotropy model parametrization is used in our model, which is the same as GLAD-M15. Compared to a general anisotropic model which has 21 independent variables, our model could be described by 5 Love parameters,  A, C, L, N and F. In seismology, it is more straight forward to define the parameter with regarding to wavespeed. Instead of Love parameters, we have $\alpha_v$, $\alpha_h$, $\beta_v$, $\beta_h$ and $\eta$. The parameters can be further reduced to 4 assuming the radial anisotropy is due to shear anistropy, we introduced the buld sound speed, $c=\sqrt{\kappa/\rho}$. Our final parameters is:\\
+Transversely isotropy model parametrization is used in our model, which is the same as GLAD-M15. Compared to a general anisotropic model which has 21 independent variables, our model could be described by 5 Love parameters,  A, C, L, N and F. In seismology, it is more straight forward to define the parameter with regarding to wavespeed. Instead of Love parameters, we have $\alpha_v$, $\alpha_h$, $\beta_v$, $\beta_h$ and $\eta$. The parameters can be further reduced to 4 assuming the radial anisotropy is due to shear anisotropy, we introduced the bulk sound speed, $c=\sqrt{\kappa/\rho}$. Our final parameters is:\\
 \begin{align*}
 c &= \sqrt{\kappa/\rho} \\
 \beta_v &= \sqrt{L/\rho} \\
@@ -243,23 +245,23 @@ Based on the parametrization described above, the perturbations in misfit functi
 \section{Adjoint Tomography Workflow}
 
 \subsection{Forward simulation}
-The forward simulation takes the CMT sources, stations and Earth models as input. It will generate synthetic seismograms and forward wavefield snapshots. We used SPECFEM3D-GLOBE as the software to calculate the sysnthetic seismograms with GPU acceleration on Titan at the Oak Ridge Nation Lab.
+The forward simulation takes the CMT sources, stations and Earth models as input. It will generate synthetic seismograms and forward wavefield snapshots. We used SPECFEM3D-GLOBE as the software to calculate the synthetic seismograms with GPU acceleration on Titan at the Oak Ridge Nation Lab.
 
-We simulate 120min of seismigrams. It taks 384 Tesla K20 GPUs approximately 10 mins to do the simulation on Titan at the Oak Ridge National Lab for each earthquakes. To fully undo the attenuation, there is also forward wavefiled saved to the disk. In out current 17sec resolution and 120min simulation, for each earthquake, the forward wavefiled is about 1TB. Given the size the 1480 earthquakes, we have 1.5TB of wavefiled during about 10 hours's of simulation, which is huge volume of I/O happening during the calculation.
+We simulate 120min of seismograms. It takes 384 Tesla K20 GPUs approximately 10 mins to do the simulation on Titan at the Oak Ridge National Lab for each earthquakes. To fully undo the attenuation, there is also forward wavefield saved to the disk. In out current 17sec resolution and 120min simulation, for each earthquake, the forward wavefield is about 1TB. Given the size the 1480 earthquakes, we have 1.5TB of wavefield during about 10 hours of simulation, which is huge volume of I/O happening during the calculation.
 
 \subsection{Seismic Data Processing}
 
-The seismic data processing takes the raw observed and synthetic data as input, and generate s the adjoint sources as the output. The preprocessing includes: 1) signal processing that  filter into different period bands and rotate the seismograms from East and North to Radial and transverse.; 2) window selection that pick the time window on a pair of observed and synthetic seismigrams; 3) frequency-dependent measurement that generate travel-time measurements inside the windows; 4) measurements quality checks that throw out bad windows and associated measurements and only keep good ones; 5) calcualte the adjoint sources; 6) for each window calculate its weightings that will be applied to the overall misfit function; 7) construct the final adjoint sources by combining the measurements in different period bands.
+The seismic data processing takes the raw observed and synthetic data as input, and generate s the adjoint sources as the output. The preprocessing includes: 1) signal processing that  filter into different period bands and rotate the seismograms from East and North to Radial and transverse.; 2) window selection that pick the time window on a pair of observed and synthetic seismograms; 3) frequency-dependent measurement that generate travel-time measurements inside the windows; 4) measurements quality checks that throw out bad windows and associated measurements and only keep good ones; 5) calculate the adjoint sources; 6) for each window calculate its weightings that will be applied to the overall misfit function; 7) construct the final adjoint sources by combining the measurements in different period bands.
 
 \subsection{Adjoint Simulation}
-The adjoint simulation takes the adjoint sources as input, and calculate the Frechet derivatives as output. The computation cost is twice as the forward simulation since it is both calculating the adjoint wavefiled and reconstruct the forward wavefield. Other than the adjoint sources, the adjoint simulation also reads in the saved forward wave.
+The adjoint simulation takes the adjoint sources as input, and calculate the frechet derivatives as output. The computation cost is twice as the forward simulation since it is both calculating the adjoint wavefiled and reconstruct the forward wavefield. Other than the adjoint sources, the adjoint simulation also reads in the saved forward wave.
 
-The Adjoint simulation nows takes about 20 mins for 17sec resolution and 120min simlulation, which about the twice the time of forwards simulation, since it needs to calculate both a forward and adjoint wavefield at the same time.
+The Adjoint simulation now takes about 20 mins for 17sec resolution and 120min simulation, which about the twice the time of forwards simulation, since it needs to calculate both a forward and adjoint wavefield at the same time.
 
 \subsection{Post-processing}
-The post-processing takes the Frechet derivatives as the input and generate the model updates as the output. It contains: 1) summation of single event kernels; 2) smoothing the summed kernels; 3) Preconditions using pseudo-Hessian; 4) Numerical optimization to get serach direction; 5) calculate the step length on the search direction; 6) update the model using the search direction and step length.
+The post-processing takes the frechet derivatives as the input and generate the model updates as the output. It contains: 1) summation of single event kernels; 2) smoothing the summed kernels; 3) Preconditions using pseudo-Hessian; 4) Numerical optimization to get search direction; 5) calculate the step length on the search direction; 6) update the model using the search direction and step length.
 
-Conjugated gradient methds was used from M00 to M21. Then L-BFGS was used afterwards. Here we will discuss the L-BFGS methods in details.
+Conjugated gradient methods was used from M00 to M21. Then L-BFGS was used afterwards. Here we will discuss the L-BFGS methods in details.
 
 \subsubsection{L-BFGS}
 
@@ -294,33 +296,33 @@ end for \\
 The search direction for L-BFGS is:
 $$d_i = -r$$
 
-The step length is choosen based upon line search along the search direction of the overall misfit function.
+The step length is chosen based upon line search along the search direction of the overall misfit function.
 
-\subsection{Adapative Seismic Data Format}
+\subsection{Adaptable Seismic Data Format}
 
 It will be a shame not to take the full advantage of high performance during the data processing stage. However, conventional data format, for example SAC, becomes the bottleneck on the I/O when processing millions of seismic traces since every trace is saved as single files. Not even to mention that it is very easy to make mistakes when processing the data since seismologists usually needs to use various files when processing the data, such as CMT files and station response files.
 
 There are five key issues the new data format should resolve:
 \begin{itemize}
-    \item Robustness and stability: the container should be well developed and mantained to ensure the correctness of scientific results.
-    \item Data Organization: the container should be self-describing. It is preferrable that data, including waveform, sources and station information, are orgainzed into certain structures.
+    \item Robustness and stability: the container should be well developed and maintained to ensure the correctness of scientific results.
+    \item Data Organization: the container should be self-describing. It is preferable that data, including waveform, sources and station information, are organized into certain structures.
     \item Reproducibility: the container should help scientist keep track of what has been done to the data and others can easily reproduce the results.
     \item Efficiently: providing users with easy mechanism to parallel computation.
 
 \end{itemize}
 
-The Adapative Seismic Data Format, ie ASDF, serves as a self-contained-and-explained data container while taking full adavantage of parallel computing. In our case, one ASDF file contained all the files need in data processing, including the seismic traces, quakeml files and station response files. The APIs were carefully designed for easy data extraction and parallel implementation. Each trace in the ASDF is associated with one speicific quakeml file and stationXML file, reducing the possibilities of making mistakes.
+The Adaptable Seismic Data Format, ASDF, serves as a self-contained-and-explained data container while taking full advantages of parallel computing. In our case, one ASDF file contained all the files need in data processing, including the seismic traces, quakeml files and station response files. The APIs were carefully designed for easy data extraction and parallel implementation. Each trace in the ASDF is associated with one specific quakeml file and stationXML file, reducing the possibilities of making mistakes.
 
 \citep{krischer2016adaptable}
 %\citep{BookChapter}
 
 \subsection{Workflow Management}
 
-There are more than 10 of small blocks contained in our workflow. Each blocks contains thousands of mini-tasks. For the forward and adjoint simulation, we have 1480 simluations which is both computational and I/O intensive at the different stages of simulations. For the data processing stage, we have million of traces, windows and measurements. It is crucial to catch the hardware and softeware failures, preventing them from containating our results. Given such a complex workflow, it is easily for humans to make mistakes. So we bring in the workflow management tools.
+There are more than 10 of small blocks contained in our workflow. Each blocks contains thousands of mini-tasks. For the forward and adjoint simulation, we have 1480 simulations which is both computational and I/O intensive at the different stages of simulations. For the data processing stage, we have million of traces, windows and measurements. It is crucial to catch the hardware and software failures, preventing them from contaminating our results. Given such a complex workflow, it is easily for humans to make mistakes. So we bring in the workflow management tools.
 
-After invesgating a few existing tools, we choose the RADICAL-SAGA and RADICAL-ENTK as our workflow mangement engines. Combine with domain applications, we developed the seismic tomography workflow tools. It can automatiically detected job failures both from the system and user-defined fucntions. So we can keep tracks of all the tasks and resubmit if necessary.
+After investigating a few existing tools, we choose the RADICAL-SAGA and RADICAL-ENTK as our workflow management engines. Combine with domain applications, we developed the seismic tomography workflow tools. It can automatically detected job failures both from the system and user-defined functions. So we can keep tracks of all the tasks and resubmit if necessary.
 
-Based on our measurements, for the forward and adjoint simulation, the ENTK will have about 20 secs overhead on each simulation, which is about acceptable given it has the power to detect failures and relaunch jobs. Given the most of the time is waiting in the queue when using supercomputers, automatically failure detection and relaunch will greatly shorten our overall time since it will finish all the simluation in one single jobs.
+Based on our measurements, for the forward and adjoint simulation, the ENTK will have about 20 secs overhead on each simulation, which is about acceptable given it has the power to detect failures and relaunch jobs. Given the most of the time is waiting in the queue when using supercomputers, automatically failure detection and relaunch will greatly shorten our overall time since it will finish all the simulations in one single jobs.
 
 
 \section{Misfit and Histogram Improvements}
@@ -397,7 +399,7 @@ Based on our measurements, for the forward and adjoint simulation, the ENTK will
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{figures/dt_histogram.pdf}
-  \caption{Histograms of phase measurements for S362ani(GLAD-M00, \textbf{Black}), GLAD-M15(\textbf{{\color{ForestGreen} Green}}) and GLAD-M25(\textbf{{\color{Red} Red}}) in the 12 measurement categories. Each columns is one comopnent and each row is one period band. The numbers on the top right is the number of measurements used in that category. The total number of measurements is around 18.2 million. Mean and standard deviations of phase measurements are also denoted in the top right of figures.}
+  \caption{Histograms of phase measurements for S362ani(GLAD-M00, \textbf{Black}), GLAD-M15(\textbf{{\color{ForestGreen} Green}}) and GLAD-M25(\textbf{{\color{Red} Red}}) in the 12 measurement categories. Each columns is one component and each row is one period band. The numbers on the top right is the number of measurements used in that category. The total number of measurements is around 18.2 million. Mean and standard deviations of phase measurements are also denoted in the top right of figures.}
   \label{fig:phase_hist}
 \end{figure}
 
@@ -412,7 +414,7 @@ Also include the P arrival measurements here.
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{figures/misfit.pdf}
-  \caption{Evolution of phase misfits from GLAD-M15 to GLAD-M25. Each color denotes the different stages of inversions, between which we make changes to the inversion by either tuning the weighting strategies or adding more data. (a) Evolution of the total phase misfit. (b) - (j) Misfit in each period band and component. (e) - {g} From GLAD-M18, we future split the 40-100 sec period band into two measurement  catgories: body waves and surface waves.}
+  \caption{Evolution of phase misfits from GLAD-M15 to GLAD-M25. Each color denotes the different stages of inversions, between which we make changes to the inversion by either tuning the weighting strategies or adding more data. (a) Evolution of the total phase misfit. (b) - (j) Misfit in each period band and component. (e) - {g} From GLAD-M18, we future split the 40-100 sec period band into two measurement categories: body waves and surface waves.}
 \end{figure}
 
 
@@ -469,7 +471,8 @@ Also include the P arrival measurements here.
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Comment out for speed-up compile of latex file
-% If not, the compilation will be slowed down quite a lot.
+% If not, the compilation will be slowed down quite a lot due
+% to the insertion of PNG files.
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %\begin{figure}[h]
@@ -497,15 +500,15 @@ Also include the P arrival measurements here.
 
 \subsection{Subductions}
 
-\section{Model Assesement}
+\section{Model Assessment}
 
 \subsection{Out-of-Sample Test}
 
-The goal is to picked unseen events and check the performance of our model using those events. We revisited the Global CMT catalogue, picked the events whose magnitude is between 6.3 and 7.0. There are in total of 360 earthquakes we choosed based. We calibrated the scalar moment and origin time in the GLAD-M25 and luanched forward simulations in variaous stage of GLAD models.
+The goal is to picked unseen events and check the performance of our model using those events. We revisited the Global CMT catalogue, picked the events whose magnitude is between 6.3 and 7.0. There are in total of 360 earthquakes we chooses. We calibrated the scalar moment and origin time in the GLAD-M25 and launched forward simulations in various stage of GLAD models.
 
 \begin{figure}
 \includegraphics[width=\textwidth]{figures/events_360.pdf}
-  \caption{Locations of 360 held-out earthquakes used to assess the traveltime misfit in the model asssessment stage. Theses events are not used in the structural inversion. (a) Beach balls of earthquakes. Same color conventions as used in the \ref{fig:event_1480} (b) and (c) Histograms of moment magnitude and depth.}
+  \caption{Locations of 360 held-out earthquakes used to assess the traveltime misfit in the model assessment stage. Theses events are not used in the structural inversion. (a) Beach balls of earthquakes. Same color conventions as used in the \ref{fig:event_1480} (b) and (c) Histograms of moment magnitude and depth.}
 \centering
 \end{figure}
 
@@ -529,4 +532,3 @@ thanks blabla...
 \bibliography{ref.bib}
 
 \end{document}
-

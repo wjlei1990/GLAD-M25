@@ -1,4 +1,4 @@
-pdflatex gji_extraguide
-bibtex gji_extraguide
-pdflatex gji_extraguide
-pdflatex gji_extraguide
+pdflatex main
+bibtex main
+pdflatex main
+pdflatex main

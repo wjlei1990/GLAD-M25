@@ -265,7 +265,7 @@ Based on the parametrization described above, the perturbations in misfit functi
 
 \begin{figure}
   \centering
-  \includegraphics[width=\textwidth]{figures/adjoint_workflow.pdf}
+  \includegraphics[width=\textwidth]{figures/adjoint_workflow_6.pdf}
   \caption{Adjoint Tomography Workflow.}
   \label{fig:phase_hist}
 \end{figure}
@@ -276,6 +276,13 @@ The forward simulation takes the CMT sources, stations and Earth models as input
 We simulate 120min of seismograms. It takes 384 Tesla K20 GPUs approximately 10 mins to do the simulation on Titan at the Oak Ridge National Lab for each earthquakes. To fully undo the attenuation, there is also forward wavefield saved to the disk. In out current 17sec resolution and 120min simulation, for each earthquake, the forward wavefield is about 1TB. Given the size the 1480 earthquakes, we have 1.5TB of wavefield during about 10 hours of simulation, which is huge volume of I/O happening during the calculation.
 
 \subsection{Seismic Data Processing}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{figures/Preprocess_workflow.pdf}
+  \caption{Adjoint Tomography Workflow.}
+  \label{fig:phase_hist}
+\end{figure}
 
 The seismic data processing takes the raw observed and synthetic data as input, and generate s the adjoint sources as the output. The preprocessing includes: 1) signal processing that  filter into different period bands and rotate the seismograms from East and North to Radial and transverse.; 2) window selection that pick the time window on a pair of observed and synthetic seismograms; 3) frequency-dependent measurement that generate travel-time measurements inside the windows; 4) measurements quality checks that throw out bad windows and associated measurements and only keep good ones; 5) calculate the adjoint sources; 6) for each window calculate its weightings that will be applied to the overall misfit function; 7) construct the final adjoint sources by combining the measurements in different period bands.
 

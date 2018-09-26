@@ -217,32 +217,58 @@ receiver weightings, $\omega_{scr}$, and source weightings $\omega_{s}$.
 The calculation of both terms can be abstracted as: given the distribution of
 points determine the weighting associated with each point.
 Here we introduce the exponential weightings to describe the density of points and
-determine the point weightings.
+determine the point weightings. Given a set of points $p_i$, the distance between
+two is $r_{ij}$, the weightings associated with each point, $w_i$, could be obtained by:
 
-For more details for the weightings, please refer to the Appendix.
+\begin{equation}
+w_{i} = \frac{1}{A} \left(
+  \sum_{j=1}^N \exp \left[ \mbox{} - \left( \frac{r_{ij}} {r_{0}} \right)^2 \right] \right) ^{-1}
+\label{eq:spatial_weights}
+\end{equation}
+where $r_{0}$ is the sensitivity distance and $A$ is the normalization term.
+The reference distance will control ratios of weightings between dense and
+sparse regions. For more details for the weightings, please refer to the Appendix XXX.
 
-\subsection{Model parametrization}
-
-Transversely isotropy model parametrization is used in our model, which is the same as GLAD-M15. Compared to a general anisotropic model which has 21 independent variables, our model could be described by 5 Love parameters,  A, C, L, N and F. In seismology, it is more straight forward to define the parameter with regarding to wavespeed. Instead of Love parameters, we have $\alpha_v$, $\alpha_h$, $\beta_v$, $\beta_h$ and $\eta$. The parameters can be further reduced to 4 assuming the radial anisotropy is due to shear anisotropy, we introduced the bulk sound speed, $c=\sqrt{\kappa/\rho}$. Our final parameters is:\\
+\subsection{Model Parametrization}
+Transversely isotropy model parametrization is used in our model, same as S362ANI(GLAD-M00)
+and GLAD-M15. Comparing to a general anisotropic model which has 21 independent variables,
+our model could be described by 5 Love parameters, A, C, L, N and F\citep{love2013treatise}.
+Since it is more straight forward to use  wavespeed as model parameters in sesimology,
+we choose $\alpha_v$, $\alpha_h$, $\beta_v$, $\beta_h$ and $\eta$.
+Assuming the radial anisotropy is due to shear anisotropy, these 5 parameters
+can be further reduced to 4, we introduced the bulk sound speed,
+$c=\sqrt{\kappa/\rho}$. Our final parameters are:\\
 \begin{align*}
-c &= \sqrt{\kappa/\rho} \\
+      c &= \sqrt{\kappa/\rho} \\
 \beta_v &= \sqrt{L/\rho} \\
 \beta_h &= \sqrt{N/\rho} \\
 \eta & = F/(A-2L)
 \end{align*}
 
-The density is hard to contain in our study due to the period band we are working on. So it is constrained by isotropic shear wavespeed, $\beta = \sqrt{(2\beta_v^2 + \beta_h)/3}$,\\
+Since density is hard to constrain due to the period band we are working on, the $\rho$ kernel is obtained by scaling the isotropic shear wavespeed kernel\citep{montagner1989petrological},\\
 \begin{equation*}
     \delta ln\rho = 0.33\delta ln\beta
 \end{equation*}
 
+where $\beta$ is defined as the Voigt average of the raidally anisotropic shear wave speeds\citep{babuska1991seismic}
+$$\beta = \sqrt{(2\beta_v^2 + \beta_h)/3}$$
+
 Based on the parametrization described above, the perturbations in misfit functions would be:
 
 \begin{equation*}
-    \delta \chi = \int_V (K_c\delta lnc + K_{\beta_v}\delta ln\beta_v + K_{\beta_h}\delta ln\beta_h + K\eta \delta ln\eta) dV
+    \delta \chi = \int_V
+      (K_c\delta lnc + K_{\beta_v}\delta ln\beta_v + K_{\beta_h}\delta ln\beta_h +
+      K_\eta \delta ln\eta) dV
 \end{equation*}
 
 \section{Adjoint Tomography Workflow}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{figures/adjoint_workflow.pdf}
+  \caption{Adjoint Tomography Workflow.}
+  \label{fig:phase_hist}
+\end{figure}
 
 \subsection{Forward simulation}
 The forward simulation takes the CMT sources, stations and Earth models as input. It will generate synthetic seismograms and forward wavefield snapshots. We used SPECFEM3D-GLOBE as the software to calculate the synthetic seismograms with GPU acceleration on Titan at the Oak Ridge Nation Lab.

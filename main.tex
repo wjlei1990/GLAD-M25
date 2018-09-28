@@ -577,6 +577,29 @@ in 17-40s body waves, with 31.1\% misfit reduction.
 
 \subsection{Comparison of Histograms}
 
+Another way to evaluate the model performance by checking the distribution
+of measurements. Fig.\ref{fig:phase_hist} shows the histograms of phase
+measurements. We use identical windows to make measurements using 1,480
+earthquakes on the all the three models, our starting model
+GLAD-M00(362ANI+CRUST2.0), first generation model GLAD-M15,
+and lastest model GLAD-M25. The total number of selected windows is over
+18 million. The standard deviations values of phase measurements has
+significant improvments on all the categories over iterations.
+The means values, has also improved expecially in the long period categories,
+such as the 40-100 surface waves and 90-250 all waves. In some categories,
+you may see slight shift of mean values, mainly due to the trade off among
+different compnents and period bands. To summarize, the improvements in
+the phase measurements histogram is consistent as we observed in the
+misfit reduction.
+
+Fig.\ref{fig:amp_hist} shows the histogram of amplitude measurements. We do
+observed variance reductions in all the categories, but the difference is
+not significant and the variance is still relatively large.
+It is because now we only assimilate phase measurements to
+constrain the elastic model parameters. To better constrain the amplitude
+anomalies, shear attenuation has to been include in our inversion, which is
+next step of our work.
+
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{figures/dt_histogram.pdf}
@@ -588,6 +611,7 @@ in 17-40s body waves, with 31.1\% misfit reduction.
   \centering
   \includegraphics[width=\textwidth]{figures/dlna_histogram.pdf}
   \caption{Same as Fig.\ref{fig:phase_hist} except for amplitude measurements.}
+  \label{fig:amp_hist}
 \end{figure}
 
 
@@ -686,28 +710,44 @@ in 17-40s body waves, with 31.1\% misfit reduction.
 
 \newpage
 
-\section{Model Assessment}
+\section{Model Evaluation}
 
-\subsection{Out-of-Sample Test}
+Here, we present two ways that used to evaluate the quality of our model:
+resolution analysis and held-out data test.
 
-The goal is to picked unseen events and check the performance of our model using those events. We revisited the Global CMT catalogue, picked the events whose magnitude is between 6.3 and 7.0. There are in total of 360 earthquakes we chooses. We calibrated the scalar moment and origin time in the GLAD-M25 and launched forward simulations in various stage of GLAD models.
+\subsection{Resolution Analysis}
+Checkboard test was commonly used a resolution test method but it is at the
+same cost of inversion of GLAD-M25, which will cost millions of CPU hours.
+Due to the very demanding computational requirements, we used the 'point
+spread function to assess the imaging quality in models GLAD-M25.
 
-\begin{table}[!htb]
+\subsection{Held-out Dataset Test}
+Following the approch by \cite{tape2009adjoint}, \cite{bozdaug2016global},
+unseen events are used to check the performance of our
+model. We revisited the Global CMT catalogue,
+picked all the events whose magnitude is between 6.3 and 7.0, which hasn't
+been used in our inversion. The reason why we set the lower bound to 6.3
+instead of 5.5, is those earthquakes have good enough data and generates
+more measurements at the global scale.
+We calibrated the scalar moment and origin time in the GLAD-M25, and there
+are 360 events left that has enough windows. Fig.\ref{fig:events_360} shows
+the ditribution of 360 earthquake that we used as held-out dataset
+
+\begin{figure}
   \centering
-  %\label{tag:misfit_reduction_M00_M25_360}
-  \begin{tabular}{|c|c|c|c|}
-    \hline
-    ~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
-    \hline
-    17--40s                &         29.2 &       33.7 &       43.4 \\
-    40--100s body waves    &         26.2 &       32.2 &       39.0 \\
-    40--100s surface waves &         49.1 &       49.4 &       51.2 \\
-    90--250s               &         30.9 &       34.8 &       34.9 \\
-    \hline
-  \end{tabular}\\
-  \caption{Misfit Reduction from M00 to M25 for 360 earthquakes as held-out dataset}
-  \label{table:misfit_reduction_M00_M25_360}
-\end{table}
+  \includegraphics[width=\textwidth]{figures/events_360.pdf}
+  \caption{Locations of 360 held-out earthquakes used to assess the traveltime misfit in the model assessment stage. Theses events are not used in the structural inversion. (a) Beach balls of earthquakes. Same color conventions as used in the \ref{fig:event_1480} (b) and (c) Histograms of moment magnitude and depth.}
+  \label{fig:events_360}
+\end{figure}
+
+First, we evaluate the model performance by misfit reduction. Same windows and
+weightings are used across models. Table.\ref{table:misfit_reduction_M00_M25_360}
+shows the misfit reduction from M15 to M25 and Table.\ref{table:misfit_reduction_M00_M25_360}
+is from M00 to M25. It agains shows misfit reduction in all categories in
+our held-out dataset, simliar to what we observed from the inversion dataset.
+The reduction are slightly smaller, partly due to the reason that we didn't
+do waveform-type inversion as we mentioned in the source inversion stage but
+only did a grid search to calibrate the scalar moment and origin time.
 
 \begin{table}[!htb]
   \centering
@@ -726,27 +766,85 @@ The goal is to picked unseen events and check the performance of our model using
   \label{table:misfit_reduction_M15_M25_360}
 \end{table}
 
+\begin{table}[!htb]
+  \centering
+  %\label{tag:misfit_reduction_M00_M25_360}
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    ~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
+    \hline
+    17--40s                &         29.2 &       33.7 &       43.4 \\
+    40--100s body waves    &         26.2 &       32.2 &       39.0 \\
+    40--100s surface waves &         49.1 &       49.4 &       51.2 \\
+    90--250s               &         30.9 &       34.8 &       34.9 \\
+    \hline
+  \end{tabular}\\
+  \caption{Misfit Reduction from M00 to M25 for 360 earthquakes as held-out dataset}
+  \label{table:misfit_reduction_M00_M25_360}
+\end{table}
 
+Second, we also plotted the histograms of phase measurements in Fig.\ref{fig:phase_hist_360}. We also observed clear variance reduction in all the 12 categories from GLAD--M00 to GLAD--M25.
+
+To summarize, both the misfit reduction and histogram improvements indicates that our model performs good with data that hasn't been used in our inversion. We expect to see similar behavior for the future earthquakes.
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/events_360.pdf}
-  \caption{Locations of 360 held-out earthquakes used to assess the traveltime misfit in the model assessment stage. Theses events are not used in the structural inversion. (a) Beach balls of earthquakes. Same color conventions as used in the \ref{fig:event_1480} (b) and (c) Histograms of moment magnitude and depth.}
-\centering
-\end{figure}
-
-\begin{figure}
-\includegraphics[width=\textwidth]{figures/dt_histogram_360.pdf}
+  \centering
+  \includegraphics[width=\textwidth]{figures/dt_histogram_360.pdf}
   \caption{Histogram of phase measurements similar to \ref{fig:phase_hist} except for 360 held-out earthquakes.}
-\centering
+  \label{fig:phase_hist_360}
 \end{figure}
 
-\subsection{Resolution Test}
 
 \section{Conclusion}
 
+Seismology is driven by data. Back into time, seismolgist would look at
+single seimograms and pick valuable information out the them. Now, we have
+ten thousands of seismograms deployed globallay and it will be a pity not
+to take all the information we have. Eventhough GLAD-M25 is following-up
+of GLAD-M15. It has many superior advantages and improvements. We increase
+the dataset from 253 to 1480 earthquaks, with carefully inverted sources
+in the 3D earth structures. We have 360 earthquakes used in the test
+dataset, which is already larger than the most of the dataset other people used
+for their inversion. We culled every seismograms from various data centers,
+thanks to the open environment and data sharing spirit of our seimology community.
+With very careful checks by assessing the integrity of instrument response
+and deployment, evaluating the singal-to-noise ratios, picking the time windows
+using over 20 criterias, cleaning windows by their statistical behavior, and
+calculating weights to balance the uneven distribution of earthquakes and
+seismic stations, we really have done a lot to ensure the cleaness of the
+data assimilated into our inversion and make sure every piece of value infomation
+will be used but rejecting the crap data.
+
+There are also quite a lot of technique challenges on the way but we are seeking
+the most cutting-edge technologies to solve them. ADIOS was introduced to save mesh
+and kernel related data, since we are saving petabyes of wavefiled snapshots
+in a few hours of simulation and it is critical even for the most advanced
+supercomputers in the world. ASDF is developed by us to store the seismograms
+since we have ten millions of time series data from thousands of earthquakes.
+We have to get access and process them in a very efficient manner that most of
+the existing data format just won't meet our requirements. To handle the complex
+inversion workflow, we are working RADICAL group to develop the workflow mangement
+tools that will help manage every piece of task and make the user aware if there
+is anything bad happened during the computation. Those tools that help the
+automation of the workflow, is the "guard" that stand there and monitor things
+to make sure our scientific results away from contaminations. Besides, the
+developer of SPECFEM packages, they dedicate more than ten years of work,
+to develop the software and make it fast, efficient and robust for global scale of simulation.
+They are working closly with hardware vendors such as Cray, IBM and NVIDIA to adapt
+the code to architecture of the most advanced supercomputers. We are soon
+moving our simulation to Summit, the world No.1 supercomputer at the Oak Ridge
+National Lab.
 
 \begin{acknowledgments}
-thanks blabla...
+
+  We want to give thanks to the Oak Ridge National Lab, for providing
+  excellent support and computational resource that facilitate our research.
+  We want to thanks IRIS and ORFEUS for providing seismic datas used in this
+  study. We want to acknowledge Hejun Zhu, Min Chen, Carl Tape and Qinya Liu,
+  for providing usefull tools and great suggetions these years.
+  We want to thanks Ebru Bozdag, for providing GLAD-M15, data and software
+  she used in the first generation model.
+
 \end{acknowledgments}
 
 \newpage

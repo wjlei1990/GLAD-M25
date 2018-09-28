@@ -6,6 +6,8 @@
 \usepackage{subfig}
 \usepackage{caption}
 \usepackage{floatrow}
+\usepackage{amssymb}
+\usepackage{commath}
 \usepackage{amsmath}
 \usepackage[dvipsnames]{xcolor}
 \floatsetup[figure]{style=plain,subcapbesideposition=top}
@@ -168,7 +170,7 @@ shows the distribution of seismic stations.
 
 \begin{figure}
   \includegraphics[width=0.8\textwidth]{figures/station_map.pdf}
-  \caption{Distribution of 11,800 seismographic stations on the globe. Colors denote the number of events which they contribute waveforms to in the model inversion stage. Stations with event response < 400 are plotted in smaller size and they are usually temporary arrays which are deployed over a short period of time.}
+  \caption{Distribution of 11,800 seismographic stations on the globe. Colors denote the number of events which they contribute waveforms to in the model inversion stage. Stations with event response < 400 are plotted in smaller size and they are usually temporary arrays which are deployed over a short period of time. The max event reponse comes from IU.ANMO, which contributeed to 1442 out of 1480 eartquakes in out dataset.}
   \label{fig:stations}
   \centering
 \end{figure}
@@ -224,7 +226,7 @@ w_{i} = \frac{1}{A} \left(
 \label{eq:spatial_weights}
 \end{equation}
 where $r_{0}$ is the sensitivity distance and $A$ is the normalization term.
-The reference distance will control ratios of weightings between dense and
+The reference distance $r_0$ will control ratios of weightings between dense and
 sparse regions. For more details for the weightings, please refer to the Appendix XXX.
 
 \subsection{Model Parametrization}
@@ -261,73 +263,143 @@ Based on the parametrization described above, the perturbations in misfit functi
 
 \section{Adjoint Tomography Workflow}
 
+The flow chart for adjoint tomography is shown in Fig.\ref{fig:adjoint_workflow}.
+The workflow starts with a certain number of earthquakes. Here, we used the
+inverted CMT sources from the Global CMT catalog. Based on the time
+of earthquakes, we downloaded observed data, including time series and StaionXML,
+from IRIS and other data centers. The we convert the sources, StationXML and time series
+into ASDF files. Each ASDF file usually contains a complete set of data from one
+earthquake. The data download and conversion need to be done only once. The raw observed data,
+storing in ASDF, could be reused afterwards.
+
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{figures/adjoint_workflow_6.pdf}
   \caption{Adjoint Tomography Workflow.}
-  \label{fig:phase_hist}
+  \label{fig:adjoint_workflow}
 \end{figure}
 
 \subsection{Forward simulation}
-The forward simulation takes the CMT sources, stations and Earth models as input. It will generate synthetic seismograms and forward wavefield snapshots. We used SPECFEM3D-GLOBE as the software to calculate the synthetic seismograms with GPU acceleration on Titan at the Oak Ridge Nation Lab.
+The forward simulation takes the CMT sources, stations and Earth models as input.
+We will first generate mesh based on the models. The CMT sources and station will
+be fed into the solver to generate synthetic seismograms and forward wavefield snapshots.
+SEPCFEM3D\_GLOBE with GPU acceleration is used on Titan at the Oak Ridge Nation Lab for
+both mesher and solver part.
 
-We simulate 120min of seismograms. It takes 384 Tesla K20 GPUs approximately 10 mins to do the simulation on Titan at the Oak Ridge National Lab for each earthquakes. To fully undo the attenuation, there is also forward wavefield saved to the disk. In out current 17sec resolution and 120min simulation, for each earthquake, the forward wavefield is about 1TB. Given the size the 1480 earthquakes, we have 1.5TB of wavefield during about 10 hours of simulation, which is huge volume of I/O happening during the calculation.
+To simulate 120min of seismograms at 17sec resolution, it takes 384 Tesla K20X
+GPUs approximately 10 mins to run on Titan. To precisly calculate the sensitivity
+kernels, there is forward wavefield saved to the disk and those will used in the
+adjoint simluation in the later stage. In the current resolution
+and simulation length, the forward wavefield saved is above 1 terabytes
+for each earthquake. Given the size the 1480 earthquakes, we have 1.5 petabytes of
+wavefield saved to disk using ADIOS\citep{liu2014hello} during about 10 hours
+of simulation using 15,360 GPUs.
+It is huge volume of data saved to distk in a relatively short period of time, in which case
+ADIOS really helped to relief the I/O bottleneck.
 
 \subsection{Seismic Data Processing}
 
 \begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth]{figures/Preprocess_workflow.pdf}
-  \caption{Adjoint Tomography Workflow.}
-  \label{fig:phase_hist}
+  \caption{Preprocessing Workflow for seismic data.}
+  \label{fig:preprocess_workflow}
 \end{figure}
 
-The seismic data processing takes the raw observed and synthetic data as input, and generate s the adjoint sources as the output. The preprocessing includes: 1) signal processing that  filter into different period bands and rotate the seismograms from East and North to Radial and transverse.; 2) window selection that pick the time window on a pair of observed and synthetic seismograms; 3) frequency-dependent measurement that generate travel-time measurements inside the windows; 4) measurements quality checks that throw out bad windows and associated measurements and only keep good ones; 5) calculate the adjoint sources; 6) for each window calculate its weightings that will be applied to the overall misfit function; 7) construct the final adjoint sources by combining the measurements in different period bands.
+The seismic data processing takes the raw observed and synthetic data as input,
+and generate s the adjoint sources as the output. As shown
+in Fig.\ref{fig:preprocess_workflow}, preprocessing includes:
+\begin{enumerate}
+  \item Signal processing that remove the instrument response from observsed data
+    to recover the true ground motion. Both observed and synthetic data will be
+    filtered into a certain period band. Then the two horizontal components of the
+    sesimograms are roated from North, East to radial and transverse only if the
+    StationXML passed the sanity check.
+  \item Window selection that picks the time window on a pair of
+    observed and synthetic seismograms. Pyflex(python version
+    of FLEXWIN\citep{maggi2009automated}), is
+    such a tool that automatically generate windows where observed data and
+    synthetic data are close enough to make measurements based on user defined
+    criteria.
+  \item Multi-taper measurement that generates frequency-dependent travel-time
+    difference within the windows selected from the last step.
+    The output files contains both the measurements and misfit values.
+  \item Window cleaning that get rid of bad windows(and associated
+    measurements), only keeping good ones based on the statistical analysis of
+    measurements.
+  \item calculate the adjoint sources with the sorted windows.
+  \item For each window and associated measurement, calculate its weightings
+    that will be applied at the summation stage and calibrate its contribution
+    into the overall misfit function, using the methond we mentioned before.
+  \item Construct the final adjoint sources by summing the adjoint source from
+    different windows and measurement categories.
+\end{enumerate}
+
+Even though it is such a computational demanding process as the forward and adjoint
+simulation, only taking about $1\%$ CPU hours in the whole workflow, it is crucial
+that directly impact the inversion results. It decides which measurement
+will be taken into consideration and have a footprint in the final gradient.
+We are very careful at this stage, including a lot of checks, such as the Station and
+response integratity check, and also filtering out bad measurements to avoid big outliers.
+On the other hand, it is very process-demanding, which means it has complex data and
+control flows, that every seismograms will go through quite a few of processes
+before the final results is generated. We have millions of seismic traces and ten
+millions of windows, it is impossible to human-check every trace and measurements.
+I will go into more depth about this part in the following sections, discussing our
+efforts how to make the data and process safe and robust.
 
 \subsection{Adjoint Simulation}
-The adjoint simulation takes the adjoint sources as input, and calculate the frechet derivatives as output. The computation cost is twice as the forward simulation since it is both calculating the adjoint wavefiled and reconstruct the forward wavefield. Other than the adjoint sources, the adjoint simulation also reads in the saved forward wave.
-
-The Adjoint simulation now takes about 20 mins for 17sec resolution and 120min simulation, which about the twice the time of forwards simulation, since it needs to calculate both a forward and adjoint wavefield at the same time.
+The adjoint simulation takes the adjoint sources as input, and calculate the frechet
+derivatives as output. The computation cost is about twice as the forward simulation since
+it is both calculating the adjoint wavefiled and reconstruct the forward wavefield.
+Other than the adjoint sources, the adjoint simulation also reads in the saved forward
+wave, to fully incorporate attenuation and more exactly calculate the anelastic
+sensitivity kernels.
+After the adjoint simulation is done, the save wavefield could be deleted and disk
+space would be freed.
+One Adjoint simulation takes about 25 mins for 17sec resolution for 120min simulation
+at 17s resolution.
 
 \subsection{Post-processing}
-The post-processing takes the frechet derivatives as the input and generate the model updates as the output. It contains: 1) summation of single event kernels; 2) smoothing the summed kernels; 3) Preconditions using pseudo-Hessian; 4) Numerical optimization to get search direction; 5) calculate the step length on the search direction; 6) update the model using the search direction and step length.
 
-Conjugated gradient methods was used from M00 to M21. Then L-BFGS was used afterwards. Here we will discuss the L-BFGS methods in details.
+The post-processing takes the frechet derivatives as the input and generate
+the model updates as the output. It contains:
+\begin{enumerate}
+  \item Summation of each kernel for each earthquake to obtain one
+    gradient for the overall misfit function. The number of kernel
+    files will reduce from 1480 to 1 after summing them up. Also,
+    there will source weightings applied at this stage, to balance
+    the uneven distribution of earthquakes.
+  \item Smoothing the misfit gradient using 3D gaussian function, which
+    serves as a regularization procedure. Instead of using a changing
+    smooth radius based upon the "ray density"\citep{bozdaug2016global},
+    we used the fixed value in the same iteration, following\cite{hu2012structure}.
+  \item Precondition the smoothed kernels. Following
+    \citep{luo2013strategies, zhu2012structure, bozdaug2016global},
+    the preconditioner we used is:
+    \begin{equation}
+      P(\mathbf{x}) = 1 / \int \partial_t^2 \mathbf{s}(\mathbf{x}, t) \cdot \partial_t^2 \mathbf{s}^\dagger(\mathbf{x}, T-t) dt
+    \end{equation}
+\end{enumerate}
 
-\subsubsection{L-BFGS}
+Search direction is calculated based on the misfit gradient from the
+post-processsing stage. Search direction is calculated using nonlinear conjugate
+gradient methods\citep{tape2007finite} and L-BFGS(starting from GLAD-M22),
+Here, we used a slightly modified version of conjugate gradient methods,
+adding a restart condition\citep{wright1999numerical} to iterations by checking
+if the current and previous gradient are far from orthogonal:
 
-Assuming the model is $m_i$ and gradient is $g_i$ at iteration i, we
-defined the change of model and gradient:
+\begin{equation}
+  \frac { \abs{g_i \cdot g_{i-1}} }  {\norm{g_{i-1}}^2} \geqslant v
+\end{equation}
 
-\begin{equation*}
-    \Delta m_i = m_{i+1} - m_i \quad
-    \Delta g_i = g_{i+1} - g_i
-\end{equation*}
+where the $v$ is set to $0.1$ in out case.
 
-and
-\begin{equation*}
-     \rho_k = \frac{1}{\Delta g^{T} \Delta m}
-\end{equation*}
-
-The L-BFGS iteration could be described below, at iteration k \citep{wright1999numerical}:
-
-\begin{align*}
-q = g_i \\
-for \quad i = k -1, k-2, ..., k-n \\
-    \alpha_i = \rho_i \delta m_{i}^{T} q \\
-    q = q - \alpha_i \delta g_i \\
-end for\\
-r = H_k^{0}q \\
-for i = k-n, k-n+1, ..., k-1 \\
-    \beta = \rho_i \delta g_i^{T}r \\
-    r = r + \delta m_i(\alpha_i - \beta) \\
-end for \\
-\end{align*}
-
-The search direction for L-BFGS is:
-$$d_i = -r$$
-
-The step length is chosen based upon line search along the search direction of the overall misfit function.
+Based upon the misfit gradient obtained from the post-processing stage.
+Line search is then used to determine the step length for model update
+along the search direction. Forward simulations were run for a subset
+of 120 earthquakes with different step length and the one with
+the max misfit reudction was picked as the model update step length.
 
 \subsection{Adaptable Seismic Data Format}
 
@@ -358,74 +430,152 @@ Based on our measurements, for the forward and adjoint simulation, the ENTK will
 
 \section{Misfit and Histogram Improvements}
 
+\subsection{Misfit Evolution}
+
+The inversion went through a few stages, mainly due to adding more data
+and measurement categories and fine tunning the weighting strategies.
+
+\subsubsection{Stage I: M15 - M17}
+
+In the GLAD-M15, we started with 520 events, mainly to validate the test our
+software and workflow, making sure things are working properly.
+In GLAD-M16, we increase our dataset to 1040 earthquakes.
+
+For iterations at this stage, seismograms are filtered into 3 period bands,
+17-40sec, 40-100sec, 90-250 sec. In the 17-40s, we selected body wave windows. For the
+other two, we used all the phases available on the seismograms. Conjugate
+gradient method is used to calculate the model update.
+
+The misfit values increase a bit at M16 due to increase of earthquakes.
+
+\subsubsection{Stage II: M18-M21}
+
+The major change at stage II is we split the 40-100 sec period band into two: one with
+body wave and the other with only surface wave measurements. Since body waves and
+surfaces are sensitive to the different parts of the earth, by splitting these two
+phases, we have more controls over spatical distribution of the model update.
+Table.\ref{table:measurement_category} shows the measurement categories we used starting
+from M18 and we will stick to it till M25.
+
+**Not sure if we need to mention the change of weighting strategy in such a detail here**
+
+Since surface waves are mostly sensitive to shallow
+structures and for shallow structures our model performs quite good
+already given current dataset, we don't expect to see large misfit
+reduction from in those long period surface wave category.
+To better bring out the deep structure, We tune
+down the weightings of 40-100 sec surface wave, thus reduce their
+contribution in the overal misfit function. That explained why we see the
+misfit jum(decrease) from M17 to M18 in Fig.\ref{fig:misfit}(h) - (j) and
+increase Fig.\ref{fig:misfit}(b)-(d). We are using the same data but
+redistribution the contribution from each category by changing the measurements
+weight in the overall misfit function.
+
 \begin{table}[!htb]
   \centering
-  %\label{tab:misfit_reduction_M00_M25}
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    ~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
+    \hline
+    17--40~s   &   P-SV body waves          & P-SV body waves           & SH body waves   \\
+    40--100~s  &   P-SV body waves          & P-SV body waves           & SH body waves \\
+    40--100~s  &   Rayleigh surface waves   & Rayleigh surface waves    & Love surface waves \\
+    90--250~s  &   All waves                & All waves                 & All waves \\
+    \hline
+  \end{tabular}\\
+  \caption{12 measurement categories starting from M18 till M25. Before M15, the 40--100 body and surface waves are combined into one in each component.}
+  \label{table:measurement_category}
+\end{table}
+
+
+
+The misfit values for 17-40sec and 40-100s body wavess are decreasing fast at
+the first few iterations, and flattens gradually, which may indicate that we are
+approaching the model resolution limits given current dataset.
+
+\subsubsection{Stage III: M22 - M25}
+
+We added an extra set of 440 earthquakes into our inversion database. Thus, the total
+number of earthquakes increased from 1,040 to 1480. We also bring back weightings
+of 40-100sec surface wave as stage I since the newly added 440 was mostly located
+in poorly covered regions in our previous dataset and those surface wave meansurements
+will help to better constrain the shallow structures at those regions.
+
+The misit jumps, from M21 to M22, is mostly due to the redistribution of weights
+and new earthquakes being added to the dataset. Optimization method is changed
+from conjugate gradient to L-BFGS. Overall misift values is steadily reducing,
+as well as those in each category.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{figures/misfit.pdf}
+  \caption{Evolution of phase misfits from GLAD-M15 to GLAD-M25.
+  Each color denotes the different stages of inversions, between
+  which we make changes to the inversion by either tuning the
+  weighting strategies or adding more data.
+  (a) Evolution of the total phase misfit. (b) - (j) Misfit in
+  each period band and component. (e) - (g) From GLAD-M18,
+  we future split the 40-100 sec period band into two
+  measurement categories: body(red dimond) waves and surface waves
+  (red square).}
+  \label{fig:misfit}
+\end{figure}
+
+\subsection{Misfit Assessment}
+
+In the last setion, we discussed how the misfit evolves in iterations. However, since
+we changed our dataset and misfit functions(mainly weightings) between different stages,
+it might not be clear that how much did we improve our model. To precisely measure
+our model performance, we calculate synthetic data using the same source using M00, M15
+and M25. Windows and weightings are also identical across different iterations.
+
+Table.\ref{table:misfit_reduction_M15_M25} shows the misfit reduction from M15 to M25
+for 12 categories. For all categories, there is a significant misfit reduction. Among
+the three components, transverse have the largest misfit recution. For the 4 period bands,
+40-100s surface waves have the largest misfit reduction which may indicate the 40-100 sec
+surface wave might not have good fit between synthetic and observed data compared to
+other period band and our inversion is improving it a lot.
+
+Table.\ref{table:misfit_reduction_M00_M25} shows M00 to M25. It is very similar to
+Table.\ref{table:misfit_reduction_M15_M25} but with larger values since it also
+counts the model improvements from M00 to M15. The best improved category is
+the transverse component in 40-100s surface waves, with misfit reduction at
+53.8\%. The minimum misfit reudction, on the other hand, is the vertical component
+in 17-40s body waves, with 31.1\% misfit reduction.
+
+\begin{table}[!htb]
+  \centering
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    ~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
+    \hline
+    17--40s  body waves    &   17.4   &       21.1 &       24.6 \\
+    40--100s body waves    &   16.8   &       21.3 &       21.7 \\
+    40--100s surface waves &   28.5   &       28.3 &       28.4 \\
+    90--250s               &   14.5   &       13.4 &       25.7 \\
+    \hline
+  \end{tabular}\\
+  \caption{Misfit Reduction from M15 to M25 for 1480 earthquakes used in the inversion}
+  \label{table:misfit_reduction_M15_M25}
+\end{table}
+
+\begin{table}[!htb]
+  \centering
   \begin{tabular}{|c|c|c|c|}
     \hline
      ~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
     \hline
-    17--40s                &    31.1    &       37.1 &       42.2 \\
+    17--40s body waves     &    31.1    &       37.1 &       42.2 \\
     40--100s body waves    &    31.3    &       40.2 &       42.0 \\
     40--100s surface waves &    50.1    &       51.1 &       53.8 \\
     90--250s               &    36.2    &       38.8 &       38.6 \\
     \hline
   \end{tabular}\\
   \caption{Misfit Reduction from M00 to M25 for 1480 earthquakes used in the inversion}
-  \label{table:categories}
+  \label{table:misfit_reduction_M00_M25}
 \end{table}
 
-\begin{table}[!htb]
-  \centering
-  %\label{tag:misfit_reduction_M00_M25_360}
-  \begin{tabular}{|c|c|c|c|}
-    \hline
-    ~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
-    \hline
-    17--40s                &         29.2 &       33.7 &       43.4 \\
-    40--100s body waves    &         26.2 &       32.2 &       39.0 \\
-    40--100s surface waves &         49.1 &       49.4 &       51.2 \\
-    90--250s               &         30.9 &       34.8 &       34.9 \\
-    \hline
-  \end{tabular}\\
-  \caption{Misfit Reduction from M00 to M25 for 360 earthquakes as held-out dataset}
-  \label{table:misfit_reduction_M00_M25_360}
-\end{table}
-
-\begin{table}[!htb]
-  \centering
-  %\label{tab:category}
-  \begin{tabular}{|c|c|c|c|}
-    \hline
-    ~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
-    \hline
-    17--40s                &   17.4   &       21.1 &       24.6 \\
-    40--100s body waves    &   16.8   &       21.3 &       21.7 \\
-    40--100s surface waves &   28.5   &       28.3 &       28.4 \\
-    90--250s               &   14.5   &       13.4 &       25.7 \\
-    \hline
-  \end{tabular}\\
-  \label{table:misfit_reduction_M15_M25}
-  \caption{Misfit Reduction from M15 to M25 for 1480 earthquakes used in the inversion}
-\end{table}
-
-\begin{table}[!htb]
-  \centering
-  %\label{tab:category}
-  \begin{tabular}{|c|c|c|c|}
-  \hline
-  ~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
-  \hline
-  17--40s                &          11.8 &       14.1 &       21.5 \\
-  40--100s body waves    &          14.5 &       12.9 &       16.9 \\
-  40--100s surface waves &          29.3 &       28.1 &       23.7 \\
-  90--250s               &          10.9 &       14.3 &       24.0 \\
-  \hline
-  \end{tabular}\\
-  \caption{Misfit Reduction from M15 to M25 for 360 earthquakes as held-out dataset}
-  \label{table:misfit_reduction_M15_M25_360}
-\end{table}
-
+\subsection{Comparison of Histograms}
 
 \begin{figure}
   \centering
@@ -440,14 +590,8 @@ Based on our measurements, for the forward and adjoint simulation, the ENTK will
   \caption{Same as Fig.\ref{fig:phase_hist} except for amplitude measurements.}
 \end{figure}
 
-Also include the P arrival measurements here.
 
-\begin{figure}
-  \centering
-  \includegraphics[width=\textwidth]{figures/misfit.pdf}
-  \caption{Evolution of phase misfits from GLAD-M15 to GLAD-M25. Each color denotes the different stages of inversions, between which we make changes to the inversion by either tuning the weighting strategies or adding more data. (a) Evolution of the total phase misfit. (b) - (j) Misfit in each period band and component. (e) - {g} From GLAD-M18, we future split the 40-100 sec period band into two measurement categories: body waves and surface waves.}
-\end{figure}
-
+**Also include the P arrival measurements here.**
 
 \section{Models}
 
@@ -465,7 +609,7 @@ Also include the P arrival measurements here.
 %  \caption{Map views of global $V_p$ variations at various depths for our model GLAD-M25(left column), S362ANI+M(middle column) and LLNL-G3Dv3(right column)\citep{simmons2012llnl}. For LLNL-G3Dv3, the depths is labeled on the right bottom based on its own mesh spacing. Other plotting conventions are used similar as in Figure \ref{fig:global-vs}.}
 %\label{fig:global-vp}
 %\centering
-%\end{figure}
+%\end{figure
 
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/globe_vp_LLNL-GAP.pdf}
@@ -540,11 +684,49 @@ Also include the P arrival measurements here.
 
 \subsection{Subductions}
 
+\newpage
+
 \section{Model Assessment}
 
 \subsection{Out-of-Sample Test}
 
 The goal is to picked unseen events and check the performance of our model using those events. We revisited the Global CMT catalogue, picked the events whose magnitude is between 6.3 and 7.0. There are in total of 360 earthquakes we chooses. We calibrated the scalar moment and origin time in the GLAD-M25 and launched forward simulations in various stage of GLAD models.
+
+\begin{table}[!htb]
+  \centering
+  %\label{tag:misfit_reduction_M00_M25_360}
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    ~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
+    \hline
+    17--40s                &         29.2 &       33.7 &       43.4 \\
+    40--100s body waves    &         26.2 &       32.2 &       39.0 \\
+    40--100s surface waves &         49.1 &       49.4 &       51.2 \\
+    90--250s               &         30.9 &       34.8 &       34.9 \\
+    \hline
+  \end{tabular}\\
+  \caption{Misfit Reduction from M00 to M25 for 360 earthquakes as held-out dataset}
+  \label{table:misfit_reduction_M00_M25_360}
+\end{table}
+
+\begin{table}[!htb]
+  \centering
+  %\label{tab:category}
+  \begin{tabular}{|c|c|c|c|}
+  \hline
+  ~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
+  \hline
+  17--40s                &          11.8 &       14.1 &       21.5 \\
+  40--100s body waves    &          14.5 &       12.9 &       16.9 \\
+  40--100s surface waves &          29.3 &       28.1 &       23.7 \\
+  90--250s               &          10.9 &       14.3 &       24.0 \\
+  \hline
+  \end{tabular}\\
+  \caption{Misfit Reduction from M15 to M25 for 360 earthquakes as held-out dataset}
+  \label{table:misfit_reduction_M15_M25_360}
+\end{table}
+
+
 
 \begin{figure}
 \includegraphics[width=\textwidth]{figures/events_360.pdf}

@@ -179,7 +179,7 @@ shows the distribution of seismic stations.
 
 \begin{figure}
   \includegraphics[width=0.8\textwidth]{figures/station_map.pdf}
-  \caption{Distribution of 11,800 seismographic stations on the globe. Colors denote the number of events which they contribute waveforms to in the model inversion stage. Stations with event response < 400 are plotted in smaller size and they are usually temporary arrays which are deployed over a short period of time. The max event reponse comes from IU.ANMO, which contributeed to 1442 out of 1480 eartquakes in out dataset.}
+  \caption{Distribution of 11,800 seismographic stations on the globe. Colors denote the number of events which they contribute waveforms to in the model inversion stage. Stations with event response < 400 are plotted in smaller size and they are usually temporary arrays which are deployed over a short period of time. The max event response comes from IU.ANMO, which contribute ed to 1442 out of 1480 earthquakes in out dataset.}
   \label{fig:stations}
   \centering
 \end{figure}
@@ -204,7 +204,7 @@ The misfit for source~$s$, category~$c$, receiver~$r$, and window~$w$ is
   \chi_{scrw} = \int \Big[ \frac {\Delta \tau_{scrw}} {\sigma_{scrw}} \Big]^2 d\omega
 \quad ,
 \end{align}
-is a frequency-dependent phase measurements using then multitaper technique.
+is a frequency-dependent phase measurements using then multi-taper technique.
 where $\Delta m_{scrw}$ denotes a measurement with associated standard deviation~$\sigma_{scrw}$.-
 
 \subsection{Weightings}
@@ -242,7 +242,7 @@ sparse regions. For more details for the weightings, please refer to the Appendi
 Transversely isotropy model parametrization is used in our model, same as S362ANI(GLAD-M00)
 and GLAD-M15. Comparing to a general anisotropic model which has 21 independent variables,
 our model could be described by 5 Love parameters, A, C, L, N and F\citep{love2013treatise}.
-Since it is more straight forward to use  wavespeed as model parameters in sesimology,
+Since it is more straight forward to use  wavespeed as model parameters in seismology,
 we choose $\alpha_v$, $\alpha_h$, $\beta_v$, $\beta_h$ and $\eta$.
 Assuming the radial anisotropy is due to shear anisotropy, these 5 parameters
 can be further reduced to 4, we introduced the bulk sound speed,
@@ -259,7 +259,7 @@ Since density is hard to constrain due to the period band we are working on, the
     \delta ln\rho = 0.33\delta ln\beta
 \end{equation*}
 
-where $\beta$ is defined as the Voigt average of the raidally anisotropic shear wave speeds\citep{babuska1991seismic}
+where $\beta$ is defined as the Voigt average of the radially anisotropic shear wave speeds\citep{babuska1991seismic}
 $$\beta = \sqrt{(2\beta_v^2 + \beta_h)/3}$$
 
 Based on the parametrization described above, the perturbations in misfit functions would be:
@@ -275,7 +275,7 @@ Based on the parametrization described above, the perturbations in misfit functi
 The flow chart for adjoint tomography is shown in Fig.\ref{fig:adjoint_workflow}.
 The workflow starts with a certain number of earthquakes. Here, we used the
 inverted CMT sources from the Global CMT catalog. Based on the time
-of earthquakes, we downloaded observed data, including time series and StaionXML,
+of earthquakes, we downloaded observed data, including time series and StationXML,
 from IRIS and other data centers. The we convert the sources, StationXML and time series
 into ASDF files. Each ASDF file usually contains a complete set of data from one
 earthquake. The data download and conversion need to be done only once. The raw observed data,
@@ -296,14 +296,14 @@ SEPCFEM3D\_GLOBE with GPU acceleration is used on Titan at the Oak Ridge Nation 
 both mesher and solver part.
 
 To simulate 120min of seismograms at 17sec resolution, it takes 384 Tesla K20X
-GPUs approximately 10 mins to run on Titan. To precisly calculate the sensitivity
+GPUs approximately 10 mins to run on Titan. To precisely calculate the sensitivity
 kernels, there is forward wavefield saved to the disk and those will used in the
-adjoint simluation in the later stage. In the current resolution
+adjoint simulation in the later stage. In the current resolution
 and simulation length, the forward wavefield saved is above 1 terabytes
 for each earthquake. Given the size the 1480 earthquakes, we have 1.5 petabytes of
 wavefield saved to disk using ADIOS\citep{liu2014hello} during about 10 hours
 of simulation using 15,360 GPUs.
-It is huge volume of data saved to distk in a relatively short period of time, in which case
+It is huge volume of data saved to disk in a relatively short period of time, in which case
 ADIOS really helped to relief the I/O bottleneck.
 
 \subsection{Seismic Data Processing}
@@ -319,10 +319,10 @@ The seismic data processing takes the raw observed and synthetic data as input,
 and generate s the adjoint sources as the output. As shown
 in Fig.\ref{fig:preprocess_workflow}, preprocessing includes:
 \begin{enumerate}
-  \item Signal processing that remove the instrument response from observsed data
+  \item Signal processing that remove the instrument response from observed data
     to recover the true ground motion. Both observed and synthetic data will be
     filtered into a certain period band. Then the two horizontal components of the
-    sesimograms are roated from North, East to radial and transverse only if the
+    seismograms are rotated from North, East to radial and transverse only if the
     StationXML passed the sanity check.
   \item Window selection that picks the time window on a pair of
     observed and synthetic seismograms. Pyflex(python version
@@ -339,7 +339,7 @@ in Fig.\ref{fig:preprocess_workflow}, preprocessing includes:
   \item calculate the adjoint sources with the sorted windows.
   \item For each window and associated measurement, calculate its weightings
     that will be applied at the summation stage and calibrate its contribution
-    into the overall misfit function, using the methond we mentioned before.
+    into the overall misfit function, using the method we mentioned before.
   \item Construct the final adjoint sources by summing the adjoint source from
     different windows and measurement categories.
 \end{enumerate}
@@ -349,7 +349,7 @@ simulation, only taking about $1\%$ CPU hours in the whole workflow, it is cruci
 that directly impact the inversion results. It decides which measurement
 will be taken into consideration and have a footprint in the final gradient.
 We are very careful at this stage, including a lot of checks, such as the Station and
-response integratity check, and also filtering out bad measurements to avoid big outliers.
+response integrity check, and also filtering out bad measurements to avoid big outliers.
 On the other hand, it is very process-demanding, which means it has complex data and
 control flows, that every seismograms will go through quite a few of processes
 before the final results is generated. We have millions of seismic traces and ten
@@ -379,7 +379,7 @@ the model updates as the output. It contains:
     files will reduce from 1480 to 1 after summing them up. Also,
     there will source weightings applied at this stage, to balance
     the uneven distribution of earthquakes.
-  \item Smoothing the misfit gradient using 3D gaussian function, which
+  \item Smoothing the misfit gradient using 3D Gaussian function, which
     serves as a regularization procedure. Instead of using a changing
     smooth radius based upon the "ray density"\citep{bozdaug2016global},
     we used the fixed value in the same iteration, following\cite{zhu2012structure}.
@@ -408,7 +408,7 @@ Based upon the misfit gradient obtained from the post-processing stage.
 Line search is then used to determine the step length for model update
 along the search direction. Forward simulations were run for a subset
 of 120 earthquakes with different step length and the one with
-the max misfit reudction was picked as the model update step length.
+the max misfit reduction was picked as the model update step length.
 
 \subsection{Adaptable Seismic Data Format}
 
@@ -423,7 +423,7 @@ There are five key issues the new data format should resolve:
 
 \end{itemize}
 
-The Adaptable Seismic Data Format, ASDF, serves as a self-contained-and-explained data container while taking full advantages of parallel computing. In our case, one ASDF file contained all the files need in data processing, including the seismic traces, quakeml files and station response files. The APIs were carefully designed for easy data extraction and parallel implementation. Each trace in the ASDF is associated with one specific quakeml file and stationXML file, reducing the possibilities of making mistakes.
+The Adaptable Seismic Data Format, ASDF, serves as a self-contained-and-explained data container while taking full advantages of parallel computing. In our case, one ASDF file contained all the files need in data processing, including the seismic traces, Quakeml files and station response files. The APIs were carefully designed for easy data extraction and parallel implementation. Each trace in the ASDF is associated with one specific Quakeml file and StationXML file, reducing the possibilities of making mistakes.
 
 \citep{krischer2016adaptable}
 %\citep{BookChapter}
@@ -442,7 +442,7 @@ Based on our measurements, for the forward and adjoint simulation, the ENTK will
 \subsection{Misfit Evolution}
 
 The inversion went through a few stages, mainly due to adding more data
-and measurement categories and fine tunning the weighting strategies.
+and measurement categories and fine tuning the weighting strategies.
 
 \subsubsection{Stage I: M15 - M17}
 
@@ -462,7 +462,7 @@ The misfit values increase a bit at M16 due to increase of earthquakes.
 The major change at stage II is we split the 40-100 sec period band into two: one with
 body wave and the other with only surface wave measurements. Since body waves and
 surfaces are sensitive to the different parts of the earth, by splitting these two
-phases, we have more controls over spatical distribution of the model update.
+phases, we have more controls over spatial distribution of the model update.
 Table.\ref{table:measurement_category} shows the measurement categories we used starting
 from M18 and we will stick to it till M25.
 
@@ -474,8 +474,8 @@ already given current dataset, we don't expect to see large misfit
 reduction from in those long period surface wave category.
 To better bring out the deep structure, We tune
 down the weightings of 40-100 sec surface wave, thus reduce their
-contribution in the overal misfit function. That explained why we see the
-misfit jum(decrease) from M17 to M18 in Fig.\ref{fig:misfit}(h) - (j) and
+contribution in the overall misfit function. That explained why we see the
+misfit jump(decrease) from M17 to M18 in Fig.\ref{fig:misfit}(h) - (j) and
 increase Fig.\ref{fig:misfit}(b)-(d). We are using the same data but
 redistribution the contribution from each category by changing the measurements
 weight in the overall misfit function.
@@ -498,7 +498,7 @@ weight in the overall misfit function.
 
 
 
-The misfit values for 17-40sec and 40-100s body wavess are decreasing fast at
+The misfit values for 17-40sec and 40-100s body waves are decreasing fast at
 the first few iterations, and flattens gradually, which may indicate that we are
 approaching the model resolution limits given current dataset.
 
@@ -507,12 +507,12 @@ approaching the model resolution limits given current dataset.
 We added an extra set of 440 earthquakes into our inversion database. Thus, the total
 number of earthquakes increased from 1,040 to 1480. We also bring back weightings
 of 40-100sec surface wave as stage I since the newly added 440 was mostly located
-in poorly covered regions in our previous dataset and those surface wave meansurements
+in poorly covered regions in our previous dataset and those surface wave measurements
 will help to better constrain the shallow structures at those regions.
 
-The misit jumps, from M21 to M22, is mostly due to the redistribution of weights
+The misfit jumps, from M21 to M22, is mostly due to the redistribution of weights
 and new earthquakes being added to the dataset. Optimization method is changed
-from conjugate gradient to L-BFGS. Overall misift values is steadily reducing,
+from conjugate gradient to L-BFGS. Overall misfit values is steadily reducing,
 as well as those in each category.
 
 \begin{figure}
@@ -525,14 +525,14 @@ as well as those in each category.
   (a) Evolution of the total phase misfit. (b) - (j) Misfit in
   each period band and component. (e) - (g) From GLAD-M18,
   we future split the 40-100 sec period band into two
-  measurement categories: body(red dimond) waves and surface waves
+  measurement categories: body(red diamond) waves and surface waves
   (red square).}
   \label{fig:misfit}
 \end{figure}
 
 \subsection{Misfit Assessment}
 
-In the last setion, we discussed how the misfit evolves in iterations. However, since
+In the last section, we discussed how the misfit evolves in iterations. However, since
 we changed our dataset and misfit functions(mainly weightings) between different stages,
 it might not be clear that how much did we improve our model. To precisely measure
 our model performance, we calculate synthetic data using the same source using M00, M15
@@ -540,7 +540,7 @@ and M25. Windows and weightings are also identical across different iterations.
 
 Table.\ref{table:misfit_reduction_M15_M25} shows the misfit reduction from M15 to M25
 for 12 categories. For all categories, there is a significant misfit reduction. Among
-the three components, transverse have the largest misfit recution. For the 4 period bands,
+the three components, transverse have the largest misfit reduction. For the 4 period bands,
 40-100s surface waves have the largest misfit reduction which may indicate the 40-100 sec
 surface wave might not have good fit between synthetic and observed data compared to
 other period band and our inversion is improving it a lot.
@@ -549,7 +549,7 @@ Table.\ref{table:misfit_reduction_M00_M25} shows M00 to M25. It is very similar 
 Table.\ref{table:misfit_reduction_M15_M25} but with larger values since it also
 counts the model improvements from M00 to M15. The best improved category is
 the transverse component in 40-100s surface waves, with misfit reduction at
-53.8\%. The minimum misfit reudction, on the other hand, is the vertical component
+53.8\%. The minimum misfit reduction, on the other hand, is the vertical component
 in 17-40s body waves, with 31.1\% misfit reduction.
 
 \begin{table}[!htb]
@@ -593,11 +593,11 @@ earthquakes on the all the three models, our starting model
 GLAD-M00(362ANI+CRUST2.0), first generation model GLAD-M15,
 and lastest model GLAD-M25. The total number of selected windows is over
 18 million. The standard deviations values of phase measurements has
-significant improvments on all the categories over iterations.
-The means values, has also improved expecially in the long period categories,
+significant improvements on all the categories over iterations.
+The means values, has also improved especially in the long period categories,
 such as the 40-100 surface waves and 90-250 all waves. In some categories,
 you may see slight shift of mean values, mainly due to the trade off among
-different compnents and period bands. To summarize, the improvements in
+different components and period bands. To summarize, the improvements in
 the phase measurements histogram is consistent as we observed in the
 misfit reduction.
 
@@ -665,7 +665,7 @@ consistent with \cite{french2014whole}.
 
 The other prominent feature of our models is that we can also constrain $V_p$ as an
 independent model parameters. Fig.\ref{fig:global-vp} shows our isotropic $V_p$
-structures at serveal depths. As comparisons, we also showed two more global
+structures at several depths. As comparisons, we also showed two more global
 $V_p$ models, LLNL-G3Dv3\citep{simmons2012llnl}} and GAP-P4\citep{fukao2013subducted}.
 
 At 100km depth, our model shows prominent ocean ridges at the realm of pacific
@@ -677,12 +677,12 @@ For upper mantle, the LLNL-G3Dv3 shows the largest variations. For example,
 the 500km, the LLNL model shows very strong slow velocity anomalies at
 Hawaii and other pacific hotspots, such as Samoa and Tahiti.
 For middle mantle at about 1000km, all them models all shows a few major
-subduction zones, such as the south america, Fiji and Sumatra regions.
+subduction zones, such as the South America, Fiji and Sumatra regions.
 At lower mantle, such as 2000km and 2800km, LLNL-G3Dv3 and GAP-P4 tends to
 fade out, even though the patterns are very similar among them, such as
 the LLSVP regions.
 
-** Note: add sphereical hormonica analysis later **
+** Note: add spherical harmonic analysis later **
 
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/globe_vp_LLNL-GAP.pdf}
@@ -700,63 +700,63 @@ For the following sections, we will discuss the velocity structures in regional
 areas.
 
 \subsubsection{North America}
-The deployment of USArray has dramatically incresed the data overage on the
+The deployment of USArray has dramatically increased the data overage on the
 continental United States. In this section, we compare our GLAD-M25 with
 together with two global models, S362ANI+M, S40RTS, and two regional models,
 US22\citep{zhu2017radial}, SL2013NA\citep{schaeffer2014imaging}.
 
-US22 is radially anosotropic model build based on adjoint tomography using
+US22 is radially anisotropic model build based on adjoint tomography using
 USArray data from 180 regional earthquakes using 15-50sec short-period
 body waves and 25-150sec long-period surface waves.
-SL2013NA is an uppe-matnle global shear wave speed model using multimode
-surface wavefrom tomography and primally focused on the north american
+SL2013NA is an upper-mantle global shear wave speed model using multimode
+surface waveform tomography and primarily focused on the north American
 region.
 
-The North American region is featured by a large, high-velocity cartonic
+The North American region is featured by a large, high-velocity cratonic
 lithosphere, bounded by the Rocky Mountain Front to the west and continental
-margein to the east. For both sides the lithosphere has been deformed by
+margin to the east. For both sides the lithosphere has been deformed by
 low velocity structures thus form a sharp boundary.
 
 At 100km, our model shows a much sharpened boundary between the carton
-and surrounding low veclocity strcutures, especially compared with
+and surrounding low velocity structures, especially compared with
 two global models, S362ANI+M and S40RTS, yet stay very similar to
 two regional models, US22 and SL2014NA. At such depth,
 we are observed a very strong expression of the Snake River Plain(
-with YellowStone) and Raton hotspot, with their depth extending to 200km.
-The very high-velocity caraton extend to 200km, with its very core part to
-300 km, similiar to US22 while SL2013NA shows it almost disappeared at such depth.
-Again, the Wyonming craton and Mecicine Hat Block shows a very strong lithospheric
-root from the very shallow depth to 400km, which is also smiliar to US22 but
-hard to observe in SL2013NA. Similiar case is the craton at Yavapai and
-Mazatzal Blocks, which define the souther bound of the large craton.
+with Yellowstone) and Raton hotspot, with their depth extending to 200km.
+The very high-velocity craton extend to 200km, with its very core part to
+300 km, similar to US22 while SL2013NA shows it almost disappeared at such depth.
+Again, the Wyoming craton and Medicine Hat Block shows a very strong lithosphere
+root from the very shallow depth to 400km, which is also similar to US22 but
+hard to observe in SL2013NA. Similar case is the craton at Yavapai and
+Mazatzal Blocks, which define the southern bound of the large craton.
 
 At such depth, we also observed high velocity
-features within the Gulf of Mexico, which conincides spatially with the deepest
-bathymetry and corresponds to a portion of anciet oceanic
-Lithosphere\citep{muller2008}. The remanant of Juan de Fuca subudction
+features within the Gulf of Mexico, which coincides spatially with the deepest
+bathymetry and corresponds to a portion of ancient oceanic
+Lithosphere\citep{muller2008}. The remnant of Juan de Fuca subduction
 plates, with its high velocity footprint, is presented in our model at
 300km and 400km, though the SL2013NA shows a much stronger anomaly.
 
-At the North, our models shows a extended high veloicty craton beneath the 
-Greenland, though clearly seperated with the North America Craton,
-bounded at the relativly low velcoity strcture at Barffin Bay and Labrador
+At the North, our models shows a extended high velocity craton beneath the 
+Greenland, though clearly separated with the North America Craton,
+bounded at the relatively low velocity structure at Barffin Bay and Labrador
 Sea, with North American Craton followed nicely with the coastline. In the
 north west region, our models shows the most clear picture of
 Aleutian subduction zones, with it high velocity feature down to 400km.
-In the nort easter part, the Iceland hotspot has been greatly enhanced,
+In the northeastern part, the Iceland hotspot has been greatly enhanced,
 especially at 300km and 400km compared to S362ANI+M.
 
 In the Easter part, our models shows a high-velocity structure at the western
-Atlantic, starting from the tip of Florica to the New York,
-seperated from the major part the north america craton,
+Atlantic, starting from the tip of Florida to the New York,
+separated from the major part the north America craton,
 though it stays very thin that the depth only extend to above 200km.
 This feature is associated with some of the oldest oceanic crust and lithosphere
 within the Atlantic\citep{muller2008, schaeffer2014imaging}.
 All the models is showing a high velocity anomaly at Nova Scotia and Newfoundland
 with its high-velocity core to 300km.
-Bermuda hotspot is nicely perserved from our starting
+Bermuda hotspot is nicely preserved from our starting
 model, yet get sharpened and stronger at 200km and 300km. Besides, the
-Carribean suduction, which is relatively young subduction systems, is clearly
+Caribbean suduction, which is relatively young subduction systems, is clearly
 observable in our model, starting from 200km to 300km.
 
 For even deeper depth, our models shows a very clear picture of the Farallon
@@ -778,6 +778,8 @@ the later sections.
 \end{figure}
 
 \subsubsection{Europe}
+
+...to be done...
 Fig.\ref{fig:europe-vs} shows the isotropic $V_s$ structures at Europe. As
 comparisons, we also showed S362ANI+M, S40RTS and one regional model EU60
 \citep{zhu2015seismic}. Compared to two global models, it is clear that
@@ -801,9 +803,10 @@ compared to S362ANI+M.
 
 \subsubsection{Asia}
 
+...to be done...
 We presented our model GLAD-M25, with S362ANI+M, S40RTS and EARA2014.
 At 100km depth, our model shows sharpening at the Himalayas subductions
-zones. At 250km, our models shows the subudction in the east part.
+zones. At 250km, our models shows the subduction in the east part.
 At 400km, our models shows the subduction at sumartra.
 
 
@@ -815,6 +818,7 @@ At 400km, our models shows the subduction at sumartra.
 \end{figure}
 
 \subsubsection{South America}
+...to be done...
 
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/south_america_vp.pdf}
@@ -874,7 +878,7 @@ Due to the very demanding computational requirements, we used the 'point
 spread function to assess the imaging quality in models GLAD-M25.
 
 \subsection{Held-out Dataset Test}
-Following the approch by \cite{tape2009adjoint}, \cite{bozdaug2016global},
+Following the approach by \cite{tape2009adjoint}, \cite{bozdaug2016global},
 unseen events are used to check the performance of our
 model. We revisited the Global CMT catalogue,
 picked all the events whose magnitude is between 6.3 and 7.0, which hasn't
@@ -883,7 +887,7 @@ instead of 5.5, is those earthquakes have good enough data and generates
 more measurements at the global scale.
 We calibrated the scalar moment and origin time in the GLAD-M25, and there
 are 360 events left that has enough windows. Fig.\ref{fig:events_360} shows
-the ditribution of 360 earthquake that we used as held-out dataset
+the distribution of 360 earthquake that we used as held-out dataset
 
 \begin{figure}
   \centering
@@ -895,8 +899,8 @@ the ditribution of 360 earthquake that we used as held-out dataset
 First, we evaluate the model performance by misfit reduction. Same windows and
 weightings are used across models. Table.\ref{table:misfit_reduction_M00_M25_360}
 shows the misfit reduction from M15 to M25 and Table.\ref{table:misfit_reduction_M00_M25_360}
-is from M00 to M25. It agains shows misfit reduction in all categories in
-our held-out dataset, simliar to what we observed from the inversion dataset.
+is from M00 to M25. It again shows misfit reduction in all categories in
+our held-out dataset, similar to what we observed from the inversion dataset.
 The reduction are slightly smaller, partly due to the reason that we didn't
 do waveform-type inversion as we mentioned in the source inversion stage but
 only did a grid search to calibrate the scalar moment and origin time.
@@ -949,40 +953,40 @@ To summarize, both the misfit reduction and histogram improvements indicates tha
 
 \section{Conclusion}
 
-Seismology is driven by data. Back into time, seismolgist would look at
-single seimograms and pick valuable information out the them. Now, we have
-ten thousands of seismograms deployed globallay and it will be a pity not
-to take all the information we have. Eventhough GLAD-M25 is following-up
+Seismology is driven by data. Back into time, seismologists would look at
+single seismograms and pick valuable information out the them. Now, we have
+ten thousands of seismograms deployed globally and it will be a pity not
+to take all the information we have. Even though GLAD-M25 is following-up
 of GLAD-M15. It has many superior advantages and improvements. We increase
-the dataset from 253 to 1480 earthquaks, with carefully inverted sources
+the dataset from 253 to 1480 earthquakes, with carefully inverted sources
 in the 3D earth structures. We have 360 earthquakes used in the test
 dataset, which is already larger than the most of the dataset other people used
 for their inversion. We culled every seismograms from various data centers,
-thanks to the open environment and data sharing spirit of our seimology community.
+thanks to the open environment and data sharing spirit of our seismology community.
 With very careful checks by assessing the integrity of instrument response
-and deployment, evaluating the singal-to-noise ratios, picking the time windows
-using over 20 criterias, cleaning windows by their statistical behavior, and
+and deployment, evaluating the signal-to-noise ratios, picking the time windows
+using over 20 criteria, cleaning windows by their statistical behavior, and
 calculating weights to balance the uneven distribution of earthquakes and
-seismic stations, we really have done a lot to ensure the cleaness of the
-data assimilated into our inversion and make sure every piece of value infomation
+seismic stations, we really have done a lot to ensure the cleanness of the
+data assimilated into our inversion and make sure every piece of value information
 will be used but rejecting the crap data.
 
 There are also quite a lot of technique challenges on the way but we are seeking
 the most cutting-edge technologies to solve them. ADIOS was introduced to save mesh
-and kernel related data, since we are saving petabyes of wavefiled snapshots
+and kernel related data, since we are saving petabytes of wavefiled snapshots
 in a few hours of simulation and it is critical even for the most advanced
 supercomputers in the world. ASDF is developed by us to store the seismograms
 since we have ten millions of time series data from thousands of earthquakes.
 We have to get access and process them in a very efficient manner that most of
 the existing data format just won't meet our requirements. To handle the complex
-inversion workflow, we are working RADICAL group to develop the workflow mangement
+inversion workflow, we are working RADICAL group to develop the workflow management
 tools that will help manage every piece of task and make the user aware if there
 is anything bad happened during the computation. Those tools that help the
 automation of the workflow, is the "guard" that stand there and monitor things
-to make sure our scientific results away from contaminations. Besides, the
+to make sure our scientific results away from contamination. Besides, the
 developer of SPECFEM packages, they dedicate more than ten years of work,
 to develop the software and make it fast, efficient and robust for global scale of simulation.
-They are working closly with hardware vendors such as Cray, IBM and NVIDIA to adapt
+They are working closely with hardware vendors such as Cray, IBM and NVidia to adapt
 the code to architecture of the most advanced supercomputers. We are soon
 moving our simulation to Summit, the world No.1 supercomputer at the Oak Ridge
 National Lab.

@@ -382,7 +382,7 @@ the model updates as the output. It contains:
   \item Smoothing the misfit gradient using 3D gaussian function, which
     serves as a regularization procedure. Instead of using a changing
     smooth radius based upon the "ray density"\citep{bozdaug2016global},
-    we used the fixed value in the same iteration, following\cite{hu2012structure}.
+    we used the fixed value in the same iteration, following\cite{zhu2012structure}.
   \item Precondition the smoothed kernels. Following
     \citep{luo2013strategies, zhu2012structure, bozdaug2016global},
     the preconditioner we used is:
@@ -628,13 +628,32 @@ next step of our work.
 
 \section{Models}
 
-\subsection{Depth cross-section}
+\subsection{Global Velocity Structure}
+In Fig.\ref{fig:global-vs}, the global map of isotropic $V_s$ is plotted at certain depths.
+As comparisons, we also plotted two other models, S362ANI+M{\citep{moulik2014anisotropic},
+which is the updated version of our starting model but with mode data added
+into the inversion, and S40RTS\citep{ritsema2011s40rts}. At the first glance,
+you may notice that all the models agree at the long wavelength structures.
+At 2800km depth, our model is very close to S362ANI+M, with more extended
+features at the LLSVP.
+
+The value ranges are labeled on the top left on each figure. It is obvious the
+value ranges in our model is generally larger than other two models, which is
+consistent with \cite{french2014whole}.
 
 \begin{figure}
-\includegraphics[width=0.9\textwidth]{figures/depth_slice/globe_vs.pdf}
-  \caption{Map views of global $V_s$ perturbations at various depths for out model GLAD-M25(left column), S362ANI+M(middle column)\citep{moulik2014anisotropic} and S40RTS(right column)\citep{ritsema2011s40rts}. The perturbations are calculated based on each model's own 1D profile. The values(upper-left corner of each figure) denotes the minimum/maximum perturbations for each model at the corresponding depth. The green circles denotes the locations of hotspots\citep{montelli2006catalogue}. The range of the colorbar is the same for each row and the range value is labeled on the most left, right after the depth.}
-\label{fig:global-vs}
-\centering
+  \centering
+  \includegraphics[width=0.9\textwidth]{figures/depth_slice/globe_vs.pdf}
+  \caption{Map views of global $V_s$ perturbations at various depths for out model
+  GLAD-M25(left column), S362ANI+M(middle column)\citep{moulik2014anisotropic}
+  and S40RTS(right column)\citep{ritsema2011s40rts}. The perturbations are
+  calculated based on each model's own 1D profile. The values(upper-left corner
+  of each figure) denotes the minimum/maximum perturbations for each model at
+  the corresponding depth. The green circles denotes the locations of
+  hotspots\citep{montelli2006catalogue}. The range of the colorbar is the same
+  for each row and the range value is labeled on the most left, right after
+  the depth.}
+  \label{fig:global-vs}
 \end{figure}
 
 %\begin{figure}
@@ -644,29 +663,148 @@ next step of our work.
 %\centering
 %\end{figure
 
+The other prominent feature of our models is that we can also constrain $V_p$ as an
+independent model parameters. Fig.\ref{fig:global-vp} shows our isotropic $V_p$
+structures at serveal depths. As comparisons, we also showed two more global
+$V_p$ models, LLNL-G3Dv3\citep{simmons2012llnl}} and GAP-P4\citep{fukao2013subducted}.
+
+At 100km depth, our model shows prominent ocean ridges at the realm of pacific
+oceans, which are relatively slow velocity regions, compared to other two vp models.
+On the other hand, the continent slabs, such as Australia, South Africa,
+North America and Europe, is more prominent in our model.
+
+For upper mantle, the LLNL-G3Dv3 shows the largest variations. For example,
+the 500km, the LLNL model shows very strong slow velocity anomalies at
+Hawaii and other pacific hotspots, such as Samoa and Tahiti.
+For middle mantle at about 1000km, all them models all shows a few major
+subduction zones, such as the south america, Fiji and Sumatra regions.
+At lower mantle, such as 2000km and 2800km, LLNL-G3Dv3 and GAP-P4 tends to
+fade out, even though the patterns are very similar among them, such as
+the LLSVP regions.
+
+** Note: add sphereical hormonica analysis later **
+
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/globe_vp_LLNL-GAP.pdf}
-  \caption{Map views of global $V_p$ variations at various depths for our model GLAD-M25(left column), S362ANI+M(middle column) and LLNL-G3Dv3(right column)\citep{simmons2012llnl}. For LLNL-G3Dv3, the depths is labeled on the right bottom based on its own mesh spacing. Other plotting conventions are used similar as in Figure \ref{fig:global-vs}.}
+  \caption{Map views of global $V_p$ variations at various depths for our model
+  GLAD-M25(left column), LLNL-G3Dv3(middle column) \citep{simmons2012llnl} and
+  GAP-P4(\citep{fukao2013subducted}).
+  For LLNL-G3Dv3, the depths is labeled on the right
+  bottom based on its own mesh spacing. Other plotting conventions are used
+  similar as in Figure \ref{fig:global-vs}.}
 \label{fig:global-vp}
 \centering
 \end{figure}
 
+For the following sections, we will discuss the velocity structures in regional
+areas.
 
+\subsubsection{North America}
+The deployment of USArray has dramatically incresed the data overage on the
+continental United States. In this section, we compare our GLAD-M25 with
+together with two global models, S362ANI+M, S40RTS, and two regional models,
+US22\citep{zhu2017radial}, SL2013NA\citep{schaeffer2014imaging}.
+
+US22 is radially anosotropic model build based on adjoint tomography using
+USArray data from 180 regional earthquakes using 15-50sec short-period
+body waves and 25-150sec long-period surface waves.
+SL2013NA is an uppe-matnle global shear wave speed model using multimode
+surface wavefrom tomography and primally focused on the north american
+region.
+
+The North American region is featured by a large, high-velocity cartonic
+lithosphere, bounded by the Rocky Mountain Front to the west and continental
+margein to the east. For both sides the lithosphere has been deformed by
+low velocity structures thus form a sharp boundary.
+
+At 100km, our model shows a much sharpened boundary between the carton
+and surrounding low veclocity strcutures, especially compared with
+two global models, S362ANI+M and S40RTS, yet stay very similar to
+two regional models, US22 and SL2014NA. At such depth,
+we are observed a very strong expression of the Snake River Plain(
+with YellowStone) and Raton hotspot, with their depth extending to 200km.
+The very high-velocity caraton extend to 200km, with its very core part to
+300 km, similiar to US22 while SL2013NA shows it almost disappeared at such depth.
+Again, the Wyonming craton and Mecicine Hat Block shows a very strong lithospheric
+root from the very shallow depth to 400km, which is also smiliar to US22 but
+hard to observe in SL2013NA. Similiar case is the craton at Yavapai and
+Mazatzal Blocks, which define the souther bound of the large craton.
+
+At such depth, we also observed high velocity
+features within the Gulf of Mexico, which conincides spatially with the deepest
+bathymetry and corresponds to a portion of anciet oceanic
+Lithosphere\citep{muller2008}. The remanant of Juan de Fuca subudction
+plates, with its high velocity footprint, is presented in our model at
+300km and 400km, though the SL2013NA shows a much stronger anomaly.
+
+At the North, our models shows a extended high veloicty craton beneath the 
+Greenland, though clearly seperated with the North America Craton,
+bounded at the relativly low velcoity strcture at Barffin Bay and Labrador
+Sea, with North American Craton followed nicely with the coastline. In the
+north west region, our models shows the most clear picture of
+Aleutian subduction zones, with it high velocity feature down to 400km.
+In the nort easter part, the Iceland hotspot has been greatly enhanced,
+especially at 300km and 400km compared to S362ANI+M.
+
+In the Easter part, our models shows a high-velocity structure at the western
+Atlantic, starting from the tip of Florica to the New York,
+seperated from the major part the north america craton,
+though it stays very thin that the depth only extend to above 200km.
+This feature is associated with some of the oldest oceanic crust and lithosphere
+within the Atlantic\citep{muller2008, schaeffer2014imaging}.
+All the models is showing a high velocity anomaly at Nova Scotia and Newfoundland
+with its high-velocity core to 300km.
+Bermuda hotspot is nicely perserved from our starting
+model, yet get sharpened and stronger at 200km and 300km. Besides, the
+Carribean suduction, which is relatively young subduction systems, is clearly
+observable in our model, starting from 200km to 300km.
+
+For even deeper depth, our models shows a very clear picture of the Farallon
+subductions, but it goes beyond the range of this comparison since the two
+region models are really upper-mantle models which don't extend to the very
+deep depth. We will show some vertical cross-sections of Farallon slabs in
+the later sections.
 
 \begin{figure}
 \centering
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/america_vs.pdf}
-  \caption{Map views of $V_s$ variations of North America at various depths for our model GLAD-M25(first column) and several global(S362ANI+M and S40RTS) and regional(US22\citep{zhu2017radial} and SL2013NA\citep{schaeffer2014imaging}) models. Green circles denotes the locations of hotspots. For SL2013NA, we showed the 610km instead of 600km due to its own mesh.}
+  \caption{Map views of $V_s$ variations of North America at various depths
+  for our model GLAD-M25(first column) and several global(S362ANI+M and S40RTS)
+  and regional(US22\citep{zhu2017radial} and SL2013NA\citep{schaeffer2014imaging})
+  models. Green circles denotes the locations of hotspots. For SL2013NA, we
+  showed the 610km instead of 600km due to its own mesh.}
 \label{fig:america-vs}
 
 \end{figure}
 
+\subsubsection{Europe}
+Fig.\ref{fig:europe-vs} shows the isotropic $V_s$ structures at Europe. As
+comparisons, we also showed S362ANI+M, S40RTS and one regional model EU60
+\citep{zhu2015seismic}. Compared to two global models, it is clear that
+our model is much sharper at few locations. At 100 and 200km, Eifel
+hotspot is clearly seen in our models, as well as in EU60. At 400km
+and 600km, the subduction is very consistent between GLAD-M25 and EU60,
+with the curved shape at the lower bottom of the figure,
+while S362ANI+M shows very smooth shape and S40RTS shows much smaller 
+perturbation values. Besides, at 400km, GLAD-M25 is enhancing Iceland
+compared to S362ANI+M.
+
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/europe_vs.pdf}
-  \caption{Map views of $V_s$ variations of Europe at various depths for our model GLAD-M25(first column) and global(S362ANI+M and S40RTS) and regional(EU60\citep{zhu2015seismic}) models. For EU60, the range of color bar is 4\% for all depths, which is labeled in the right bottom of the figures.}
+  \caption{Map views of $V_s$ variations of Europe at various depths for our
+  model GLAD-M25(first column) and global(S362ANI+M and S40RTS) and
+  regional(EU60\citep{zhu2015seismic}) models. For EU60, the range of color
+  bar is 4\% for all depths, which is labeled in the right bottom of the figures.}
 \label{fig:europe-vs}
 \centering
 \end{figure}
+
+\subsubsection{Asia}
+
+We presented our model GLAD-M25, with S362ANI+M, S40RTS and EARA2014.
+At 100km depth, our model shows sharpening at the Himalayas subductions
+zones. At 250km, our models shows the subudction in the east part.
+At 400km, our models shows the subduction at sumartra.
 
 
 \begin{figure}
@@ -676,6 +814,7 @@ next step of our work.
 \centering
 \end{figure}
 
+\subsubsection{South America}
 
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/south_america_vp.pdf}
@@ -685,6 +824,8 @@ next step of our work.
 \end{figure}
 
 \subsection{Plumes}
+
+In this section, we will visit the plumes systems on the earth.
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Comment out for speed-up compile of latex file
@@ -716,6 +857,8 @@ next step of our work.
 %\end{figure}
 
 \subsection{Subductions}
+
+In this sections, we will visit some of the well-known subduction zones.
 
 \newpage
 

@@ -56,7 +56,7 @@ test3 \citet{ekstrom2012global}
 
 \section{Starting Model GLAD--M15}
 
-{\color{Red} Wenjie: Read for Jeroen to edit}
+{\color{Red} Wenjie: Ready for Jeroen to edit}
 
 As the continuation of our previous work, we used GLAD-M15 as our
 starting model\citep{bozdaug2016global}.
@@ -83,7 +83,7 @@ of the phase measurements, which will discussed in the following sections.
 
 \section{Earthquakes}
 
-{\color{Red} Wenjie: Read for Jeroen to edit}
+{\color{Red} Wenjie: Ready for Jeroen to edit}
 
 In addition to the 256 earthquakes used in the first generation model GLAD-M15, we
 carefully picked 784 more earthquakes from Global Centroid-Moment-Tensor catalog\citep{}
@@ -170,7 +170,7 @@ earthquakes but only calibrate its origin time and scalar moment.
 
 \section{Seismic Data}
 
-{\color{Red} Wenjie: Read for Jeroen to edit}
+{\color{Red} Wenjie: Ready for Jeroen to edit}
 
 Seismic stations have been very carefully picked to ensure global coverage and high data quality.
 Other than the networks we mentioned in the source inversion, we include all the data we can
@@ -196,7 +196,7 @@ shows the distribution of seismic stations.
 
 \section{Misfit function and Model Parametrization}
 
-{\color{Red} Wenjie: Read for Jeroen to edit}
+{\color{Red} Wenjie: Ready for Jeroen to edit}
 
 This sections will discuss how we define the the misfit function and how we parameterize the model.
 The overall misfit, $\Phi$, is defined as follows:
@@ -284,7 +284,7 @@ Based on the parametrization described above, the perturbations in misfit functi
 
 \section{Adjoint Tomography Workflow}
 
-{\color{Red} Wenjie: Read for Jeroen to edit}
+{\color{Red} Wenjie: Ready for Jeroen to edit}
 
 The flow chart for adjoint tomography is shown in Fig.\ref{fig:adjoint_workflow}.
 The workflow starts with a certain number of earthquakes. Here, we used the
@@ -304,7 +304,7 @@ storing in ASDF, could be reused afterwards.
 
 \subsection{Forward simulation}
 
-{\color{Red} Wenjie: Read for Jeroen to edit}
+{\color{Red} Wenjie: Ready for Jeroen to edit}
 
 The forward simulation takes the CMT sources, stations and Earth models as input.
 We will first generate mesh based on the models. The CMT sources and station will
@@ -325,7 +325,7 @@ ADIOS really helped to relief the I/O bottleneck.
 
 \subsection{Seismic Data Processing}
 
-{\color{Red} Wenjie: Read for Jeroen to edit}
+{\color{Red} Wenjie: Ready for Jeroen to edit}
 
 \begin{figure}
   \centering
@@ -378,7 +378,7 @@ efforts how to make the data and process safe and robust.
 
 \subsection{Adjoint Simulation}
 
-{\color{Red} Wenjie: Read for Jeroen to edit}
+{\color{Red} Wenjie: Ready for Jeroen to edit}
 
 The adjoint simulation takes the adjoint sources as input, and calculate the frechet
 derivatives as output. The computation cost is about twice as the forward simulation since
@@ -393,7 +393,7 @@ at 17s resolution.
 
 \subsection{Post-processing}
 
-{\color{Red} Wenjie: Read for Jeroen to edit}
+{\color{Red} Wenjie: Ready for Jeroen to edit}
 
 The post-processing takes the frechet derivatives as the input and generate
 the model updates as the output. It contains:
@@ -465,7 +465,7 @@ Based on our measurements, for the forward and adjoint simulation, the ENTK will
 
 \subsection{Misfit Evolution}
 
-{\color{Red} Wenjie: Read for Jeroen to edit}
+{\color{Red} Wenjie: Ready for Jeroen to edit}
 
 The inversion went through a few stages, mainly due to adding more data
 and measurement categories and fine tuning the weighting strategies.
@@ -558,7 +558,7 @@ as well as those in each category.
 
 \subsection{Misfit Assessment}
 
-{\color{Red} Wenjie: Read for Jeroen to edit}
+{\color{Red} Wenjie: Ready for Jeroen to edit}
 
 In the last section, we discussed how the misfit evolves in iterations. However, since
 we changed our dataset and misfit functions(mainly weightings) between different stages,
@@ -614,7 +614,7 @@ in 17-40s body waves, with 31.1\% misfit reduction.
 
 \subsection{Comparison of Histograms}
 
-{\color{Red} Wenjie: Read for Jeroen to edit}
+{\color{Red} Wenjie: Ready for Jeroen to edit}
 
 Another way to evaluate the model performance by checking the distribution
 of measurements. Fig.\ref{fig:phase_hist} shows the histograms of phase
@@ -821,7 +821,7 @@ areas.
 
 \subsubsection{North America}
 
-{\color{Red} Wenjie: Read for Jeroen to edit}
+{\color{Red} Wenjie: Ready for Jeroen to edit}
 
 The deployment of USArray has dramatically increased the data overage on the
 continental United States. In this section, we compare our GLAD-M25 with

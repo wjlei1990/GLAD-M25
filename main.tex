@@ -36,6 +36,9 @@
 \maketitle
 
 \section{Introduction}
+
+{\color{Red} Wenjie: I want to leave this part to the end, when I finished reading all the papers.}
+
 With the development of high performance computing and numerical methods, it is now possible to using adjoint method to image the interior the globe using thousands of earthquakes.
 
 There are few agreements about the earth model and yet many unknown to be resolved. There are quite a lot of global models exits however there is no such con-sense.
@@ -52,6 +55,8 @@ test3 \citet{ekstrom2012global}
 
 
 \section{Starting Model GLAD--M15}
+
+{\color{Red} Wenjie: Read for Jeroen to edit}
 
 As the continuation of our previous work, we used GLAD-M15 as our
 starting model\citep{bozdaug2016global}.
@@ -77,6 +82,9 @@ in all measurement categories and and better behavior in statistic analysis from
 of the phase measurements, which will discussed in the following sections.
 
 \section{Earthquakes}
+
+{\color{Red} Wenjie: Read for Jeroen to edit}
+
 In addition to the 256 earthquakes used in the first generation model GLAD-M15, we
 carefully picked 784 more earthquakes from Global Centroid-Moment-Tensor catalog\citep{}
 and added them into our database, making the total number of earthquakes reach 1,040.
@@ -162,6 +170,8 @@ earthquakes but only calibrate its origin time and scalar moment.
 
 \section{Seismic Data}
 
+{\color{Red} Wenjie: Read for Jeroen to edit}
+
 Seismic stations have been very carefully picked to ensure global coverage and high data quality.
 Other than the networks we mentioned in the source inversion, we include all the data we can
 downloaded from IRIS data center. Regional and temporary networks has become a significant part
@@ -185,6 +195,8 @@ shows the distribution of seismic stations.
 \end{figure}
 
 \section{Misfit function and Model Parametrization}
+
+{\color{Red} Wenjie: Read for Jeroen to edit}
 
 This sections will discuss how we define the the misfit function and how we parameterize the model.
 The overall misfit, $\Phi$, is defined as follows:
@@ -272,6 +284,8 @@ Based on the parametrization described above, the perturbations in misfit functi
 
 \section{Adjoint Tomography Workflow}
 
+{\color{Red} Wenjie: Read for Jeroen to edit}
+
 The flow chart for adjoint tomography is shown in Fig.\ref{fig:adjoint_workflow}.
 The workflow starts with a certain number of earthquakes. Here, we used the
 inverted CMT sources from the Global CMT catalog. Based on the time
@@ -289,6 +303,9 @@ storing in ASDF, could be reused afterwards.
 \end{figure}
 
 \subsection{Forward simulation}
+
+{\color{Red} Wenjie: Read for Jeroen to edit}
+
 The forward simulation takes the CMT sources, stations and Earth models as input.
 We will first generate mesh based on the models. The CMT sources and station will
 be fed into the solver to generate synthetic seismograms and forward wavefield snapshots.
@@ -307,6 +324,8 @@ It is huge volume of data saved to disk in a relatively short period of time, in
 ADIOS really helped to relief the I/O bottleneck.
 
 \subsection{Seismic Data Processing}
+
+{\color{Red} Wenjie: Read for Jeroen to edit}
 
 \begin{figure}
   \centering
@@ -358,6 +377,9 @@ I will go into more depth about this part in the following sections, discussing 
 efforts how to make the data and process safe and robust.
 
 \subsection{Adjoint Simulation}
+
+{\color{Red} Wenjie: Read for Jeroen to edit}
+
 The adjoint simulation takes the adjoint sources as input, and calculate the frechet
 derivatives as output. The computation cost is about twice as the forward simulation since
 it is both calculating the adjoint wavefiled and reconstruct the forward wavefield.
@@ -370,6 +392,8 @@ One Adjoint simulation takes about 25 mins for 17sec resolution for 120min simul
 at 17s resolution.
 
 \subsection{Post-processing}
+
+{\color{Red} Wenjie: Read for Jeroen to edit}
 
 The post-processing takes the frechet derivatives as the input and generate
 the model updates as the output. It contains:
@@ -440,6 +464,8 @@ Based on our measurements, for the forward and adjoint simulation, the ENTK will
 \section{Misfit and Histogram Improvements}
 
 \subsection{Misfit Evolution}
+
+{\color{Red} Wenjie: Read for Jeroen to edit}
 
 The inversion went through a few stages, mainly due to adding more data
 and measurement categories and fine tuning the weighting strategies.
@@ -532,6 +558,8 @@ as well as those in each category.
 
 \subsection{Misfit Assessment}
 
+{\color{Red} Wenjie: Read for Jeroen to edit}
+
 In the last section, we discussed how the misfit evolves in iterations. However, since
 we changed our dataset and misfit functions(mainly weightings) between different stages,
 it might not be clear that how much did we improve our model. To precisely measure
@@ -586,6 +614,8 @@ in 17-40s body waves, with 31.1\% misfit reduction.
 
 \subsection{Comparison of Histograms}
 
+{\color{Red} Wenjie: Read for Jeroen to edit}
+
 Another way to evaluate the model performance by checking the distribution
 of measurements. Fig.\ref{fig:phase_hist} shows the histograms of phase
 measurements. We use identical windows to make measurements using 1,480
@@ -626,9 +656,99 @@ next step of our work.
 
 **Also include the P arrival measurements here.**
 
+
+\section{Model Evaluation}
+
+Here, we present two ways that used to evaluate the quality of our model:
+resolution analysis and held-out data test.
+
+\subsection{Resolution Analysis}
+Checkboard test was commonly used a resolution test method but it is at the
+same cost of inversion of GLAD-M25, which will cost millions of CPU hours.
+Due to the very demanding computational requirements, we used the 'point
+spread function to assess the imaging quality in models GLAD-M25.
+
+\subsection{Held-out Dataset Test}
+Following the approach by \cite{tape2009adjoint}, \cite{bozdaug2016global},
+unseen events are used to check the performance of our
+model. We revisited the Global CMT catalogue,
+picked all the events whose magnitude is between 6.3 and 7.0, which hasn't
+been used in our inversion. The reason why we set the lower bound to 6.3
+instead of 5.5, is those earthquakes have good enough data and generates
+more measurements at the global scale.
+We calibrated the scalar moment and origin time in the GLAD-M25, and there
+are 360 events left that has enough windows. Fig.\ref{fig:events_360} shows
+the distribution of 360 earthquake that we used as held-out dataset
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{figures/events_360.pdf}
+  \caption{Locations of 360 held-out earthquakes used to assess the traveltime misfit in the model assessment stage. Theses events are not used in the structural inversion. (a) Beach balls of earthquakes. Same color conventions as used in the \ref{fig:event_1480} (b) and (c) Histograms of moment magnitude and depth.}
+  \label{fig:events_360}
+\end{figure}
+
+First, we evaluate the model performance by misfit reduction. Same windows and
+weightings are used across models. Table.\ref{table:misfit_reduction_M00_M25_360}
+shows the misfit reduction from M15 to M25 and Table.\ref{table:misfit_reduction_M00_M25_360}
+is from M00 to M25. It again shows misfit reduction in all categories in
+our held-out dataset, similar to what we observed from the inversion dataset.
+The reduction are slightly smaller, partly due to the reason that we didn't
+do waveform-type inversion as we mentioned in the source inversion stage but
+only did a grid search to calibrate the scalar moment and origin time.
+
+\begin{table}[!htb]
+  \centering
+  %\label{tab:category}
+  \begin{tabular}{|c|c|c|c|}
+  \hline
+  ~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
+  \hline
+  17--40s                &          11.8 &       14.1 &       21.5 \\
+  40--100s body waves    &          14.5 &       12.9 &       16.9 \\
+  40--100s surface waves &          29.3 &       28.1 &       23.7 \\
+  90--250s               &          10.9 &       14.3 &       24.0 \\
+  \hline
+  \end{tabular}\\
+  \caption{Misfit Reduction from M15 to M25 for 360 earthquakes as held-out dataset}
+  \label{table:misfit_reduction_M15_M25_360}
+\end{table}
+
+\begin{table}[!htb]
+  \centering
+  %\label{tag:misfit_reduction_M00_M25_360}
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    ~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
+    \hline
+    17--40s                &         29.2 &       33.7 &       43.4 \\
+    40--100s body waves    &         26.2 &       32.2 &       39.0 \\
+    40--100s surface waves &         49.1 &       49.4 &       51.2 \\
+    90--250s               &         30.9 &       34.8 &       34.9 \\
+    \hline
+  \end{tabular}\\
+  \caption{Misfit Reduction from M00 to M25 for 360 earthquakes as held-out dataset}
+  \label{table:misfit_reduction_M00_M25_360}
+\end{table}
+
+Second, we also plotted the histograms of phase measurements in Fig.\ref{fig:phase_hist_360}. We also observed clear variance reduction in all the 12 categories from GLAD--M00 to GLAD--M25.
+
+To summarize, both the misfit reduction and histogram improvements indicates that our model performs good with data that hasn't been used in our inversion. We expect to see similar behavior for the future earthquakes.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{figures/dt_histogram_360.pdf}
+  \caption{Histogram of phase measurements similar to \ref{fig:phase_hist} except for 360 held-out earthquakes.}
+  \label{fig:phase_hist_360}
+\end{figure}
+
+
+
 \section{Models}
 
 \subsection{Global Velocity Structure}
+
+{\color{Red} Wenjie: Plan to work more on this part. But do you any suggestion what things should I talk about?}
+
 In Fig.\ref{fig:global-vs}, the global map of isotropic $V_s$ is plotted at certain depths.
 As comparisons, we also plotted two other models, S362ANI+M{\citep{moulik2014anisotropic},
 which is the updated version of our starting model but with mode data added
@@ -700,6 +820,9 @@ For the following sections, we will discuss the velocity structures in regional
 areas.
 
 \subsubsection{North America}
+
+{\color{Red} Wenjie: Read for Jeroen to edit}
+
 The deployment of USArray has dramatically increased the data overage on the
 continental United States. In this section, we compare our GLAD-M25 with
 together with two global models, S362ANI+M, S40RTS, and two regional models,
@@ -865,90 +988,6 @@ In this section, we will visit the plumes systems on the earth.
 In this sections, we will visit some of the well-known subduction zones.
 
 \newpage
-
-\section{Model Evaluation}
-
-Here, we present two ways that used to evaluate the quality of our model:
-resolution analysis and held-out data test.
-
-\subsection{Resolution Analysis}
-Checkboard test was commonly used a resolution test method but it is at the
-same cost of inversion of GLAD-M25, which will cost millions of CPU hours.
-Due to the very demanding computational requirements, we used the 'point
-spread function to assess the imaging quality in models GLAD-M25.
-
-\subsection{Held-out Dataset Test}
-Following the approach by \cite{tape2009adjoint}, \cite{bozdaug2016global},
-unseen events are used to check the performance of our
-model. We revisited the Global CMT catalogue,
-picked all the events whose magnitude is between 6.3 and 7.0, which hasn't
-been used in our inversion. The reason why we set the lower bound to 6.3
-instead of 5.5, is those earthquakes have good enough data and generates
-more measurements at the global scale.
-We calibrated the scalar moment and origin time in the GLAD-M25, and there
-are 360 events left that has enough windows. Fig.\ref{fig:events_360} shows
-the distribution of 360 earthquake that we used as held-out dataset
-
-\begin{figure}
-  \centering
-  \includegraphics[width=\textwidth]{figures/events_360.pdf}
-  \caption{Locations of 360 held-out earthquakes used to assess the traveltime misfit in the model assessment stage. Theses events are not used in the structural inversion. (a) Beach balls of earthquakes. Same color conventions as used in the \ref{fig:event_1480} (b) and (c) Histograms of moment magnitude and depth.}
-  \label{fig:events_360}
-\end{figure}
-
-First, we evaluate the model performance by misfit reduction. Same windows and
-weightings are used across models. Table.\ref{table:misfit_reduction_M00_M25_360}
-shows the misfit reduction from M15 to M25 and Table.\ref{table:misfit_reduction_M00_M25_360}
-is from M00 to M25. It again shows misfit reduction in all categories in
-our held-out dataset, similar to what we observed from the inversion dataset.
-The reduction are slightly smaller, partly due to the reason that we didn't
-do waveform-type inversion as we mentioned in the source inversion stage but
-only did a grid search to calibrate the scalar moment and origin time.
-
-\begin{table}[!htb]
-  \centering
-  %\label{tab:category}
-  \begin{tabular}{|c|c|c|c|}
-  \hline
-  ~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
-  \hline
-  17--40s                &          11.8 &       14.1 &       21.5 \\
-  40--100s body waves    &          14.5 &       12.9 &       16.9 \\
-  40--100s surface waves &          29.3 &       28.1 &       23.7 \\
-  90--250s               &          10.9 &       14.3 &       24.0 \\
-  \hline
-  \end{tabular}\\
-  \caption{Misfit Reduction from M15 to M25 for 360 earthquakes as held-out dataset}
-  \label{table:misfit_reduction_M15_M25_360}
-\end{table}
-
-\begin{table}[!htb]
-  \centering
-  %\label{tag:misfit_reduction_M00_M25_360}
-  \begin{tabular}{|c|c|c|c|}
-    \hline
-    ~          &  Vertical(\%) & Radial(\%) &  Transverse(\%) \\
-    \hline
-    17--40s                &         29.2 &       33.7 &       43.4 \\
-    40--100s body waves    &         26.2 &       32.2 &       39.0 \\
-    40--100s surface waves &         49.1 &       49.4 &       51.2 \\
-    90--250s               &         30.9 &       34.8 &       34.9 \\
-    \hline
-  \end{tabular}\\
-  \caption{Misfit Reduction from M00 to M25 for 360 earthquakes as held-out dataset}
-  \label{table:misfit_reduction_M00_M25_360}
-\end{table}
-
-Second, we also plotted the histograms of phase measurements in Fig.\ref{fig:phase_hist_360}. We also observed clear variance reduction in all the 12 categories from GLAD--M00 to GLAD--M25.
-
-To summarize, both the misfit reduction and histogram improvements indicates that our model performs good with data that hasn't been used in our inversion. We expect to see similar behavior for the future earthquakes.
-
-\begin{figure}
-  \centering
-  \includegraphics[width=\textwidth]{figures/dt_histogram_360.pdf}
-  \caption{Histogram of phase measurements similar to \ref{fig:phase_hist} except for 360 held-out earthquakes.}
-  \label{fig:phase_hist_360}
-\end{figure}
 
 
 \section{Conclusion}

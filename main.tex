@@ -146,7 +146,10 @@ we assign receiver weights~$\omega_{cr}$ based on the expression
 \quad ,
 \label{eq:spatial_weights}
 \end{equation}
+
 {\color{Red} Wenjie: is it $\omega_{cr}^{-2}$ or $\omega_{cr}^{-1}$? And does the normalization factor~$N_c$ depend on~$c$?\\ }
+{\color{Red} To Jeroen: I checked the code. we are using $\omega_{cr}^{-1}$. The normalization factor depends on c.}
+
 where~$N_c$ is a normalization factor,
 and where~$\Delta_{rr'}$ denotes the angular distance between receivers~$r$ and~$r'$\,.
 The reference angular distance~$\Delta_c$ needs to be chosen such that the condition 
@@ -302,6 +305,8 @@ numbers of the diagonal weighting matrices defined by Eqns.~(\ref{eq:source_weig
 
 {\color{red} Wenjie: is there just one $\Delta$, or are there different ones for sources, receivers and categories? And is there just one normalization constant~$N$, or are there multiple ones?}
 
+{\color{red} To Jeroen: You are right. $\Delta$ is different for a given source and category. Actually, we don't directly control $\Delta$. Instead, we control the condition number of weights. So the $\Delta$ will vary with receiver distributions. }
+
 \section{Model parametrization}
 
 We use the same transversely isotropic model parametrization as starting model GLAD-M15.
@@ -451,7 +456,7 @@ The evolution of the overall misfit function~(\ref{eq:misfit}) as well as its be
 
 \begin{figure}
   \centering
-  \includegraphics[width=\textwidth]{figures/misfit.pdf}
+  \includegraphics[width=0.8\textwidth]{figures/misfit.pdf}
   \caption{Evolution of phase misfits from GLAD-M15 to GLAD-M25.
   Each color denotes the different stages of inversions, between
   which we make changes to the inversion by either tuning the
@@ -461,7 +466,7 @@ The evolution of the overall misfit function~(\ref{eq:misfit}) as well as its be
   we future split the 40-100 sec period band into two
   measurement categories: body(red diamond) waves and surface waves
   (red square).
-  {\color{red} Wenjie, why do the graphs overlap at iteration 22, but not at iteration 18? Shouldn't 22 look like 18, i.e., no overlapping points?}
+  {\color{red} Wenjie, why do the graphs overlap at iteration 22, but not at iteration 18? Shouldn't 22 look like 18, i.e., no overlapping points?    \textbf{To Jeroen}: overlap means I calculate the misfit twice using the same mode. For example, in iteration M22, I caculated the misfit using the 1040 earthquakes and 1480 earthquakes, respectively. In M18, I haven't done so. If you want, I can calculate the misfit values and adding the overlap misfit point.}
   }
   \label{fig:misfit}
 \end{figure}
@@ -535,7 +540,7 @@ The improvements in fit per component are comparable in all period bands,
 indicating that the various categories are reasonably well balanced in the assessment of misfit.
 
 {\color{red} Wenjie: Make sure the variance reductions are calculated as ln (Phi\_M25 / Phi\_M15).}
-
+{\color{red} Wenjie: I was using (Phi\_M25 - Phi\_M15) / Phi\_M15. So let me modify it?}
 \begin{table}[!htb]
   \centering
   \begin{tabular}{|c|c|c|c|}

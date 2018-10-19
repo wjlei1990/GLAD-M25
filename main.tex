@@ -77,7 +77,7 @@ In this study we also used three-component seismograms with a shortest period of
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{figures/source_corrections.pdf}
-  \caption{Source corrections for 1,040 out of 1,480 events used in the structural inversion. (a) Map view of depth changes. (b) Distribution of seismographic stations used for source inversions. (c) Depth change relative to the original global CMT Catalog depth. (d)--(f) Histograms of depth, origin time, and scalar moment changes relative to the CMT Catalog. {\color{red} \textbf{[Fixed]} Wenjie: please put a space between ``depth'' and ``km'' in the x-axis labels of figures C and D.}
+  \caption{Source corrections for 1,040 out of 1,480 events used in the structural inversion. (a) Map view of depth changes. (b) Distribution of seismographic stations used for source inversions. (c) Depth change relative to the original global CMT Catalog depth. (d)--(f) Histograms of depth, origin time, and scalar moment changes relative to the CMT Catalog.
   }
   \label{fig:source_correction}
 \end{figure}
@@ -447,7 +447,7 @@ Given that most HPC system time is spent waiting in the job queue, automatic fai
 \section{Misfit evolution}
 
 The inversion went through ten iterations in a number of stages, as documented in this section.
-The behavior of the overall misfit function~(\ref{eq:misfit}) as well as its behavior in the various measurement categories is shown in Fig.~\ref{fig:misfit}.
+The evolution of the overall misfit function~(\ref{eq:misfit}) as well as its behavior in the various measurement categories is summarized in Fig.~\ref{fig:misfit}.
 
 \begin{figure}
   \centering
@@ -461,7 +461,7 @@ The behavior of the overall misfit function~(\ref{eq:misfit}) as well as its beh
   we future split the 40-100 sec period band into two
   measurement categories: body(red diamond) waves and surface waves
   (red square).
-  {\color{red} Wenjie, why do the graphs overlap at iteration 22, but not at iteration 18?Shouldn't 22 look like 18, i.e., no overlapping points?}
+  {\color{red} Wenjie, why do the graphs overlap at iteration 22, but not at iteration 18? Shouldn't 22 look like 18, i.e., no overlapping points?}
   }
   \label{fig:misfit}
 \end{figure}
@@ -490,7 +490,7 @@ Because the 17th iteration model explains 40--100~s surface wave data relatively
 we reduced their weight on all three components for iterations 18--21,
 as indicated by the lower red curves in Figs.~\ref{fig:misfit}e--g.
 
-The misfit reduction for 17--40~s body waves (Figs.~\ref{fig:misfit}b--d) tapers off by iteration 21, prompting us to add more earthquakes and change the weighting strategy again.
+The misfit reduction for 17--40~s body waves (Figs.~\ref{fig:misfit}b--d) tapers off by iteration 21, prompting us to add more earthquakes and change the weighting strategy again by reintroducing the 17--40~s surface waves.
 
 % Table~\ref{table:measurement_category} shows the four passbands we used in Stage~II, tabulating misfit reductions in all four passbands on three components,
 % that is, in twelve measurement categories.
@@ -516,21 +516,25 @@ The misfit reduction for 17--40~s body waves (Figs.~\ref{fig:misfit}b--d) tapers
 
 At iteration~22 we added another 440 earthquakes to the database,
 bringing the total to 1,480 event,
-and we changed the 40--100~s surface wave weights back to their setting during Stage~I.
-During this stage we also switched from a nonlinear conjugate gradient optimization algorithm to an L-BFGS quasi-Newton method.
+and we changed the 40--100~s surface wave weights back to their setting in Stage~I.
+During this stage we switched from a nonlinear conjugate gradient optimization algorithm to an L-BFGS quasi-Newton method.
 
 \subsection{Misfit assessment}
+\label{section:Misfit assessment}
 
-In the previous section we discussed the evolution of the misfit through the three key stages of the inversion.
+In the previous sections we discussed the evolution of the misfit through three key stages of the inversion.
 It is important to note that ``the misfit function'' is, in fact, a continually moving target, because at every iteration the number of measurements increases as the model improves,
 and the number of earthquakes increases at iterations~18 and~22.
+
 In this section we calculate specific changes in misfit using all 1,480 earthquakes and an identical set of weightings and windows for three models, namely, GLAD-M25, GLAD-M15, and S362ANI combined with CRUST2.0.
 Table~\ref{table:misfit_reduction_M15_M25} summarizes the changes in fit in the twelve measurement categories
 between the new model, GLAD-M25, and its starting model, GLAD-M15, and between GLAD-M25 and model S362ANI combined with CRUST2.0, which was the starting model for the GLAD-M15 inversion.
 In all categories we observe significant misfit reductions,
-with dispersive 40--100~s surface waves exhibiting the largest misfit reduction.
+with dispersive 40--100~s surface waves exhibiting the largest improvements.
 The improvements in fit per component are comparable in all period bands,
 indicating that the various categories are reasonably well balanced in the assessment of misfit.
+
+{\color{red} Wenjie: Make sure the variance reductions are calculated as ln (Phi\_M25 / Phi\_M15).}
 
 \begin{table}[!htb]
   \centering
@@ -566,6 +570,7 @@ between the new model, GLAD-M25, and its starting model, GLAD-M15, and, in paren
 % \end{table}
 
 \subsection{Histogram comparisons}
+\label{section:Histogram comparisons}
 
 Another way to evaluate model performance is by assessing the distribution
 of measurements in the various categories.
@@ -574,18 +579,18 @@ to assess GLAD-M25, GLAD-M15, and S362ANI combined with CRUST2.0.
 The total number of selected windows exceeds 18~million.
 Fig~\ref{fig:phase_hist} shows histograms of the resulting phase
 measurements in all twelve measurement categories.
-We observed that the distributions generally become better centered on zero,
-and that the standard deviations are steadily reduced.
-Again we note that the inversion is aimned at reducing the overall misfit,
+We observe that the distributions generally become better centered on zero,
+and that all standard deviations are steadily reduced.
+Again we note that the inversion is aimed at reducing the overall misfit,
 so there are small tradeoffs between different measurement categories.
 
 Fig~\ref{fig:amp_hist} shows histograms of the amplitude
 measurements for all twelve measurement categories,
-which are not used in the current inversion.
+which were not used in the current inversion.
 Despite this,
-we observe modest reductions in the standard deviations of the histograms.
-The histograms are nicely centered, indicating that the moment magnitudes are suitably selected.
-In the next phase of our ongoing inversion we plan to begin assimilating these amplitude measurements,
+we observe modest reductions in all standard deviations of the histograms.
+The histograms are nicely centered, indicating that the moment magnitudes are suitably selected, because the scalar moment affects all measurement categories equally.
+In the next phase of our ongoing inversion we plan to begin assimilating amplitude measurements,
 while simultaneously adding shear attenuation as a new model parameter.
 
 \begin{figure}
@@ -608,44 +613,39 @@ while simultaneously adding shear attenuation as a new model parameter.
 
 {\color{red} Wenjie: Also include the P arrival measurements here.}
 
-\section{Model Evaluation}
+\section{Model evaluation}
 
-Here, we present two ways that used to evaluate the quality of our model:
-resolution analysis and held-out data test.
+In this section we evaluate model GLAD-M25 further based on a point-spread function resolution analysis as well as a ``held-out'' dataset, that is, a set of data not used in the actual structural inversion.
 
-\subsection{Resolution Analysis}
-Checkboard test was commonly used a resolution test method but it is at the
-same cost of inversion of GLAD-M25, which will cost millions of CPU hours.
-Due to the very demanding computational requirements, we used the 'point
-spread function to assess the imaging quality in models GLAD-M25.
+\subsection{Point-spread function analysis}
 
-\subsection{Held-out Dataset Test}
-Following the approach by \cite{tape2009adjoint}, \cite{bozdaug2016global},
-unseen events are used to check the performance of our
-model. We revisited the Global CMT catalogue,
-picked all the events whose magnitude is between 6.3 and 7.0, which hasn't
-been used in our inversion. The reason why we set the lower bound to 6.3
-instead of 5.5, is those earthquakes have good enough data and generates
-more measurements at the global scale.
-We calibrated the scalar moment and origin time in the GLAD-M25, and there
-are 360 events left that has enough windows. Fig.\ref{fig:events_360} shows
-the distribution of 360 earthquake that we used as held-out dataset
+Checkboard tests or tests involving a chosen known structure, e.g., a plume or slab,
+are frequently used to evaluate resolution in a tomographic inversion.
+Such tests are extremely expensive in FWI and adjoint tomography, because they require roughly the same computational resources as the actual inversion.
+In lieu of such tests,
+we performed two point-spread function analyses~\citep{fichtner2011resolution,zhu2015seismic,bozdaug2016global}.
+
+\subsection{Held-out dataset}
+
+Following the approach of \cite{tape2009adjoint}, \cite{chen2015multiparameter}, and \cite{bozdaug2016global},
+we selected 360 earthquakes that were not used in the actual inversion.
+This held-out dataset consists of all magnitude 6.3--7.0 earthquakes in the global CMT catalog that were not used in the inversion.
+We chose larger events to generate as many measurements as possible.
+We calibrated the centroid time and scalar moment using a grid search based on 3D synthetics calculated in GLAD-M25.
+Fig.~\ref{fig:events_360} summarizes the properties of the held-out database.
 
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{figures/events_360.pdf}
-  \caption{Locations of 360 held-out earthquakes used to assess the traveltime misfit in the model assessment stage. Theses events are not used in the structural inversion. (a) Beach balls of earthquakes. Same color conventions as used in the \ref{fig:event_1480} (b) and (c) Histograms of moment magnitude and depth.}
+  \caption{Summary of the held-out database containing 360 earthquakes. Theses events were not used in the structural inversion. (a) Distribution of events, color coded by depth range as in Fig.~\ref{fig:event_1480}. (b) \& (c) Histograms of moment magnitude and depth.}
   \label{fig:events_360}
 \end{figure}
 
-First, we evaluate the model performance by misfit reduction. Same windows and
-weightings are used across models. Table.\ref{table:misfit_reduction_M00_M25_360}
-shows the misfit reduction from M15 to M25 and Table.\ref{table:misfit_reduction_M00_M25_360}
-is from M00 to M25. It again shows misfit reduction in all categories in
-our held-out dataset, similar to what we observed from the inversion dataset.
-The reduction are slightly smaller, partly due to the reason that we didn't
-do waveform-type inversion as we mentioned in the source inversion stage but
-only did a grid search to calibrate the scalar moment and origin time.
+First, we repeated the misfit assessment discussed in Section~\ref{section:Misfit assessment} for the held-out database.
+Table~\ref{table:misfit_reduction_M15_M25_360} summarizes the reductions in misfit for the held-out database for model GLAD-M25 compared to GLAD-M15 as well a S362ANI combined with CRUST2.0.
+It is comforting to see that the reductions are comparable to the
+values tabulated in Table~\ref{table:misfit_reduction_M15_M25} for the actual inversion.
+Overall the reductions are slightly smaller, partly due to the fact that we did not conduct full CMT inversions for the held-out database.
 
 \begin{table}[!htb]
   \centering
@@ -682,119 +682,110 @@ between the new model, GLAD-M25, and its starting model, GLAD-M15, and, in paren
 %   \label{table:misfit_reduction_M00_M25_360}
 % \end{table}
 
-Second, we also plotted the histograms of phase measurements in Fig.\ref{fig:phase_hist_360}. We also observed clear variance reduction in all the 12 categories from GLAD--M00 to GLAD--M25.
-
-To summarize, both the misfit reduction and histogram improvements indicates that our model performs good with data that hasn't been used in our inversion. We expect to see similar behavior for the future earthquakes.
+Second, we repeated the histogram comparisons discussed in Section~\ref{section:Histogram comparisons} for the held-out database.
+We used a set of identical windows on all three components to assess
+phase and amplitude anomalies in models GLAD-M25, GLAD-M15, and S362ANI combined with CRUST2.0.
+Fig.~\ref{fig:phase_hist_360} shows histograms of the resulting phase
+measurements in all twelve measurement categories.
+The total number of measurements exceeds 7.8~million.
+As in the actual inversion,
+we observe systematic decreases in all standard deviations in all twelve categories,
+and we note a sharpening of the distributions centered around zero.
 
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{figures/dt_histogram_360.pdf}
-  \caption{Histogram of phase measurements similar to \ref{fig:phase_hist} except for 360 held-out earthquakes.}
+  \caption{Histogram of phase measurements for the 360 events in the held-out database.}
   \label{fig:phase_hist_360}
 \end{figure}
 
+\section{Model GLAD-M25}
 
+In this section we discuss model GLAD-M25 in some detail.
+We begin with a global overview of the model before concentrating on specific geographical regions.
+We conclude by highlighting various slabs and plumes in the model.
 
-\section{Models}
+\subsection{Global structure}
 
-\subsection{Global Velocity Structure}
-
-{\color{Red} Wenjie: Plan to work more on this part. But do you any suggestion what things should I talk about?}
-
-In Fig.\ref{fig:global-vs}, the global map of isotropic $V_s$ is plotted at certain depths.
-As comparisons, we also plotted two other models, S362ANI+M{\citep{moulik2014anisotropic},
-which is the updated version of our starting model but with mode data added
-into the inversion, and S40RTS\citep{ritsema2011s40rts}. At the first glance,
-you may notice that all the models agree at the long wavelength structures.
-At 2800km depth, our model is very close to S362ANI+M, with more extended
-features at the LLSVP.
-
-The value ranges are labeled on the top left on each figure. It is obvious the
-value ranges in our model is generally larger than other two models, which is
-consistent with \cite{french2014whole}.
+We first examine model GLAD-M25 in the context of existing global tomographic models.
+In Fig.~\ref{fig:global-vs} we compare global maps of the isotropic part of our shear wavespeed model with model S362ANI$+$M~\citep{moulik2014anisotropic},
+which is an updated version of the starting model for the GLAD-M15 inversion,
+and model S40RTS~\citep{ritsema2011s40rts}.
+The range of perturbations in shear wavespeed varies from map to map, as indicated in the top left of each panel.
+Overall these models are in good agreement at the longest wavelengths, especially Glad-M25 and S362ANI$+$M.
+The perturbations in GLAD-M15 tend to be larger than in the other models,
+consistent with observations by~\cite{french2014whole},
+whose model is also based on a form of waveform inversion.
 
 \begin{figure}
   \centering
   \includegraphics[width=0.9\textwidth]{figures/depth_slice/globe_vs.pdf}
-  \caption{Map views of global $V_s$ perturbations at various depths for out model
-  GLAD-M25(left column), S362ANI+M(middle column)\citep{moulik2014anisotropic}
-  and S40RTS(right column)\citep{ritsema2011s40rts}. The perturbations are
-  calculated based on each model's own 1D profile. The values(upper-left corner
-  of each figure) denotes the minimum/maximum perturbations for each model at
-  the corresponding depth. The green circles denotes the locations of
-  hotspots\citep{montelli2006catalogue}. The range of the colorbar is the same
-  for each row and the range value is labeled on the most left, right after
+  \caption{Map views of global shear wavespeed perturbations at various depths for  model
+  GLAD-M25~(left column), S362ANI$+$M~\citep[middle column;][]{moulik2014anisotropic}
+  and S40RTS~\citep[right column;][]{ritsema2011s40rts}.
+  At a given radius,
+  perturbations are calculated relative to each model's average.
+  The range of perturbations in shear wavespeed varies from map to map, as indicated in the top left of each panel.
+  The green circles denote locations of various
+  hotspots~\citep{montelli2006catalogue}.
+  The range of the colorbar is the same for each row,
+  and its maximum value is indicated in parentheses on the left, after
   the depth.}
   \label{fig:global-vs}
 \end{figure}
 
 %\begin{figure}
 %\includegraphics[width=0.9\textwidth]{figures/depth_slice/globe_vp_S362ANI-LLNL.pdf}
-%  \caption{Map views of global $V_p$ variations at various depths for our model GLAD-M25(left column), S362ANI+M(middle column) and LLNL-G3Dv3(right column)\citep{simmons2012llnl}. For LLNL-G3Dv3, the depths is labeled on the right bottom based on its own mesh spacing. Other plotting conventions are used similar as in Figure \ref{fig:global-vs}.}
+%  \caption{Map views of global $V_p$ variations at various depths for our model GLAD-M25(left column), S362ANI$+$M(middle column) and LLNL-G3Dv3(right column)\citep{simmons2012llnl}. For LLNL-G3Dv3, the depths is labeled on the right bottom based on its own mesh spacing. Other plotting conventions are used similar as in Figure \ref{fig:global-vs}.}
 %\label{fig:global-vp}
 %\centering
 %\end{figure
 
-The other prominent feature of our models is that we can also constrain $V_p$ as an
-independent model parameters. Fig.\ref{fig:global-vp} shows our isotropic $V_p$
-structures at several depths. As comparisons, we also showed two more global
-$V_p$ models, LLNL-G3Dv3\citep{simmons2012llnl}} and GAP-P4\citep{fukao2013subducted}.
+An important aspect of our inversion is that constrain shear and compressional waves simultaneously.
+In Fig.~\ref{fig:global-vs} we compare global maps of our compressional wavespeed model with P models LLNL-G3Dv3~\citep{simmons2012llnl} and GAP-P4~\citep{fukao2013subducted}.
+At a depth of 100~km,
+GLAD-M25 shows prominent mid-oceanic ridges, cooling of the Pacific lithosphere, and the roots of numerous continental cratons.
+In the upper mantle, LLNL-G3Dv3 exhibits the largest lateral variations,
+e.g., very slow compressional wavespeeds at 500~km depth below Hawaii, Samoa, and Tahiti.
+In the midmantle we can see remnants of subduction beneath South America, Indonesia,
+and Tonga-Kermadec.
+In the deep mantle, LLNL-G3Dv3 and GAP-P4 begin to fade out, but the long-wavelength patterns,
+in particular the lowerparts of the Africa and Pacific superplumes, are very similar.
 
-At 100km depth, our model shows prominent ocean ridges at the realm of pacific
-oceans, which are relatively slow velocity regions, compared to other two vp models.
-On the other hand, the continent slabs, such as Australia, South Africa,
-North America and Europe, is more prominent in our model.
-
-For upper mantle, the LLNL-G3Dv3 shows the largest variations. For example,
-the 500km, the LLNL model shows very strong slow velocity anomalies at
-Hawaii and other pacific hotspots, such as Samoa and Tahiti.
-For middle mantle at about 1000km, all them models all shows a few major
-subduction zones, such as the South America, Fiji and Sumatra regions.
-At lower mantle, such as 2000km and 2800km, LLNL-G3Dv3 and GAP-P4 tends to
-fade out, even though the patterns are very similar among them, such as
-the LLSVP regions.
-
-** Note: add spherical harmonic analysis later **
+{\color{red} Wenjie: Note: add spherical harmonic analysis later.}
 
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/globe_vp_LLNL-GAP.pdf}
-  \caption{Map views of global $V_p$ variations at various depths for our model
-  GLAD-M25(left column), LLNL-G3Dv3(middle column) \citep{simmons2012llnl} and
-  GAP-P4(\citep{fukao2013subducted}).
-  For LLNL-G3Dv3, the depths is labeled on the right
-  bottom based on its own mesh spacing. Other plotting conventions are used
-  similar as in Figure \ref{fig:global-vs}.}
+  \caption{Map views of global compressional wavespeed variations at various depths for model
+  GLAD-M25 (left column), LLNL-G3Dv3 \citep[middle column;][]{simmons2012llnl} and
+  GAP-P4~[right column;][](\citep{fukao2013subducted}).
+  For LLNL-G3Dv3, depth ranges are labeled on the bottom right
+  bottom of each panel. Other plotting conventions are as in Fig.~\ref{fig:global-vs}.}
 \label{fig:global-vp}
 \centering
 \end{figure}
 
-For the following sections, we will discuss the velocity structures in regional
-areas.
-
 \subsubsection{North America}
 
-{\color{Red} Wenjie: Ready for Jeroen to edit}
+The deployment of USArray has dramatically increased data overage underneath the
+continental United States.
+In this section, we compare GLAD-M25 with
+with two global models, S362ANI$+$M and S40RTS, and two regional models,
+US22~\citep{zhu2017radial} and SL2013NA~\citep{schaeffer2014imaging}.
+US22 is a radially anisotropic model based on adjoint tomography using
+USArray data from 180 regional earthquakes using 15--50~s
+body waves and 25--150~s surface waves.
+SL2013NA is a global upper-mantle shear wavespeed model based on multimode
+surface waveform tomography primarily focused on North America.
 
-The deployment of USArray has dramatically increased the data overage on the
-continental United States. In this section, we compare our GLAD-M25 with
-together with two global models, S362ANI+M, S40RTS, and two regional models,
-US22\citep{zhu2017radial}, SL2013NA\citep{schaeffer2014imaging}.
-
-US22 is radially anisotropic model build based on adjoint tomography using
-USArray data from 180 regional earthquakes using 15-50sec short-period
-body waves and 25-150sec long-period surface waves.
-SL2013NA is an upper-mantle global shear wave speed model using multimode
-surface waveform tomography and primarily focused on the north American
-region.
-
-The North American region is featured by a large, high-velocity cratonic
-lithosphere, bounded by the Rocky Mountain Front to the west and continental
-margin to the east. For both sides the lithosphere has been deformed by
-low velocity structures thus form a sharp boundary.
+North America is characterized by a large, high-wavespeed cratonic
+lithosphere, bounded by the Rocky Mountain Front to the West and continental
+margin to the East. On both sides the lithosphere has been deformed by
+low wavespeed structures, thus forming sharp boundaries.
 
 At 100km, our model shows a much sharpened boundary between the carton
 and surrounding low velocity structures, especially compared with
-two global models, S362ANI+M and S40RTS, yet stay very similar to
+two global models, S362ANI$+$M and S40RTS, yet stay very similar to
 two regional models, US22 and SL2014NA. At such depth,
 we are observed a very strong expression of the Snake River Plain(
 with Yellowstone) and Raton hotspot, with their depth extending to 200km.
@@ -819,7 +810,7 @@ Sea, with North American Craton followed nicely with the coastline. In the
 north west region, our models shows the most clear picture of
 Aleutian subduction zones, with it high velocity feature down to 400km.
 In the northeastern part, the Iceland hotspot has been greatly enhanced,
-especially at 300km and 400km compared to S362ANI+M.
+especially at 300km and 400km compared to S362ANI$+$M.
 
 In the Easter part, our models shows a high-velocity structure at the western
 Atlantic, starting from the tip of Florida to the New York,
@@ -844,7 +835,7 @@ the later sections.
 \centering
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/america_vs.pdf}
   \caption{Map views of $V_s$ variations of North America at various depths
-  for our model GLAD-M25(first column) and several global(S362ANI+M and S40RTS)
+  for our model GLAD-M25(first column) and several global(S362ANI$+$M and S40RTS)
   and regional(US22\citep{zhu2017radial} and SL2013NA\citep{schaeffer2014imaging})
   models. Green circles denotes the locations of hotspots. For SL2013NA, we
   showed the 610km instead of 600km due to its own mesh.}
@@ -856,20 +847,20 @@ the later sections.
 
 
 Fig.\ref{fig:europe-vs} shows the isotropic $V_s$ structures at Europe. As
-comparisons, we also showed S362ANI+M, S40RTS and one regional model EU60
+comparisons, we also showed S362ANI$+$M, S40RTS and one regional model EU60
 \citep{zhu2015seismic}. Compared to two global models, it is clear that
 our model is much sharper at few locations. At 100 and 200km, Eifel
 hotspot is clearly seen in our models, as well as in EU60. At 400km
 and 600km, the subduction is very consistent between GLAD-M25 and EU60,
 with the curved shape at the lower bottom of the figure,
-while S362ANI+M shows very smooth shape and S40RTS shows much smaller 
+while S362ANI$+$M shows very smooth shape and S40RTS shows much smaller 
 perturbation values. Besides, at 400km, GLAD-M25 is enhancing Iceland
-compared to S362ANI+M.
+compared to S362ANI$+$M.
 
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/europe_vs.pdf}
   \caption{Map views of $V_s$ variations of Europe at various depths for our
-  model GLAD-M25(first column) and global(S362ANI+M and S40RTS) and
+  model GLAD-M25(first column) and global(S362ANI$+$M and S40RTS) and
   regional(EU60\citep{zhu2015seismic}) models. For EU60, the range of color
   bar is 4\% for all depths, which is labeled in the right bottom of the figures.}
 \label{fig:europe-vs}
@@ -886,7 +877,7 @@ America), our inversion is compensated by the large number of temporary
 arrays and earthquakes.
 
 Our model at Asian region is plotted on Fig.\ref{fig:asia-vs},
-together with S362ANI+M, S40RTS and EARA2014\cite{chen2015multiparameter}.
+together with S362ANI$+$M, S40RTS and EARA2014\cite{chen2015multiparameter}.
 EARA2014 is a regional 3D anisotropic tomographic model using adjoint
 methods, comprising 1.7million frequency-dependent traveltime
 measurements from 227 earthquakes recorded by 1869 seismic stations.
@@ -932,7 +923,7 @@ near the Philippine plate, indicating the pounding of ancient subducted plates.
 
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/asia_vs.pdf}
-  \caption{Map views of $V_s$ variations of Asia at various depths for our model GLAD-M25(first column) and several global(S362ANI+M and S40RTS) and regional(EARA2014\citep{chen2015multiparameter}) models.}
+  \caption{Map views of $V_s$ variations of Asia at various depths for our model GLAD-M25(first column) and several global(S362ANI$+$M and S40RTS) and regional(EARA2014\citep{chen2015multiparameter}) models.}
 \label{fig:asia-vs}
 \centering
 \end{figure}
@@ -942,7 +933,7 @@ near the Philippine plate, indicating the pounding of ancient subducted plates.
 
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/south_america_vp.pdf}
-  \caption{Map views of $V_p$ variations of South America at various depths for our model GLAD-M25(first column) and several global models, including S362ANI+M, LLNL-G3Dv3 and GAP-P4\citep{fukao2013subducted}.}
+  \caption{Map views of $V_p$ variations of South America at various depths for our model GLAD-M25(first column) and several global models, including S362ANI$+$M, LLNL-G3Dv3 and GAP-P4\citep{fukao2013subducted}.}
 \label{fig:southamerica-vp}
 \centering
 \end{figure}
@@ -988,6 +979,11 @@ In this sections, we will visit some of the well-known subduction zones.
 
 
 \section{Conclusion}
+
+In summary,
+the new model performs well for the held-out dataset, both in terms of misfit reductions and measurement distributions in all twelve measurement categories.
+We expect to see similar behavior for any future earthquakes.
+
 
 Seismology is driven by data. Back into time, seismologists would look at
 single seismograms and pick valuable information out the them. Now, we have
@@ -1039,7 +1035,8 @@ National Lab.
 
 This research used resources of the Oak Ridge Leadership Computing Facility, which is a DOE Office of Science User Facility supported under contract DE-AC05-00OR22725.
 Additional computational resources were provided by the Princeton Institute for Computational Science \& Engineering (PICSciE).
-We acknowledge IRIS ({\tt iris.edu}) and ORFEUS ({\tt orfeus-eu.org}) for providing the data used in this study. We thank Ryan Modrak, Ridvan Orsvuran, Frederik Simons, and James Smith for fruitful discussions.
+We acknowledge IRIS ({\tt iris.edu}) and ORFEUS ({\tt orfeus-eu.org}) for providing the data used in this study.
+{\color{red} Wenjie: Please add all relevant data centers.} We thank Ryan Modrak, Ridvan Orsvuran, Frederik Simons, and James Smith for fruitful discussions.
 The open source spectral-element software package SPECFEM3D\_GLOBE and the seismic measurement software package FLEXWIN used for this article are freely available via the Computational Infrastructure for Geodynamics (CIG; {\tt geodynamics.org}). This research was supported by NSF grant~1644826.
 
 \end{acknowledgments}

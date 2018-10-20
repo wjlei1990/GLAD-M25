@@ -146,13 +146,9 @@ we assign receiver weights~$\omega_{cr}$ based on the expression
 \quad ,
 \label{eq:spatial_weights}
 \end{equation}
-
-{\color{Red} Wenjie: is it $\omega_{cr}^{-2}$ or $\omega_{cr}^{-1}$? And does the normalization factor~$N_c$ depend on~$c$?\\ }
-{\color{Red} To Jeroen: I checked the code. we are using $\omega_{cr}^{-1}$. The normalization factor depends on c.}
-
-where~$N_c$ is a normalization factor,
+where~$N_c$ is a normalization factor for category~$c$,
 and where~$\Delta_{rr'}$ denotes the angular distance between receivers~$r$ and~$r'$\,.
-The reference angular distance~$\Delta_c$ needs to be chosen such that the condition 
+The reference angular distance~$\Delta_c$ for each category~$c$ needs to be chosen such that the condition 
 number of the diagonal weighting matrix defined by Eqn.~(\ref{eq:spatial_weights}) is not too large.
 The calculation of the weights may be abstracted as: given a spatial distribution of
 points on the unit sphere, determine a weighting associated with each point.
@@ -186,7 +182,7 @@ Fig.~\ref{fig:event_1480} summarizes the characteristics of all 1,480 earthquake
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{figures/events_1480.pdf}
-  \caption{1,480 earthquakes used in this study. (a) Distribution of earthquakes. The color of each beach ball reflects its depth range, where blue designate events shallower than 50~km, green events between 50~km and 300~km, and red events deeper than 300~km. (b) and (c) Histograms of earthquake moment magnitudes and depths.}
+  \caption{1,480 earthquakes used in this study. (a) Distribution of earthquakes. The color of each beach ball reflects its depth range, where blue designate events shallower than 50~km, green events between 50~km and 300~km, and red events deeper than 300~km. (b) \& (c) Histograms of earthquake moment magnitudes and depths.}
   \label{fig:event_1480}
 \end{figure}
 
@@ -302,10 +298,6 @@ Here~$N$ and~$N_{sc}$ are a normalization factors,
 and~$\Delta_{ss'}$ and~$\Delta_{rr'}$ denote angular distances between source and receiver pairs~$\{s,s'\}$ and~$\{r,r'\}$\,.
 The reference angular distances~$\Delta$ and~$\Delta_{sc}$ need to be chosen based on the condition 
 numbers of the diagonal weighting matrices defined by Eqns.~(\ref{eq:source_weights}) and~(\ref{eq:receiver_weights}).
-
-{\color{red} Wenjie: is there just one $\Delta$, or are there different ones for sources, receivers and categories? And is there just one normalization constant~$N$, or are there multiple ones?}
-
-{\color{red} To Jeroen: You are right. $\Delta$ is different for a given source and category. Actually, we don't directly control $\Delta$. Instead, we control the condition number of weights. So the $\Delta$ will vary with receiver distributions. }
 
 \section{Model parametrization}
 
@@ -467,6 +459,7 @@ The evolution of the overall misfit function~(\ref{eq:misfit}) as well as its be
   measurement categories: body(red diamond) waves and surface waves
   (red square).
   {\color{red} Wenjie, why do the graphs overlap at iteration 22, but not at iteration 18? Shouldn't 22 look like 18, i.e., no overlapping points?    \textbf{To Jeroen}: overlap means I calculate the misfit twice using the same mode. For example, in iteration M22, I caculated the misfit using the 1040 earthquakes and 1480 earthquakes, respectively. In M18, I haven't done so. If you want, I can calculate the misfit values and adding the overlap misfit point.}
+  {\color{blue}Wenjie: OK, then let's be consistent in what we do. I would prefer no overlap.}
   }
   \label{fig:misfit}
 \end{figure}
@@ -541,6 +534,7 @@ indicating that the various categories are reasonably well balanced in the asses
 
 {\color{red} Wenjie: Make sure the variance reductions are calculated as ln (Phi\_M25 / Phi\_M15).}
 {\color{red} Wenjie: I was using (Phi\_M25 - Phi\_M15) / Phi\_M15. So let me modify it?}
+{\color{blue} Wenjie: yes please. It will only change things slightly, if at all. You need to do the same for Table~\ref{table:misfit_reduction_M15_M25_360}.}
 \begin{table}[!htb]
   \centering
   \begin{tabular}{|c|c|c|c|}
@@ -650,7 +644,7 @@ First, we repeated the misfit assessment discussed in Section~\ref{section:Misfi
 Table~\ref{table:misfit_reduction_M15_M25_360} summarizes the reductions in misfit for the held-out database for model GLAD-M25 compared to GLAD-M15 as well a S362ANI combined with CRUST2.0.
 It is comforting to see that the reductions are comparable to the
 values tabulated in Table~\ref{table:misfit_reduction_M15_M25} for the actual inversion.
-Overall the reductions are slightly smaller, partly due to the fact that we did not conduct full CMT inversions for the held-out database.
+Overall, the reductions are slightly smaller, partly due to the fact that we did not conduct full CMT inversions for the held-out database.
 
 \begin{table}[!htb]
   \centering
@@ -689,7 +683,7 @@ between the new model, GLAD-M25, and its starting model, GLAD-M15, and, in paren
 
 Second, we repeated the histogram comparisons discussed in Section~\ref{section:Histogram comparisons} for the held-out database.
 We used a set of identical windows on all three components to assess
-phase and amplitude anomalies in models GLAD-M25, GLAD-M15, and S362ANI combined with CRUST2.0.
+phase anomalies in models GLAD-M25, GLAD-M15, and S362ANI combined with CRUST2.0.
 Fig.~\ref{fig:phase_hist_360} shows histograms of the resulting phase
 measurements in all twelve measurement categories.
 The total number of measurements exceeds 7.8~million.
@@ -700,7 +694,7 @@ and we note a sharpening of the distributions centered around zero.
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{figures/dt_histogram_360.pdf}
-  \caption{Histogram of phase measurements for the 360 events in the held-out database.}
+  \caption{Histograms of phase measurements for the 360 events in the held-out database.}
   \label{fig:phase_hist_360}
 \end{figure}
 
@@ -717,7 +711,7 @@ In Fig.~\ref{fig:global-vs} we compare global maps of the isotropic part of our 
 which is an updated version of the starting model for the GLAD-M15 inversion,
 and model S40RTS~\citep{ritsema2011s40rts}.
 The range of perturbations in shear wavespeed varies from map to map, as indicated in the top left of each panel.
-Overall these models are in good agreement at the longest wavelengths, especially Glad-M25 and S362ANI$+$M.
+Overall, these models are in good agreement at the longest wavelengths, especially Glad-M25 and S362ANI$+$M.
 The perturbations in GLAD-M15 tend to be larger than in the other models,
 consistent with observations by~\cite{french2014whole},
 whose model is also based on a form of waveform inversion.
@@ -746,7 +740,7 @@ whose model is also based on a form of waveform inversion.
 %\centering
 %\end{figure
 
-An important aspect of our inversion is that constrain shear and compressional waves simultaneously.
+An important aspect of our inversion is that it constrains shear and compressional waves simultaneously.
 In Fig.~\ref{fig:global-vs} we compare global maps of our compressional wavespeed model with P models LLNL-G3Dv3~\citep{simmons2012llnl} and GAP-P4~\citep{fukao2013subducted}.
 At a depth of 100~km,
 GLAD-M25 shows prominent mid-oceanic ridges, cooling of the Pacific lithosphere, and the roots of numerous continental cratons.
@@ -763,8 +757,8 @@ in particular the lowerparts of the Africa and Pacific superplumes, are very sim
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/globe_vp_LLNL-GAP.pdf}
   \caption{Map views of global compressional wavespeed variations at various depths for model
   GLAD-M25 (left column), LLNL-G3Dv3 \citep[middle column;][]{simmons2012llnl} and
-  GAP-P4~[right column;][](\citep{fukao2013subducted}).
-  For LLNL-G3Dv3, depth ranges are labeled on the bottom right
+  GAP-P4~\citep[right column;][]{fukao2013subducted}.
+  For LLNL-G3Dv3, depth ranges are labeled in the bottom right
   bottom of each panel. Other plotting conventions are as in Fig.~\ref{fig:global-vs}.}
 \label{fig:global-vp}
 \centering
@@ -772,9 +766,9 @@ in particular the lowerparts of the Africa and Pacific superplumes, are very sim
 
 \subsubsection{North America}
 
-The deployment of USArray has dramatically increased data overage underneath the
+The deployment of USArray has dramatically increased data overage across the
 continental United States.
-In this section, we compare GLAD-M25 with
+In this section, we compare GLAD-M25 in this region with
 with two global models, S362ANI$+$M and S40RTS, and two regional models,
 US22~\citep{zhu2017radial} and SL2013NA~\citep{schaeffer2014imaging}.
 US22 is a radially anisotropic model based on adjoint tomography using
@@ -783,152 +777,138 @@ body waves and 25--150~s surface waves.
 SL2013NA is a global upper-mantle shear wavespeed model based on multimode
 surface waveform tomography primarily focused on North America.
 
-North America is characterized by a large, high-wavespeed cratonic
-lithosphere, bounded by the Rocky Mountain Front to the West and continental
+North America is characterized by a large, high-wavespeed lithospheric craton,
+bounded by the Rocky Mountain Front to the West and continental
 margin to the East. On both sides the lithosphere has been deformed by
-low wavespeed structures, thus forming sharp boundaries.
+low wavespeed structures, thus forming sharp tectonic boundaries.
 
-At 100km, our model shows a much sharpened boundary between the carton
-and surrounding low velocity structures, especially compared with
-two global models, S362ANI$+$M and S40RTS, yet stay very similar to
-two regional models, US22 and SL2014NA. At such depth,
-we are observed a very strong expression of the Snake River Plain(
-with Yellowstone) and Raton hotspot, with their depth extending to 200km.
-The very high-velocity craton extend to 200km, with its very core part to
-300 km, similar to US22 while SL2013NA shows it almost disappeared at such depth.
-Again, the Wyoming craton and Medicine Hat Block shows a very strong lithosphere
-root from the very shallow depth to 400km, which is also similar to US22 but
-hard to observe in SL2013NA. Similar case is the craton at Yavapai and
-Mazatzal Blocks, which define the southern bound of the large craton.
+At a depth of 100~km, we observed that the edges of the craton are sharper in
+GLAD-M15 than in the other two global models,
+and quite similar in shape and sharpness to the two regional models.
+We can clearly see impressions of the Snake River Plain (with Yellowstone)
+and the Raton hotspot, which also have distinct slow expressions at depths of 200~km.
+The core of the craton exhibits fast wavespeeds at depths reaching 300~km Northwest of
+Hudson Bay.
+In the regional models the craton has basically faded away at these depths.
+The Wyoming and Medicine Hat Blocks show a very strong and thick lithospheric
+root from shallow depths to $\sim$400~km, similar to US22 but
+difficult to discern in SL2013NA.
+Similar observations can be made for the Yavapai and
+Mazatzal Blocks, which define the southern boundary of the large craton.
 
-At such depth, we also observed high velocity
-features within the Gulf of Mexico, which coincides spatially with the deepest
+In the 200--400~km depth range, we observe a high wavespeed
+anomaly within the Gulf of Mexico, which coincides spatially with the deepest
 bathymetry and corresponds to a portion of ancient oceanic
-Lithosphere\citep{muller2008}. The remnant of Juan de Fuca subduction
-plates, with its high velocity footprint, is presented in our model at
-300km and 400km, though the SL2013NA shows a much stronger anomaly.
+Lithosphere~\citep{muller2008}.
+A remnant of the Juan de Fuca plate,
+with a high wavespeed footprint, is visible at depths of 300~km and 400~km,
+where SL2013NA shows a much stronger anomaly.
 
-At the North, our models shows a extended high velocity craton beneath the 
-Greenland, though clearly separated with the North America Craton,
-bounded at the relatively low velocity structure at Barffin Bay and Labrador
-Sea, with North American Craton followed nicely with the coastline. In the
-north west region, our models shows the most clear picture of
-Aleutian subduction zones, with it high velocity feature down to 400km.
-In the northeastern part, the Iceland hotspot has been greatly enhanced,
-especially at 300km and 400km compared to S362ANI$+$M.
+In the North,
+we see a high wavespeed craton beneath Greenland which is partly separated from the
+North American craton by low wavespeed structures beneath Baffin Bay and the Labrador Sea,
+where the North American craton nicely follows the coastline.
+In the Northeast corner of the maps we see that the Iceland hotspot is very prominent in GLAD-M25 in all depth ranges, similar to S40RTS but largely missing in S362ANI$+$M.
+In the Northwest we see a clear imprint of the Aleutian subduction zone in the 200--400~km depth range, comparable to SL2013NA bu absent in the other global models.
 
-In the Easter part, our models shows a high-velocity structure at the western
-Atlantic, starting from the tip of Florida to the New York,
-separated from the major part the north America craton,
-though it stays very thin that the depth only extend to above 200km.
-This feature is associated with some of the oldest oceanic crust and lithosphere
-within the Atlantic\citep{muller2008, schaeffer2014imaging}.
-All the models is showing a high velocity anomaly at Nova Scotia and Newfoundland
-with its high-velocity core to 300km.
-Bermuda hotspot is nicely preserved from our starting
-model, yet get sharpened and stronger at 200km and 300km. Besides, the
-Caribbean suduction, which is relatively young subduction systems, is clearly
-observable in our model, starting from 200km to 300km.
-
-For even deeper depth, our models shows a very clear picture of the Farallon
-subductions, but it goes beyond the range of this comparison since the two
-region models are really upper-mantle models which don't extend to the very
-deep depth. We will show some vertical cross-sections of Farallon slabs in
-the later sections.
+In the East, at 100~km depth,
+we see ageing of the Atlantic lithosphere, comparable to the other global models~\citep{muller2008, schaeffer2014imaging}.
+All models show fast anomalies beneath Newfoundland and Nova Scotia extending to depths of 300~km.
+The Bermuda hotspot shows a very nice slow wavespeed impression,
+getting sharper and stronger at depths of 200~km and 300~km (note differences in the scales of the maps).
+The Caribbean slab, a relatively young subduction zone, is clearly
+visible in our model in the 200--400~km depth range.
+At greater depths,
+GLAD-M25 shows a very distinct image of the Farallon slab,
+but since it goes well beyond the depth range of this comparison,
+we return to this feature in Section~\ref{section:slabs}.
 
 \begin{figure}
 \centering
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/america_vs.pdf}
-  \caption{Map views of $V_s$ variations of North America at various depths
-  for our model GLAD-M25(first column) and several global(S362ANI$+$M and S40RTS)
-  and regional(US22\citep{zhu2017radial} and SL2013NA\citep{schaeffer2014imaging})
-  models. Green circles denotes the locations of hotspots. For SL2013NA, we
-  showed the 610km instead of 600km due to its own mesh.}
+  \caption{Map views of isotropic shear wavespeed variations beneath North America 
+  for model GLAD-M25 (first column) and several global (S362ANI$+$M and S40RTS)
+  and regional~\citep[US22;][]{zhu2017radial} and~\citep[SL2013NA;][]{schaeffer2014imaging}
+  models. Green circles denote the locations of hotspots. For SL2013NA, we
+  show a depth of 610~km instead of 600~km, reflecting its model parametrization.}
 \label{fig:america-vs}
 
 \end{figure}
 
 \subsubsection{Europe}
 
-
-Fig.\ref{fig:europe-vs} shows the isotropic $V_s$ structures at Europe. As
-comparisons, we also showed S362ANI$+$M, S40RTS and one regional model EU60
-\citep{zhu2015seismic}. Compared to two global models, it is clear that
-our model is much sharper at few locations. At 100 and 200km, Eifel
-hotspot is clearly seen in our models, as well as in EU60. At 400km
-and 600km, the subduction is very consistent between GLAD-M25 and EU60,
-with the curved shape at the lower bottom of the figure,
-while S362ANI$+$M shows very smooth shape and S40RTS shows much smaller 
-perturbation values. Besides, at 400km, GLAD-M25 is enhancing Iceland
-compared to S362ANI$+$M.
+Fig.~\ref{fig:europe-vs} shows isotropic shear wavespeed perturbations beneath Europe.
+For comparison,
+we again include the two global models S362ANI$+$M and S40RTS,
+as well as regional model EU60~\citep{zhu2015seismic},
+which is based on adjoint tomography.
+Again there is good agreemment with the two global models with regards to the longer wavelength structure,
+although the Iceland hotspot is less prominent in S362ANI$+$M.
+In the 100--200~km depth range we see the Massif Central, the Eiffel hotspot,
+and the Central Slovakia Volcanic Field as distinctly slow anomalies,
+in agreement with EU60.
+In the 400--600~km depth range,
+GLAD-M25 is again in good agreement with~EU60,
+featuring past subduction in the Mediterranean,
+including the present-day Aegean slab.
 
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/europe_vs.pdf}
-  \caption{Map views of $V_s$ variations of Europe at various depths for our
-  model GLAD-M25(first column) and global(S362ANI$+$M and S40RTS) and
-  regional(EU60\citep{zhu2015seismic}) models. For EU60, the range of color
-  bar is 4\% for all depths, which is labeled in the right bottom of the figures.}
+  \caption{Map views of isotropic shear wavespeed variations beneath Europe for   
+  model GLAD-M25 (first column), two global model (S362ANI$+$M and S40RTS), and
+  one regional model~\citep[EU60;][]{zhu2015seismic}. For EU60, the range of the color
+  bar is 4\% at all depths, as indicated in the bottom right bottom of the panels.}
 \label{fig:europe-vs}
 \centering
 \end{figure}
 
 \subsubsection{Asia}
 
-Asia has a very complicated tectonic settings, containing
-the interaction among Indian, Euroasian, Australia, Pacific and Philippine
-plates. Even though we don't have a significant large number of high
-event-response stations at this region(compared to Europe and North
-America), our inversion is compensated by the large number of temporary
-arrays and earthquakes.
+Asia, like Europe, has a complicated tectonic history, involving
+interactions among the Indian, Eurasian, Australian, Pacific, and Philippine
+plates.
+Map views of GLAD-M15 centered on Asia are plotted in Fig.~\ref{fig:asia-vs},
+together with S362ANI$+$M, S40RTS, and regional model EARA2014~\citep{chen2015multiparameter}.
+EARA2014 is a transversely isotropic model based on adjoint
+tomography, assimilating 1.7~million frequency-dependent traveltime
+measurements from 227 earthquakes recorded by 1,869 seismic stations.
+It has superior data coverage, mainly by incorporating data from the China Array.
 
-Our model at Asian region is plotted on Fig.\ref{fig:asia-vs},
-together with S362ANI$+$M, S40RTS and EARA2014\cite{chen2015multiparameter}.
-EARA2014 is a regional 3D anisotropic tomographic model using adjoint
-methods, comprising 1.7million frequency-dependent traveltime
-measurements from 227 earthquakes recorded by 1869 seismic stations.
-It has superior data coverage, mainly by incorporating the China
-Seismic Array in this area.
-
-The southwestern part of China is featured by the Himalayas mountain,
-which is 
-a shallow expression of the collision between India and Euroasian plate. Our
-models shows a strong high-velocity anomalies near the plate boundary, and this
-anomaly has all the way extending from 100km to 600km depth. With the increase
-of depth, the high-velocity regions get sharper, indicating the narrowing
-root of subduction plate. The high-elevation Tibetan plateau, sitting to
-the north of Himalaya mountains, shows a relatively low velocity
-comparing to its surroundings, including the Himalayas at its south and
-Tianshan Mountain at is North, which is consistent with other global
+The Southwestern part of China is dominated by the Himalayas,
+expressing the collision between India and Eurasia.
+GLAD-M25 exhibits strong high wavespeed anomalies in this area, which extend all the way from 100~km to 600~km, narrowing and sharpening with depth,
+in good agreement with EARA2014.
+The Tibetan plateau shows relatively low wavespeeds
+compared to its surroundings, including the Himalayas to its South and
+the Tianshan Mountains to its North, consistent with the other global
 and regional studies.
 
-The southern part of Asia sees the majority tectonic activity between the Philippine
-, EuroAsian and Australia plate. The Sumatra and Java trench, shown as sharp high-velocity
-anomaly in our models below 200km, nicely follows the boundary between Euroasian
-and Australia plates. This feature stays still very sharp at the 600km and extend
-down to 1000km. We will have more detailed discussion about it in the following sections.
-The Malina and Philippine Trench is also much sharper in our model between 200km and
-600km.
-The eastern part has a series of trenches, including Japan Trench, Izu-Bonin Trench,
-Mariana Trench from North to the South. All those features follows perfectly with
-the plate boundary, as emerging features compared the two global models from 200km
-to 400km depth. At 100km depth, our model is strengthening the low-velocity structures
-in the east of Philippine Plate and the anomaly gradually moved to the west at 200km
-depth. In the north, our models shows low-velocity structures associated
-with the Altay-Sayan and Baikai rift systems.
-
-Other than the boundaries, our models also show much more details at the
-intra-plate tectonic activities. It has good correlation of low-velocity regions with
-the Hainan spot and Changbai Volcanoes. Those low-velocity features is prominent at
-shallow depth, but gradually reduce its magnitude down with the increase of
-depth, indicating that those features might be lithosphere's activity rather
-than deep mantle's.
-The Sichuan basin, a very localized high-velocity structures, is extending below
-250km depth. At 600km, most of the models shows a large regions of high-velocities
-near the Philippine plate, indicating the pounding of ancient subducted plates.
+The southern part of Asia shows major tectonic activity between the
+Philippine, Eurasian, and Australia plates.
+The Sunda trench is visible as a distinct high wavespeed anomaly below 200~km,
+nicely following the plate boundary.
+This feature remains very sharp at 600~km and extends
+down to 1000~km.
+We discuss this subducting slab further in Section~\ref{section:slabs}.
+The Manila and Philippine trenches are also much sharper in our model between 200~km and
+600~km than in the other global models, and comparable to EARA2014.
+The eastern edge of the map features a series of trenches following plate boundaries,
+including Japan, Izu-Bonin, and Mariana.
+These slabs are absent in the other global model,
+but feature more prominently in EARA2014.
+Along the northern edge we see low wavespeeds associated with the
+Altai-Sayan and Baikal rift systems.
+In terms of intra-plate activities,
+at shallow depths we see clear low wavespeed impressions of the Hainan and Changbai volcanoes,
+suggesting a lithospheric rather than deeper mantle origin.
+The Sichuan basin, a very localized high-wavespeed structure, extends below
+250~km depth. At 600~km, most models shows a large region of high wavespeed
+beneath the Philippine plate, indicating ponding of ancient subducted plates.
 
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/asia_vs.pdf}
-  \caption{Map views of $V_s$ variations of Asia at various depths for our model GLAD-M25(first column) and several global(S362ANI$+$M and S40RTS) and regional(EARA2014\citep{chen2015multiparameter}) models.}
+  \caption{Map views of shear wavespeed variations beneath Asia for GLAD-M25~(first column),
+  global models S362ANI$+$M (second column) and S40RTS (third column), and regional model EARA2014~\citep[last column;][]{chen2015multiparameter}.}
 \label{fig:asia-vs}
 \centering
 \end{figure}
@@ -938,12 +918,13 @@ near the Philippine plate, indicating the pounding of ancient subducted plates.
 
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/south_america_vp.pdf}
-  \caption{Map views of $V_p$ variations of South America at various depths for our model GLAD-M25(first column) and several global models, including S362ANI$+$M, LLNL-G3Dv3 and GAP-P4\citep{fukao2013subducted}.}
+  \caption{Map views of compressional wavespeed variations beneath South America for GLAD-M25~(first column) and global models S362ANI$+$M (second column), LLNL-G3Dv3~(third column), and GAP-P4~\citep[last column;][]{fukao2013subducted}.}
 \label{fig:southamerica-vp}
 \centering
 \end{figure}
 
 \subsection{Plumes}
+\label{section:plumes}
 
 In this section, we will visit the plumes systems on the earth.
 
@@ -976,7 +957,8 @@ In this section, we will visit the plumes systems on the earth.
 %    \caption{Vertical cross sections of shear wave velocity perturbations of plumes in the pacific region.}
 %\end{figure}
 
-\subsection{Subductions}
+\subsection{Slabs}
+\label{section:slabs}
 
 In this sections, we will visit some of the well-known subduction zones.
 
@@ -1046,7 +1028,129 @@ The open source spectral-element software package SPECFEM3D\_GLOBE and the seism
 
 \end{acknowledgments}
 
+\appendix
+
+\section{Spherical harmonic model expansion}
+
+{\color{red} Wenjie, to save space, this appendix could also go in the supplementary online material.} 
+
+In this appendix we express model GLAD-M25 in a spherical harmonic basis
+to facilitate easy plotting, analysis, and comparisons with other models.
+The resulting spherical harmonic model should only be used for these purposes, not for numerical simulations, which should always be based on the fully 3D spectral-element mesh.
+
+To accomplish the transformation,
+we first need to transform our 3D mesh --- which includes ellipticity, topography \& bathymetry, and undulations on internal boundaries --- into a spherical volume.
+After these adjustments, we obtain a spectral element mesh for a perfect sphere,
+that is, the sort of mesh we use for spherically symmetric earth models, such as PREM~\citep{PREM}.
+
+In the spherical mesh, the model may be expressed in the form
+\begin{equation}
+    m(\mathbf{x})=\sum_{\mathrm{elem}}\sum_{\alpha,\beta,\gamma}m^{\alpha\beta\gamma}\,h_{\alpha}(\xi)\,h_{\beta}(\eta)\,h_{\gamma}(\zeta)\,
+    \quad ,
+\end{equation}
+where~$h_\alpha$ denotes a Lagrange polynomial, and where we have used the invertible mapping
+\begin{equation}
+    \mathbf{x}=\mathbf{x}(\xi,\eta,\zeta)
+    \label{eq:map}
+\end{equation}
+between spatial points~$\mathbf{x}=\{x,y,z\}$ and Gauss-Lobatto-Legendre (GLL) points in the reference element~$\{\xi,\eta,\zeta\}$~\citep{KoTr99}.
+
+Our goal is to expand our spectral-element model in a spherical harmonic basis, i.e.,
+\begin{equation}
+    m(\mathbf{x})=\sum_{n=0}^N\sum_{\ell = 0}^L\sum_{m=-\ell}^\ell {}_nC_{\ell m}\,R_n(r)\,Y_{\ell m}(\theta,\phi)
+    \quad ,
+    \label{eq:m}
+\end{equation}
+where~$r$ denotes the radius, $\theta$ colatitude, and~$\phi$ longitude.
+We choose a radial basis of the form~$R_n(r)$\,, $n=0,\ldots,N$\,,
+e.g., layers or B-splines.
+These radial basis functions need to be chosen sufficiently dense to mimic the density of the radial spectral element mesh.
+The radial basis may or may not be orthogonal,
+i.e.,
+\begin{equation}
+    \int_b^a R_{n'}(r)\,R_{n}(r)\,r^2\mathrm{d}r = A_{n'n}
+    \quad ,
+    \label{eq:R}
+\end{equation}
+where~$b$ denotes the radius of the CMB and~$a$ the free surface.
+The matrix elements~$A_{n'n}$ define a positive definite matrix which is invertible.
+As lateral basis functions we use fully normalized spherical harmonics~$Y_{\ell m}(\theta,\phi)$\,, $\ell=0,\ldots,L$ and $m=\mbox{}-\ell,\ldots,\ell$\,, i.e.,~\citep{DT98}
+\begin{equation}
+    \int_0^{2\pi}\int_0^\pi Y^*_{\ell'm'}(\theta,\phi)\,Y_{\ell m}(\theta,\phi)\,\sin\theta\,\mathrm{d}\theta\,\mathrm{d}\phi = \delta_{\ell' \ell}\,\delta_{m'm}
+    \quad ,
+    \label{eq:Y}
+\end{equation}
+where an asterisk denotes complex conjugation.
+The maximum degree~$L$ needs to be chosen to resolve the spectral-element mesh laterally.
+
+To obtain the expansion coefficients~${}_nC_{\ell m}$\,, we multiply Eqn.~(\ref{eq:m}) by
+$R_{n'}(r)\,Y^*_{\ell' m'}(\theta,\phi)$ and integrate over the volume of the mantle and crust,~$V$\,, using Eqns.~(\ref{eq:R} and~(\ref{eq:Y}):
+\begin{equation}
+    \int_V m(\mathbf{x})\,R_{n'}(r)\,Y^*_{\ell' m'}(\theta,\phi)\,\mathrm{d}^3\mathrm{x}=\sum_{n=0}^N {}_nC_{\ell' m'}\,A_{n'n}
+    \quad ,
+\end{equation}
+We evaluate the integral on the left using GLL quadrature~\citep{KoTr99}:
+\begin{equation}
+    \sum_{\mathrm{elem}}\sum_{\alpha,\beta,\gamma}\omega_\alpha\,\omega_\beta\,\omega_\gamma\,m^{\alpha\beta\gamma}\,J^{\alpha\beta\gamma}\,R_{n'}^{\alpha\beta\gamma}\,Y_{\ell'm'}^{*\,\alpha\beta\gamma}
+    =\sum_{n=0}^N {}_nC_{\ell' m'}\,A_{n'n}
+    \quad .
+\end{equation}
+Here~$\omega_\alpha$ denotes a GLL quadrature weight,
+$J_{\alpha\beta\gamma}$ the Jacobian of the mapping~(\ref{eq:map}) evaluated on the GLL points,
+and $R_{n'}^{\alpha\beta\gamma}$ and $Y_{\ell'm'}^{*\,\alpha\beta\gamma}$ the values of the radial and spherical harmonic basis functions at a GLL point.
+
+Finally, the desired model coefficients may be obtained ---one combination of $n$\,, $\ell$\,, and $m$ at a time--- via
+\begin{equation}
+    {}_nC_{\ell m}=\sum_{n'}A^{-1}_{nn'}\sum_{\mathrm{elem}}\sum_{\alpha,\beta,\gamma}\omega_\alpha\,\omega_\beta\,\omega_\gamma\,m^{\alpha\beta\gamma}\,J^{\alpha\beta\gamma}\,R_{n'}^{\alpha\beta\gamma}\,Y_{\ell m}^{*\,\alpha\beta\gamma}
+    \quad ,
+    \label{eq:Cnlm}
+\end{equation}
+where~$A^{-1}$ denotes the inverse of the~$N\times N$ matrix~$A$.
+Expressions of the form~(\ref{eq:Cnlm}) are commonplace in spectral-element simulations,
+and thus easily calculated.
+The power per degree~$\ell$ may be calculated via~\citep[][Eqn.~B.95]{DT98}
+\begin{equation}
+    \sigma_\ell^2=\frac{1}{2\ell+1}\,\sum_{n=0}^N\sum_{m=-\ell}^\ell|{}_nC_{\ell m}|^2
+    \quad .
+\end{equation}
+
+Instead of the complex spherical harmonic model expansion~(\ref{eq:m}),
+we may wish to use a real spherical harmonic expansion of the form~\citep[][Section~B.8, Eqn.~B.99]{DT98}
+\begin{equation}
+\begin{split}
+    m(\mathbf{x}) \ = & \ \sum_{n=0}^N\sum_{\ell = 0}^L \left[ {}_na_{\ell 0}\,R_n(r)\,X_{\ell 0}(\theta)
+   +\sqrt{2}\sum_{m=1}^\ell R_n(r)\,({}_na_{\ell m}\,\cos m\phi+{}_nb_{\ell m}\,\sin m\phi)\,X_{\ell m}(\theta)\right]
+    \quad ,
+\end{split}
+    \label{eq:mreal}
+\end{equation}
+where~\citep[][Eqn.~B.30]{DT98}
+\begin{equation}
+    Y_{\ell m}(\theta,\phi)=X_{\ell m}(\theta)\exp(i m\phi)
+    \quad ,
+\end{equation}
+and where
+\begin{equation}
+    {}_na_{\ell 0}=\sum_{n'}A^{-1}_{nn'}\sum_{\mathrm{elem}}\sum_{\alpha,\beta,\gamma}\omega_\alpha\,\omega_\beta\,\omega_\gamma\,m^{\alpha\beta\gamma}\,J^{\alpha\beta\gamma}\,R_{n'}^{\alpha\beta\gamma}\,X_{\ell m}^{\alpha\beta\gamma}
+    \quad ,
+\end{equation}
+and for~$1\le m\le \ell$
+\begin{equation}
+    {}_na_{\ell m}=\sqrt{2}\,\sum_{n'}A^{-1}_{nn'}\sum_{\mathrm{elem}}\sum_{\alpha,\beta,\gamma}\omega_\alpha\,\omega_\beta\,\omega_\gamma\,m^{\alpha\beta\gamma}\,J^{\alpha\beta\gamma}\,R_{n'}^{\alpha\beta\gamma}\,X_{\ell m}^{\alpha\beta\gamma}\,(\cos m \phi)^{\alpha\beta\gamma}
+    \quad ,
+\end{equation}
+\begin{equation}
+    {}_nb_{\ell m}=\sqrt{2}\,\sum_{n'}A^{-1}_{nn'}\sum_{\mathrm{elem}}\sum_{\alpha,\beta,\gamma}\omega_\alpha\,\omega_\beta\,\omega_\gamma\,m^{\alpha\beta\gamma}\,J^{\alpha\beta\gamma}\,R_{n'}^{\alpha\beta\gamma}\,X_{\ell m}^{\alpha\beta\gamma}\,(\sin m \phi)^{\alpha\beta\gamma}
+    \quad .
+\end{equation}
+The power per degree~$\ell$ may then be calculated via~\citep[][Eqn.~B.104]{DT98}
+\begin{equation}
+    \sigma_\ell^2=\frac{1}{2\ell+1}\,\sum_{n=0}^N\left[{}_na_{\ell 0}^2+\sum_{m=1}^\ell({}_na_{\ell m}^2+{}_nb_{\ell m}^2)\right]
+    \quad .
+\end{equation}
+
 \newpage
+
 \bibliographystyle{gji}
 \bibliography{ref.bib}
 

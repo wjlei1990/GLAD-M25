@@ -713,14 +713,6 @@ We conclude by highlighting various slabs and plumes in the model.
 
 \subsection{Global structure}
 
-\begin{figure}
-  \centering
-  \includegraphics[width=0.9\textwidth]{figures/1d_profile.pdf}
-  \caption{1D velocity profile of GLAD-M25, STW105 and PREM models.}
-  \label{fig:global-vs}
-\end{figure}
-
-
 We first examine model GLAD-M25 in the context of existing global tomographic models.
 In Fig.~\ref{fig:global-vs} we compare global maps of the isotropic part of our shear wavespeed model with model S362ANI$+$M~\citep{moulik2014anisotropic},
 which is an updated version of the starting model for the GLAD-M15 inversion,
@@ -1099,6 +1091,57 @@ The open source spectral-element software package SPECFEM3D\_GLOBE and the seism
 
 \appendix
 
+\section{Spherically symmetric average model}
+
+In this appendix we determine the spherically symmetric (radial) average of model GLAD-M25.
+To accomplish this,
+we first need to transform the 3D spectral-element mesh --- which includes ellipticity, topography \& bathymetry, and undulations on internal boundaries --- into a spherical volume.
+After these adjustments, we obtain a spectral-element mesh for a perfect cubed sphere~\citep{KoTr02a}.
+
+In the spherical mesh, the model may be expressed in the form
+\begin{equation}
+    m(\mathbf{x})=\sum_{\mathrm{elem}}\sum_{\alpha,\beta,\gamma}m^{\alpha\beta\gamma}\,h_{\alpha}(\xi)\,h_{\beta}(\eta)\,h_{\gamma}(\zeta)\,
+    \quad ,
+\end{equation}
+where~$h_\alpha$ denotes a Lagrange polynomial, and where we have used the invertible mapping
+\begin{equation}
+    \mathbf{x}=\mathbf{x}(\xi,\eta,\zeta)
+\end{equation}
+between spatial points~$\mathbf{x}=\{x,y,z\}$ and Gauss-Lobatto-Legendre (GLL) points in the reference element~$\{\xi,\eta,\zeta\}$~\citep{KoTr99}.
+
+The spherically symmetric part of the model is defined as
+\begin{equation}
+    \overline{m}(r)=\frac{1}{4\pi}\,\int_\Omega m(\mathbf{x})\,\mathrm{d} \Omega
+    \quad,
+\end{equation}
+where~$r$ denotes the radius and~$\Omega$ the unit sphere.
+
+Using 2D GLL quadrature~\citep{KoTr99} in the unit sphere,
+the radial average may be determined numerically via GLL quadrature:
+\begin{equation}
+    \overline{m}(r)=\frac{1}{4\pi\,r^2}\,\sum_{\alpha,\beta}\omega_\alpha\omega_\beta\,m^{\alpha\beta}(r)\,J^{\alpha\beta}(r)
+    \quad.
+    \label{eq:radial_average}
+\end{equation}
+Here~$\alpha$ and~$\beta$ denote GLL points in the sphere with radius~$r$\,,
+$\omega_\alpha$ denotes a GLL quadrature weight, and $J^{\alpha\beta}(r)$ is the 2D Jacobian of the mapping to the sphere.
+It is important to carry out the summations in~(\ref{eq:radial_average}) at the elemental level to ensure that first-order discontinuities are honored in the process.
+
+Figure~\ref{fig:global-average} shows the resulting radial averages of the isotropic shear and compressional wavespeeds for model~GLAD-M25
+compared to 1D starting model~STW105~\citep{kustowski2008anisotropic} and PREM~\citep{PREM}.
+The radial average of~GLAD-M25 remains very close to the radial starting model~STW105.
+The main difference between these two models and~PREM
+is the absence of the 220~km discontinuity and a lower~$V_p/V_s$ ratio in the top 200~km.
+\begin{figure}
+  \centering
+  \includegraphics[width=0.9\textwidth]{figures/1d_profile.pdf}
+  \caption{1D radial shear and compressional wavespeed profiles for GLAD-M25, STW105, and PREM.
+  The reference frequency for physical dispersion is~{\color{red} ??}~Hz.}
+  \label{fig:global-average}
+\end{figure}
+
+
+
 \section{Spherical harmonic model expansion}
 
 {\color{red} Wenjie, to save space, this appendix could also go in the supplementary online material.} 
@@ -1108,9 +1151,9 @@ to facilitate easy plotting, analysis, and comparisons with other models.
 The resulting spherical harmonic model should only be used for these purposes, not for numerical simulations, which should always be based on the fully 3D spectral-element mesh.
 
 To accomplish the transformation,
-we first need to transform our 3D mesh --- which includes ellipticity, topography \& bathymetry, and undulations on internal boundaries --- into a spherical volume.
+we first need to transform the 3D mesh --- which includes ellipticity, topography \& bathymetry, and undulations on internal boundaries --- into a spherical volume.
 After these adjustments, we obtain a spectral element mesh for a perfect sphere,
-that is, the sort of mesh we use for spherically symmetric earth models, such as PREM~\citep{PREM}.
+that is, the sort of mesh used for spherically symmetric earth models, such as PREM~\citep{PREM}.
 
 In the spherical mesh, the model may be expressed in the form
 \begin{equation}

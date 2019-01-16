@@ -1335,7 +1335,7 @@ The maximum degree~$L$ needs to be chosen to resolve the spectral-element mesh l
 To obtain the expansion coefficients~${}_nC_{\ell m}$\,, we multiply Eqn.~(\ref{eq:m}) by
 $R_{n'}(r)\,Y^*_{\ell' m'}(\theta,\phi)$ and integrate over the volume of the mantle and crust,~$V$\,, using Eqns.~(\ref{eq:R} and~(\ref{eq:Y}):
 \begin{equation}
-    \int_V m(\mathbf{x})\,R_{n'}(r)\,Y^*_{\ell' m'}(\theta,\phi)\,\mathrm{d}^3\mathrm{x}=\sum_{n=0}^N {}_nC_{\ell' m'}\,A_{n'n}
+    \int_V m(\mathbf{x})\,R_{n'}(r)\,Y^*_{\ell' m'}(\theta,\phi)\,\mathrm{d}^3\mathbf{x}=\sum_{n=0}^N {}_nC_{\ell' m'}\,A_{n'n}
     \quad ,
 \end{equation}
 We evaluate the integral on the left using GLL quadrature~\citep{KoTr99}:
@@ -1357,9 +1357,10 @@ Finally, the desired model coefficients may be obtained ---one combination of $n
 where~$A^{-1}$ denotes the inverse of the~$N\times N$ matrix~$A$.
 Expressions of the form~(\ref{eq:Cnlm}) are commonplace in spectral-element simulations,
 and thus easily calculated.
-The power per degree~$\ell$ may be calculated via~\citep[][Eqn.~B.95]{DT98}
+The normalized power per degree~$\ell$ may be calculated via
 \begin{equation}
-    \sigma_\ell^2=\frac{1}{2\ell+1}\,\sum_{n=0}^N\sum_{m=-\ell}^\ell|{}_nC_{\ell m}|^2
+    \sigma_\ell^2=\frac{1}{2\ell+1}\,
+    \sum_{n' = 0}^N\sum_{n = 0}^N\sum_{m = -\ell}^\ell{}_{n'}C^*_{\ell m}\,A_{n'n}\,{}_{n}C_{\ell m}
     \quad .
 \end{equation}
 
@@ -1392,9 +1393,28 @@ and for~$1\le m\le \ell$
     {}_nb_{\ell m}=\sqrt{2}\,\sum_{n'}A^{-1}_{nn'}\sum_{\mathrm{elem}}\sum_{\alpha,\beta,\gamma}\omega_\alpha\,\omega_\beta\,\omega_\gamma\,m^{\alpha\beta\gamma}\,J^{\alpha\beta\gamma}\,R_{n'}^{\alpha\beta\gamma}\,X_{\ell m}^{\alpha\beta\gamma}\,(\sin m \phi)^{\alpha\beta\gamma}
     \quad .
 \end{equation}
-The power per degree~$\ell$ may then be calculated via~\citep[][Eqn.~B.104]{DT98}
+The normalized power per degree~$\ell$ may then be calculated via
 \begin{equation}
-    \sigma_\ell^2=\frac{1}{2\ell+1}\,\sum_{n=0}^N\left[{}_na_{\ell 0}^2+\sum_{m=1}^\ell({}_na_{\ell m}^2+{}_nb_{\ell m}^2)\right]
+    \sigma_\ell^2=\frac{1}{2\ell+1}\,\sum_{n'=0}^N\,\sum_{n=0}^N\,A_{n'n}\,\left[{}_{n'}a_{\ell 0}\,{}_{n}a_{\ell 0}+\sum_{m=1}^\ell({}_{n'}a_{\ell m}\,{}_na_{\ell m}+{}_{n'}b_{\ell m}\,{}_nb_{\ell m})\right]
+    \quad .
+\end{equation}
+
+To assess the accuracy of the expansion,
+we calculate the model norm in the GLL basis,
+\begin{equation}
+    ||m_\text{\,GLL}||^2=\int_V m_\text{\,GLL}^2(\mathbf{x})\,\mathrm{d}^3\mathbf{x}=
+    \sum_{\mathrm{elem}}\sum_{\alpha,\beta,\gamma}\omega_\alpha\,\omega_\beta\,\omega_\gamma\,(m^{\alpha\beta\gamma})^2\,J^{\alpha\beta\gamma}
+    \quad ,
+\end{equation}
+and compare it to the model norm in the spherical harmonic basis,
+\begin{equation}
+    ||m_\text{\,SH}||^2=\int_V m_\text{\,SH}^2(\mathbf{x})\,\mathrm{d}^3\mathbf{x}=
+    \sum_{\ell = 0}^L(2\ell+1)\,\sigma_\ell^2
+    \quad ,
+\end{equation}
+by calculating the error
+\begin{equation}
+    \epsilon = \log\,\frac{||m_\text{\,SH}||^2}{||m_\text{\,GLL}||^2}
     \quad .
 \end{equation}
 

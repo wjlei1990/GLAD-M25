@@ -37,9 +37,12 @@
 
 \section{Introduction}
 
-With the development of high performance computing and numerical methods, it is now possible to using adjoint method to image the interior the globe using thousands of earthquakes.
+With the development of high performance computing and numerical methods,
+it is now possible to using adjoint method to image the interior the globe
+using thousands of earthquakes.
 
-There are few agreements about the earth model and yet many unknown to be resolved. There are quite a lot of global models exits however there is no such con-sense.
+There are few agreements about the earth model and yet many unknown to be
+resolved. There are quite a lot of global models exits however there is no such con-sense.
 
 The GLAD-M25 is the first earth model that incorporate the P and S wave speed using full waveform inversion. Also, people are using specific set of phases in their inversion. For P models, people are using P phase and other body wave phases and for S models, people are using mostly S wave phases and surface waves to constrain the structure. Those two kinds of models usually reveals very different parts of the earth. For example, for P wave, people used it the image the subduction slabs and it is not very good at image lower mantle structures, such as plumes and lower mantle convection. For S waves, it is the verse verso.
 
@@ -1269,14 +1272,40 @@ compared to 1D starting model~STW105~\citep{kustowski2008anisotropic} and PREM~\
 The radial average of~GLAD-M25 remains very close to the radial starting model~STW105.
 The main difference between these two models and~PREM
 is the absence of the 220~km discontinuity and a lower~$V_p/V_s$ ratio in the top 200~km.
+
 \begin{figure}
   \centering
-  \includegraphics[width=0.9\textwidth]{figures/1d_profile.pdf}
+  \includegraphics[width=0.8\textwidth]{figures/1d_profile.pdf}
   \caption{1D radial shear and compressional wavespeed profiles for GLAD-M25, STW105, and PREM.
   The reference frequency for physical dispersion is~{\color{red} ??}~Hz.}
   \label{fig:global-average}
 \end{figure}
 
+\begin{figure}
+  \centering
+  \includegraphics[width=0.9\textwidth]{figures/1d_profile_ra.pdf}
+  \caption{1D radial-anisotropic shear and compressional wavespeed profiles for GLAD-M25 and STW105. The reference frequency for physical dispersion is~{\color{red} ??}~Hz.}
+  \label{fig:global-ra-average}
+\end{figure}
+
+\section{Window distributions}
+
+Fig.\ref{fig:window_density} shows the window density map on the
+vertical component for 17-40 sec period band. In this category,
+we picked in total of 4,363,719 time windows. The color denotes the
+density of windows. X axis is the time and y axis is the epicenter
+distance. Windows are discretized into 1 degree in epicenter distance
+domain and 1 second in time domain.
+
+The max density value of windows is 9,931, located at 134-135 epicenter
+distance bin and 1375-1376 time bin.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.9\textwidth]{figures/window_colorbar_linear_Z.pdf}
+  \caption{The window density map.}
+  \label{fig:window_density}
+\end{figure}
 
 
 \section{Spherical harmonic model expansion}

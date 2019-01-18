@@ -58,7 +58,7 @@ test3 \citet{ekstrom2012global}
 \section{Starting model GLAD-M15}
 
 As a continuation of our previous work~\citep{bozdaug2016global},
-we used ``first generation'' model GLAD-M15 as our
+we used ``first-generation'' model GLAD-M15 as our
 starting model.
 GLAD-M15 is a 3D transversely isotropic earth model, which combined
 3D mantle model S362ANI~\citep{kustowski2008anisotropic}
@@ -208,7 +208,7 @@ of our database and greatly improve coverage in certain regions.
 
 \begin{figure}
   \includegraphics[width=0.8\textwidth]{figures/station_map.pdf}
-  \caption{Distribution of 11,800 seismographic stations used in this study. Colors denote the number of events for which a given station contributes waveforms to the structural inversion. Stations with a number of event responses $<400$ are plotted in smaller size; these are usually temporary arrays deployed over a short period of time, frequently ocean bottom seismometers. The maximum number of event responses comes from ANMO, in Albuquerque, New Mexico, which contributed to 1,442 out of 1,480 earthquakes in the data set.}
+  \caption{Distribution of 11,800 seismographic stations used in this study. Colors denote the number of events for which a given station contributes waveforms to the structural inversion. Stations with a number of event responses $<400$ are plotted in smaller size; these are usually temporary arrays deployed over a short period of time, frequently ocean bottom seismometers. The maximum number of event responses comes from ANMO, in Albuquerque, New Mexico, which contributed to 1,442 out of 1,480 earthquakes in the dataset.}
   \label{fig:stations}
   \centering
 \end{figure}
@@ -233,9 +233,9 @@ In this context, there are four key issues ASDF resolves.
 \end{itemize}
 
 ASDF serves as a self-contained-and-explained data container while taking
-full advantages of parallel computing. In our workflow,
+full advantage of parallel computing. In our workflow,
 one ASDF file contains all the information needed for data processing,
-including the seismic traces, event information files, and station response files.
+including the seismic traces, event information files (QuakeML), and station response files (StationXML).
 The related APIs are carefully designed for easy data extraction and parallel implementation.
 
 \section{Misfit function}
@@ -308,7 +308,7 @@ and
 \label{eq:receiver_weights}
 \end{equation}
 respectively.
-Here~$N$ and~$N_{sc}$ are a normalization factors,
+Here~$N$ and~$N_{sc}$ are normalization factors,
 and~$\Delta_{ss'}$ and~$\Delta_{rr'}$ denote angular distances between source and receiver pairs~$\{s,s'\}$ and~$\{r,r'\}$\,.
 The reference angular distances~$\Delta$ and~$\Delta_{sc}$ need to be chosen based on the condition 
 numbers of the diagonal weighting matrices defined by Eqns.~(\ref{eq:source_weights}) and~(\ref{eq:receiver_weights}).
@@ -421,6 +421,21 @@ includes the following phases.
   \item Construction of the final, properly weighted, adjoint sources.
 \end{enumerate}
 
+Fig.~\ref{fig:window_density} shows a time-distance plot
+for vertical component 17--40~s body waves in which the Pyflex window count is used to identify parts of seismograms being assimilated.
+A total of 4,363,719 time windows were picked in this category.
+The figure nicely highlights all the well known body traveltime branches.
+The maximum window count is 9,931 in the 134--135$^\circ$ distance and 1375--1376~s time bin.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.9\textwidth]{figures/window_colorbar_linear_Z.pdf}
+  \caption{Time-distance plot for vertical component 17--40~s body waves showing a measurement window density map.
+  A total of 4,363,719 time windows were discretized into 1~degree epicentral distance and 1~s time bins.
+  }
+  \label{fig:window_density}
+\end{figure}
+
 \subsection{Adjoint Simulations}
 
 Collectively,
@@ -482,22 +497,19 @@ in Fig.~\ref{fig:misfit}.
 \begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth]{figures/misfit.pdf}
-  \caption{Evolution of phase misfits from GLAD-M15 to GLAD-M25.
-  Each color denotes the different stages of inversions, between
-  which we make changes to the inversion by either tuning the
-  weighting strategies or adding more data.
-  (a) Evolution of the total phase misfit. (b) - (j) Misfit in
-  each period band and component. (e) - (g) From GLAD-M18,
-  we future split the 40-100 sec period band into two
-  measurement categories: body(red diamond) waves and surface waves
-  (red square).
-  {\color{red} Wenjie, why do the graphs overlap at iteration 22, but not at iteration 18? Shouldn't 22 look like 18, i.e., no overlapping points?    \textbf{To Jeroen}: overlap means I calculate the misfit twice using the same mode. For example, in iteration M22, I caculated the misfit using the 1040 earthquakes and 1480 earthquakes, respectively. In M18, I haven't done so. If you want, I can calculate the misfit values and adding the overlap misfit point.}
-  {\color{blue}Wenjie: OK, then let's be consistent in what we do. I would prefer no overlap.}
+  \caption{Evolution of the misfit function from GLAD-M15 to GLAD-M25.
+  Each color denotes different stages of the inversion, as discussed in Sections~\ref{sec:I}--\ref{sec:III}.
+  (a) Evolution of the total misfit. (b)--(j) Misfit in
+  each period band (rows) on three components (columns). (e)--(g) From GLAD-M18,
+  we  split the 40--100~s period band into two
+  measurement categories: body waves (red diamonds) and surface waves
+  (red squares).
   }
   \label{fig:misfit}
 \end{figure}
 
-\subsubsection{Stage~I: Iterations 15--17}
+\subsection{Stage~I: Iterations 15--17}
+\label{sec:I}
 
 Starting model GLAD-M15 was constructed using a database of 256 earthquakes.
 For iterations 15--17 of the inversion we used an expanded database of 520 events.
@@ -508,11 +520,11 @@ For these iterations we used three period bands, namely,
 and we used a nonlinear conjugate
 gradient method to update the model.
 
-\subsubsection{Stage~II: Iterations 18--21}
+\subsection{Stage~II: Iterations 18--21}
 
-We see an abrupt change in the value of the misfit function at iteration 18
+We see an abrupt change in the value of the misfit function at iteration~18
 in Fig.~\ref{fig:misfit},
-reflecting the addition of 520 events to the inversion database,
+reflecting the addition of 520~events to the inversion database,
 and a change in the weighting strategy for 40--100~s surface waves.
 For iterations 18--21 we split the 40--100~s period band into two, separating the
 body and surface waves (Figs.~\ref{fig:misfit}e--g).
@@ -523,8 +535,7 @@ we reduced their weight on all three components for iterations 18--21,
 as indicated by the lower red curves in Figs.~\ref{fig:misfit}e--g.
 
 The misfit reduction for 17--40~s body waves (Figs.~\ref{fig:misfit}b--d) tapers off by
-iteration 21, prompting us to add more earthquakes and change the weighting strategy
-again by reintroducing the 17--40~s surface waves.
+iteration~21, prompting us to add more earthquakes and change the weighting strategy again by reintroducing 17--40~s surface waves.
 
 % Table~\ref{table:measurement_category} shows the four passbands we used in Stage~II, tabulating misfit reductions in all four passbands on three components,
 % that is, in twelve measurement categories.
@@ -546,9 +557,11 @@ again by reintroducing the 17--40~s surface waves.
 %   \label{table:measurement_category}
 % \end{table}
 
-\subsubsection{Stage~III: Iterations 22--25}
+\subsection{Stage~III: Iterations 22--25}
+\label{sec:III}
+
 At iteration~22 we added another 440 earthquakes to the database,
-bringing the total to 1,480 event,
+bringing the total to 1,480 events,
 and we changed the 40--100~s surface wave weights back to their
 setting in Stage~I. During this stage we switched from a nonlinear
 conjugate gradient optimization algorithm to an L-BFGS quasi-Newton method.
@@ -564,7 +577,7 @@ measurements increases as the model improves,
 and the number of earthquakes increases at iterations~18 and~22.
 
 In this section we calculate specific changes in misfit using all 1,480
-earthquakes and an identical set of weightings and windows for three models,
+earthquakes and an identical set of weights and windows for three models,
 namely, GLAD-M25, GLAD-M15, and S362ANI combined with CRUST2.0.
 Table~\ref{table:misfit_reduction_M15_M25} summarizes the changes in fit in
 the twelve measurement categories between the new model, GLAD-M25, and its
@@ -763,7 +776,7 @@ and we note a sharpening of the distributions centered around zero.
 
 \section{Model GLAD-M25}
 
-In this section we discuss model GLAD-M25 in some detail.
+In this section we discuss model GLAD-M25 in detail.
 We begin with a global overview of the model before concentrating on
 specific geographical regions.
 We conclude by highlighting various slabs and plumes in the model.
@@ -775,10 +788,9 @@ In Fig.~\ref{fig:global-vs} we compare global maps of the isotropic part of our
 shear wavespeed model with model S362ANI$+$M~\citep{moulik2014anisotropic},
 which is an updated version of the starting model for the GLAD-M15 inversion,
 and model S40RTS~\citep{ritsema2011s40rts}.
-The range of perturbations in shear wavespeed varies from map to map,
-as indicated in the top left of each panel. Overall, these models are in good agreement
+Overall, these models are in good agreement
 at the longest wavelengths, especially Glad-M25 and S362ANI$+$M.
-The perturbations in GLAD-M15 tend to be larger than in the other models,
+The perturbations in GLAD-M25 tend to be larger than in the other models,
 consistent with observations by~\cite{french2014whole},
 whose model is also based on a form of waveform inversion.
 
@@ -801,7 +813,7 @@ whose model is also based on a form of waveform inversion.
 
 %\begin{figure}
 %\includegraphics[width=0.9\textwidth]{figures/depth_slice/globe_vp_S362ANI-LLNL.pdf}
-%  \caption{Map views of global $V_p$ variations at various depths for our model GLAD-M25(left column), S362ANI$+$M(middle column) and LLNL-G3Dv3(right column)\citep{simmons2012llnl}. For LLNL-G3Dv3, the depths is labeled on the right bottom based on its own mesh spacing. Other plotting conventions are used similar as in Figure \ref{fig:global-vs}.}
+%  \caption{Map views of global $V_\textrm{P}$ variations at various depths for our model GLAD-M25(left column), S362ANI$+$M(middle column) and LLNL-G3Dv3(right column)\citep{simmons2012llnl}. For LLNL-G3Dv3, the depths is labeled on the right bottom based on its own mesh spacing. Other plotting conventions are used similar as in Figure \ref{fig:global-vs}.}
 %\label{fig:global-vp}
 %\centering
 %\end{figure
@@ -811,7 +823,6 @@ compressional waves simultaneously. In Fig.~\ref{fig:global-vs} we
 compare global maps of our compressional wavespeed model with P models
 LLNL-G3Dv3~\citep{simmons2012llnl} and GAP-P4~\citep{fukao2013subducted}.
 At a depth of 100~km,
-
 GLAD-M25 shows prominent mid-oceanic ridges, cooling of the Pacific lithosphere,
 and the roots of numerous continental cratons. In the upper mantle, LLNL-G3Dv3
 exhibits the largest lateral variations,
@@ -864,7 +875,7 @@ margin to the East. On both sides the lithosphere has been deformed by
 low wavespeed structures, thus forming sharp tectonic boundaries.
 
 At a depth of 100~km, we observe that the edges of the craton are sharper in
-GLAD-M15 than in the other two global models,
+GLAD-M25 than in the other two global models,
 and quite similar in shape and sharpness to the two regional models.
 We can clearly see impressions of the Snake River Plain (with Yellowstone)
 and the Raton hotspot, which also have distinct slow expressions at depths of 200~km.
@@ -933,7 +944,7 @@ We see slab ponding in the transition zone beneath the western Mediterranean
 associated with slab roll-back of the Appennines-Maghrebides subduction zone
 ~\citep{Giordano2017Magmatic}.
 At shallower depths, we see low wavespeeds along its western border,
-which are interpreted as back-arc extension associated with the roll-back.
+which are interpreted as back-arc extension associated with  roll-back.
 Compared to S362ANI$+$M and S40RTS,
 our model shows much sharper features for these tectonic structures.
 
@@ -942,7 +953,7 @@ Dinarides Mountains, separating the Adria plate from the Pannonian Basin,
 indicating subduction of the Adria plate beneath the Eurasian plate.
 This anomaly gets sharper at 600~km depth.
 Its southern part interacts with the Hellenic slab, which penetrates the mantle
-transition zone and extends below 1,000~km in our model.
+transition zone and extends below 1000km in our model.
 We discuss the Hellenic Arc further in Section~\ref{section:slabs}.
 The Pannonian Basin is characterized by a low wavespeed
 anomaly at depths from 100~km to 250~km.
@@ -971,10 +982,10 @@ The Azores represent a much shallower hotspot, with a maximum depth of about 250
 
 \subsubsection{Asia}
 
-Asia, like Europe, has a complicated tectonic history, involving
+Asia, like Europe, has a complex tectonic history, involving
 interactions among the Indian, Eurasian, Australian, Pacific, and Philippine
 plates.
-Map views of GLAD-M15 centered on Asia are plotted in Fig.~\ref{fig:asia-vs},
+Map views of GLAD-M25 centered on Asia are plotted in Fig.~\ref{fig:asia-vs},
 together with S362ANI$+$M, S40RTS, and regional model EARA2014~\citep{chen2015multiparameter}.
 EARA2014 is a transversely isotropic model based on adjoint
 tomography, assimilating 1.7~million frequency-dependent traveltime
@@ -1025,79 +1036,73 @@ beneath the Philippine plate, indicating ponding of ancient subducted plates.
 
 \begin{figure}
   \includegraphics[width=0.9\textwidth]{figures/depth_slice/south_america_vp.pdf}
-  \caption{Map views of compressional wavespeed variations beneath South America for GLAD-M25~(first column) and global models S362ANI$+$M, LLNL-G3Dv3~\citep{}, and GAP-P4~\citep{fukao2013subducted}.}
+  \caption{Map views of compressional wavespeed variations beneath South America for GLAD-M25~(first column) and global models S362ANI$+$M~\citep{moulik2014anisotropic} (second column), LLNL-G3Dv3~\citep{simmons2012llnl} (third column), and GAP-P4~\citep{fukao2013subducted} (fourth column).}
   \label{fig:southamerica-vp}
   \centering
 \end{figure}
 
-Fig.\ref{fig:southamerica-vp} shows the $V_p$ velocity in our model, together with 3
-global models, S362ANI$+$M, LLNL-G3Dv3\citep{}, GAP-P4\citep{fukao2013subducted},
-while the latter two are global $V_p$ models.
+Fig.~\ref{fig:southamerica-vp} shows compressional wavespeed anomalies in model GLAD-M25 in comparison with three
+global models, namely, S362ANI$+$M~\citep{moulik2014anisotropic}, LLNL-G3Dv3~\citep{simmons2012llnl}, and GAP-P4~\citep{fukao2013subducted};
+the latter two are $V_\textrm{P}$ models.
 
-At 100km depth, the northern part of South America is covered by large area
-of lithosphere craton, showing fast wave anomaly except GAP-P4. The fast anomaly
-stays strong in LLNL-G3Dv3 while for GLAD-M25
-and S362ANI$+$M it disappear at such depth.
-At 300km, we are see a sharpened fast anomaly in the south subduction area
-in GLAD-M25 compared to S372ANI+M. However, the shape and strength are very close
-between GLAD-M25 and LLNL-G3Dv3 models. Moving to even larger depth, the features of
-subductions becomes divergent between the north Peruvian slab and south Chilean slab.
-At 600km, we observed a large chunk of fast anomaly in the Chilean slab,
-indicating the slab is trapped and stagnant in the mantle transition zone. However,
-the Peruvian slabs has penetrated the mantle transition zone and extend till 1000,
-reaching the uppermost part of lower mantle, which is consistent with GAP-P4
+At 150~km depth, the northern half of South America is covered by a large lithospheric craton, exhibiting fast anomalies in all models except GAP-P4.
+The Galapagos,
+San Felix, and Juan Fernandez hotspots are associated with distinct low wavespeed anomalies in GLAD-M25,
+but not in the other models.
+At 300~km depth, we see sharpened subduction of the Nazca plate
+in GLAD-M25 compared to S372ANI+M, similar in shape to  model LLNL-G3Dv3.
+Moving to greater depths,
+we see distinct Peru and Chile slabs in GLAD-M25,
+with the Chile slab ponding in the transition zone
+and the Peru slab penetrating into the lower mantle and still clearly visible at 1000km depth.
+These differences in behavior are consistent with GAP-P4
 \citep{fukao2013subducted}.
 
-Besides, in the Pacific and Nazca plate, our models is sharpening the Galapagos,
-San Felix and Juan Fernandez hotspot. In the Scotia plate, our models shows a very
-strong expression of Scotia Arc subduction till 1000km, which is barely observable
-in other models. In the Caribbean plate, we also observed fast anomaly, indicating
-the Caribbean subduction.
+In the south,
+Scotia Arc subduction is very distinct in GLAD-M25 at all depths,
+but barely observable in other models.
+To the north,
+Caribbean subduction is clearly discernible in model GLAD-M25 and the two $V_\textrm{P}$ models.
 
 \subsection{Plumes}
 \label{section:plumes}
 
-In this section, we will visit the plumes systems on the earth. Fig.\ref{fig:plumes}
-shows the cross section on several plumes. In addition, we also shows TX2015 model here.
+In this section we highlight various plume systems on Earth. Fig.~\ref{fig:plumes}
+shows cross sections of several plumes, comparing models GLAD-M25 ($V_\textrm{P}$),
+TX2015~\citep[$V_\textrm{S}$;][]{TX2015}, and SEMUCB-WM1~\citep[$V_\textrm{S}$;][]{french2015broad}.
 
-Some of the plumes origins from the CMB and extend till the surface of the Earth,
-even though their formation is still under heated discussion. Even though most of
-the models tends to agree near the CMB, its rising shape diffs quite a lot in the
-lower and upper mantle, thus dramatically changes the dynamics of the mantle
-convections. Here, we present our model together with TX2015 and SEMUCB-WM1.
+Some plumes originate from the CMB and extend all the way to the Earth's surface.
+The three models tend to agree near the CMB,
+and there is overall good agreement between GLAD-M25 and TX2015,
+but the models can differ substantially in the mid and upper mantle,
+with profoundly different implications for mantle
+convection.
 
-Our model shows that Afar plumes orignates from the CMB, narrows its diameter
-in the middle mantle and broadens again above 660km discontinuity. It behaves
-very similar to TX2015 while differs a lot with SEMUCB-WM1. Despite the similarity
-with TX2015, our models shows stronger slow velocity anomaly around 660km
-discontinuity, possibly indicating a enhanced partial melting at that depth. 
+In Fig.~\ref{fig:plumes}(a),
+we see that the Afar plume in model GLAD-M25 originates from the CMB, narrows its diameter
+in the mid mantle, and broadens again above the 660~km discontinuity.
+It exhibits
+very similar behavior in TX2015 but differs significantly in SEMUCB-WM1.  
 
-In fig.\ref{fig:plumes_b}, from left to right, we can see: 1) the Farallon
-subduction slabs showing as fast anomaly; 2) the bermuda hotspot that stays
-above 660km discontinuity; 3) Canary hotspot that originates from the CMT and
-rise all the way up the the surface of the earth; 4) the Afar hotspot from another
-angle of view.
+In Fig.~\ref{fig:plumes}(b), from left to right, we see in model GLAD-M25 1) the Farallon
+slab; 2) the Bermuda hotspot above the 660~km discontinuity; 3) the Canary hotspot originating from the CMT and
+rising all the way up the Earth's surface; 4) the Afar hotspot from another angle.
 
-In fig.\ref{fig:plumes_c}, from left to right, we can see: 1) the subduction slab
-in South America showings as a big block of fast anomaly; 2) Cape Verde hotspot
-that originates from the CMT and rise all the way up to the surface; 3) Hoggar hotspot
-that has strong slow anomaly from 660km to the very surface. It is very interesting
-to compare the image of Hoggar in our model with the other two, while the TX2015 only
-shows slow anomaly around 660km and SEMUCB-WM1 only in the very surface.
+Fig.~\ref{fig:plumes}(c) features 1) South America subduction; 2) the Cape Verde hotspot extending from the CMB all the way to the surface; 3) the Hoggar hotspot from 660~km to the surface. 
 
-In fig.\ref{fig:plumes_d}, plumes rises right below Icleland, reaches 660km and amplifies
-its anomaly and rise to the surface. Here it may indicates another place where anmaly gets
-much stronger above 660, possibly indicating the partial melting below 600km.
+Fig.~\ref{fig:plumes}(d) shows a plume which rises from the CMB right below Iceland, reaches 660~km, amplifies,
+and ascends to the surface.
+The intensification above 660~km may be an indication of partial melting.
 
-In fig.\ref{fig:plumes_e}, from left to right: 1) the Easter hotspot; 2) the Galapogos
-hotspot; 3) the Central America subduction slabs showing as fast anomaly. It is interesting
-seeing that the Easter and Galapagos may originates from the same underlying plumes, which
-lies in the middle of both hotspots. The underlying plumes near the CMB belongs to the
-a east extension arm of the Pacific super plume.
+Fig.~\ref{fig:plumes}(e) contains 1) the Easter hotspot; 2) the Galapagos
+hotspot; 3) the Central America slab.
+In models GLAD-M25 and TX2015,
+the Easter and Galapagos hotspots appear to originate from the same underlying plume in the deep mantle,
+which is the eastern arm of the Pacific superplume.
 
-If fig.\ref{fig:plumes:f}, we are seeing Marion and Kerguelen hotspot, which might related
-the Afar at its lower mantle part. Those hotspots and plumes are very hard to recover due
-to the poor data coverage at the south hemisphere.
+Finally,
+in Fig.~\ref{fig:plumes}(f) we see the Marion and Kerguelen hotspots, which might be connected to Afar in the lower mantle.
+Recovering these plumes is challenging due to poor data coverage in the southern hemisphere.
 
 \begin{figure}[h]
     \centering
@@ -1107,7 +1112,11 @@ to the poor data coverage at the south hemisphere.
     \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Iceland_Eifel.png}\label{fig:plumes_d}}\\[-1pt]
     \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Easter_Galapagos.png}\label{fig:plumes_a}}\\[-1pt]
     \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Marion3_Kerguelen.png}\label{fig:plumes_g}}\\
-    \caption{Vertical cross sections of perturbations of shear wave velocity Vs of plumes. (a) Afar; (b) Bermuda (left) and Canary (mid); (c) Cape Verde (mid) and Hoggar (right); (d) Iceland (mid) and Eifel (right); (e) Easter (left) and Galapagos (right); (f) Marion (mid) and Kerguelen (right). }
+    \caption{Vertical cross sections for various plumes for models GLAD-M25 ($V_\textrm{P}$; left column), TX2015~\citep[$V_\textrm{S}$;][]{TX2015} (center column), and SEMUCB-WM1~\citep[$V_\textrm{S}$;][]{french2015broad} (right column).
+    The map in the top left corner of each row shows the cross section with color-coded red, green, and white dots for geographical reference;
+    hotspots are denoted by red triangles.
+    The dashed black semicircles in the cross sections denote depths of 410~km, 660~km, and 1000~km.
+    (a) Afar; (b) Bermuda (left) and Canary (middle); (c) Cape Verde (middle) and Hoggar (right); (d) Iceland (middle) and Eifel (right); (e) Easter (left) and Galapagos (right); (f) Marion (middle), and Kerguelen (right). }
     \label{fig:plumes}
 \end{figure}
 
@@ -1123,34 +1132,20 @@ to the poor data coverage at the south hemisphere.
 %\end{figure}
 
 
-\subsection{Subduction Slabs}
+\subsection{Subduction zones}
 \label{section:slabs}
 
-In this section, we visit another kind of geological systems on the earth,
-subduction zones. In \cite{fukao2013subducted} and \cite{van2018atlas},
-they both presented the subductions systems in the details. In
-figure.\ref{fig:subd} we plotted our model, GLAD-M25, together with
-GAP-P4 and UU-P07.
+In this section we highlight various subduction systems on Earth.
+In Fig.~\ref{fig:subd} we compare GLAD-M25~($V_\textrm{P}$) with two compressional wavespeed models,
+namely, GAP-P4~\citep{fukao2013subducted} and UU-P07~\citep{van2018atlas}.
 
-In general, all the models are in good agreement with each other, despite
-the fact that our model use waveform measurements and the other two
-uses travel-time. However, there are still difference when comparing those
-models in details. At shallow depth, our models shows more consistent
-structure in the continental crust and craton, across all the figures we
-listed in fig.\ref{fig:subd}. When it comes to the upper and middle mantle,
-all the models shares a a lot in common. Difference becomes obvious at depth,
-especially for subductions below 1000km. For example, in fig.\ref{fig:subd_c},
-it shows the Frallon subductions. Our models shows a more continous subductions
-that goes all the way the lower mantle, while the other two travel-time models
-only shows the subduction slab vaguely. This comes from two factors. Our model
-incorporates more data, including the whole US-Array data for this region
-specifically. Second, the finite-frequency kernels have more sensitivity in
-depth, when compared to the classical ray-theory based inversions.
-
-Also, as mentioned in the previous sections, we showed our model in Vp
-perturbations, since in our inverison, Vp is treated as independant
-parameters, while in previous waveform models, they usually fixed the
-Vp and Vs ratios.
+Overall, the three models are in reasonably good agreement.
+At shallow depths, model GLAD-M25 shows more distinct continental crust and cratons, thanks to the inclusion of surface waves.
+In the upper and mid mantle,
+the models share very similar features.
+At depth greater than 1000km, 
+we see a very strong expression of the ancient Farallon slab in model Glad-M25, which is much weaker in the two P models.
+The difference may be attributed to increased data coverage thanks to USArray, as well as the use of finite-frequency Fr\'echet derivatives.
 
 \begin{figure}[h]
     \centering
@@ -1159,7 +1154,11 @@ Vp and Vs ratios.
     \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Ha.png}\label{fig:subd_c}}\\[-1pt]
     \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Ne.png}\label{fig:subd_d}}\\[-1pt]
     \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Wc.png}\label{fig:subd_e}}\\[-1pt]
-    \caption{Vertical cross sections of perturbations of Vp in subduction regions. (a) the Aegean anomaly; (b) South American Subduction; (c) the Hatteras anomaly; (d) the Nepal Anomaly; (e) the Wichita anomaly.}
+    \caption{Vertical cross sections of compressional wavespeed perturbations in various subduction zones
+    for models GLAD-M25 ($V_\textrm{P}$; left column), GAP-P4~\citep{fukao2013subducted} (middle column) and UU-P07~\citep{van2018atlas} (right column).
+    The map in the top left corner of each row shows the cross section with color-coded red, green, and white dots for geographical reference.
+    The dashed black semicircles in the cross sections denote depths of 410~km, 660~km, and 1000~km.
+    (a) Aegean; (b) South America; (c) Hatteras; (d) Nepal; (e)  Wichita.}
     \label{fig:subd}
 \end{figure}
 
@@ -1265,13 +1264,13 @@ the radial average may be determined numerically via GLL quadrature:
 \end{equation}
 Here~$\alpha$ and~$\beta$ denote GLL points in the sphere with radius~$r$\,,
 $\omega_\alpha$ denotes a GLL quadrature weight, and $J^{\alpha\beta}(r)$ is the 2D Jacobian of the mapping to the sphere.
-It is important to carry out the summations in~(\ref{eq:radial_average}) at the elemental level to ensure that first-order discontinuities are honored in the process.
+%It is important to carry out the summations in~(\ref{eq:radial_average}) at the elemental level to ensure that first-order discontinuities are honored in the process.
 
 Figure~\ref{fig:global-average} shows the resulting radial averages of the isotropic shear and compressional wavespeeds for model~GLAD-M25
 compared to 1D starting model~STW105~\citep{kustowski2008anisotropic} and PREM~\citep{PREM}.
 The radial average of~GLAD-M25 remains very close to the radial starting model~STW105.
 The main difference between these two models and~PREM
-is the absence of the 220~km discontinuity and a lower~$V_p/V_s$ ratio in the top 200~km.
+is the absence of the 220~km discontinuity and a lower~$V_P/V_S$ ratio in the top 200~km.
 
 \begin{figure}
   \centering
@@ -1287,26 +1286,6 @@ is the absence of the 220~km discontinuity and a lower~$V_p/V_s$ ratio in the to
   \caption{1D radial-anisotropic shear and compressional wavespeed profiles for GLAD-M25 and STW105. The reference frequency for physical dispersion is~{\color{red} ??}~Hz.}
   \label{fig:global-ra-average}
 \end{figure}
-
-\section{Window distributions}
-
-Fig.\ref{fig:window_density} shows the window density map on the
-vertical component for 17-40 sec period band. In this category,
-we picked in total of 4,363,719 time windows. The color denotes the
-density of windows. X axis is the time and y axis is the epicenter
-distance. Windows are discretized into 1 degree in epicenter distance
-domain and 1 second in time domain.
-
-The max density value of windows is 9,931, located at 134-135 epicenter
-distance bin and 1375-1376 time bin.
-
-\begin{figure}
-  \centering
-  \includegraphics[width=0.9\textwidth]{figures/window_colorbar_linear_Z.pdf}
-  \caption{The window density map.}
-  \label{fig:window_density}
-\end{figure}
-
 
 \section{Spherical harmonic model expansion}
 

@@ -37,18 +37,77 @@
 
 \section{Introduction}
 
-With the development of high performance computing and numerical methods,
-it is now possible to using adjoint method to image the interior the globe
-using thousands of earthquakes.
+In the last few decades, we have witnessed great improvments in the global
+seismic imaging. There are different types of earth models published using
+various data types and methodologies\citep{}. The theory of Finite-frequcy
+was brought up in the early 1980\citep{}, overcomes very limitations
+in the ray-based theory. However, it is still the very recent
+decade that people are able to use it in the global scale inverison, 
+thanks to the advance in the high-performance computing and numerical methods.
 
-There are few agreements about the earth model and yet many unknown to be
-resolved. There are quite a lot of global models exits however there is no such con-sense.
+There are gaps between the global and regional models. Regional models, tends to
+resolve structures at shorter period bands such as 10 - 15 seconds\citep{},
+but lacks of resolution in depth. 
+On the other hand, global models, resolved structures as deep as 
+the core-mantle boundary, but only starting from ~60 seconds period bands
+at most, mainly due to the high computational cost\citep{}. Recent years
+we have seen models moves to 30 seconds in waveform-type inversion but
+there is still a clear gap between the global and regional inversions.
+Owing to the recent advances in high-performance computing and numerical
+methods, it is possible to simulate seismic waves in an unprecendental
+resolution at global scale, to close the gap between regional and global
+studies.
 
-The GLAD-M25 is the first earth model that incorporate the P and S wave speed using full waveform inversion. Also, people are using specific set of phases in their inversion. For P models, people are using P phase and other body wave phases and for S models, people are using mostly S wave phases and surface waves to constrain the structure. Those two kinds of models usually reveals very different parts of the earth. For example, for P wave, people used it the image the subduction slabs and it is not very good at image lower mantle structures, such as plumes and lower mantle convection. For S waves, it is the verse verso.
+In our previous model paper\citep{}, advantanges of spetral-element methods
+and adjoint tomography has been thoroughly discussed. Crust and discontinuity
+is honored in our mesh. Thus, there is no crust correction needed in our
+inversion procedures. Adjoint methods, can fully take the 3D earth structure
+an attenuation into account, for both forward simulation and adjoint simulation,
+calculating the frechet direvative in a more precise way.
+However, when pushing for high frequecy, it soon becomes very
+demanding on computational resourse. 
 
-There are many challenges coming along the way. First, the data volume is huge.  There are in total of 1480 earthquakes used in the inversion stage, added into the database step by step. Second, workflow management is crucial dealing with such a large project. One factor is coming from the complex workflow. There are 4 major building blocks, forward simulation, seismic data processing, adjoint simulation and post-processing. Each blocks contains several small blocks. The other factor is coming from the number of earthquakes and high demands of computation. In each iteration, we are doing 1480 forward and adjoint simulation, generating a few Petabytes of wavefield files and consuming 16 million of CPU hours on the supercomputer at Oak Ridge National Lab. There are yet more in data processing stages. How to deal with hardware failures is very important and prevent contamination into our inversion results.
+Other than the simulation part, the data assimilation has been another key factor
+to the success of tomography. Ray-based travel-time inversion has accumulated
+huge amount of data along it way. However, they usually focused on certain type of phases.
+relying on both open and customized travel time database.
+Models, such as GAP-P4 and UU-P07, used millions of travel time measurements, but only
+used P related phases. 
+The finite frequcy methods is developed recently so there are less consense of the dataset
+used in the research. On the other hand, the methods also gives more freedom when it comes
+to data assimilation. It then become a critial question for which part of the data should
+be assimilated into the inverison. 
+Recent years have seen a lot of good quality seismic networks deployed, such as US array.
+However, there is few global model that take the advantage of network yet. It would be
+a pity not to utlized it, but data assimilation should be handled very carefully since it
+will directly impact the image in a few ways. First, it is the data quality. only good
+seismograms and phases should be including into the inversion. Second, the high density
+distribution of regional networks would skew the inversion so proper weightings should be
+taken care of.
 
-Here, we present our GLAD-M25 earth model, with significantly improvements on the plumes and subductions.
+There are many challenges coming along the way. First, the data volume is huge.
+There are in total of 1480 earthquakes used in the inversion stage, added into
+the database step by step. Second, workflow management is crucial dealing with
+such a large project. One factor is coming from the complex workflow. There are
+4 major building blocks, forward simulation, seismic data processing, adjoint
+simulation and post-processing. Each blocks contains several small blocks.
+The other factor is coming from the number of earthquakes and high demands of
+computation. In each iteration, we are doing 1480 forward and adjoint simulation,
+generating a few Petabytes of wavefield files and consuming 16 million of CPU
+hours on the supercomputer at Oak Ridge National Lab. There are yet more in
+data processing stages. How to deal with hardware failures is very important
+and prevent contamination into our inversion results.
+
+In the following sections, we will present the GLAD-M25 earth model in details.
+From section 2 - 4, we will focus on the data, including the starting model,
+earthquakes and seismic data used in this study.  In section 5 and 6, we will
+discuss the model parametrization and the choice of misfit function we made.
+Section 7 and 8 describes the adjoint tomography workflow and the evolution
+of inversion, and the improvments we made with the iterations. Section 9 will
+focus on model evaluation part, which we used a few techniques to assess the
+quality of inverison. Section 10 will address on presenting images of our model,
+together with whole bunch of other models, global and regional. We conclude in 
+section 10, summarizing our model and diretion of future works.
 
 test1 (\cite{zhu2012structure}, \cite{zhu2012structure})
 test2 \citep{zhu2015seismic, ekstrom2012global}
@@ -1162,23 +1221,44 @@ The difference may be attributed to increased data coverage thanks to USArray, a
     \label{fig:subd}
 \end{figure}
 
+
+\section{Discussion}
+
+Here, we presented our GLAD-M25 models. Starting from GLAD-M25, we
+conducted 10 more iterations, with significantly more earthquakes
+(up to 1480 earthquakes)and seismic data(up to 18.2 million time
+windows) added in the inversion in a progressive way. It is the first
+global transerse isotropoic model that brings the resolution down to
+17 secs, but also invert the $V_p$ and $V_s$ indenpendently. Due to the
+nature of spetral-element methos, our model meshes the crust and mantal
+, without introducing the "crustal correction". Our solver also enables
+us the take the full-attenuation into accout, both in forward and adjoint
+simulations, using undo attenuation at the cost of more computation
+hours and disk space.
+
+GLAD-M25 is evaluated in many ways. First, it shows significant misfit
+reduction in all measurements categories, but also in the variance
+reduction in travel-time measurements. For the 360 held-out earthquakes,
+the behavior is similar to what we have in our inversion dataset. We
+presented our global $V_s$ and $V_p$, together with other well-known global
+models and at large scale they agree with each other. However, when we focus
+on regional studies and compare with regional models, our model shows superior
+more detailed structures compared to other global models, staying at the 
+same resolution of regional models. Our models shows great resolution in both
+plumes and suduction zones, using the independently inverted $V_p$ and $V_s$
+velocity models.
+
 \section{Conclusion}
-
-In summary, the new model performs well for the held-out dataset,
-both in terms of misfit reductions and measurement distributions
-in all twelve measurement categories. We expect to see similar
-behavior for any future earthquakes.
-
 
 Seismology is driven by data. Back into time, seismologists would look at
 single seismograms and pick valuable information out the them. Now, we have
 ten thousands of seismograms deployed globally and it will be a pity not
 to take all the information we have. Even though GLAD-M25 is following-up
-of GLAD-M15. It has many superior advantages and improvements. We increase
+of GLAD-M15, It has many superior advantages and improvements. We increase
 the dataset from 253 to 1480 earthquakes, with carefully inverted sources
 in the 3D earth structures. We have 360 earthquakes used in the test
 dataset, which is already larger than the most of the dataset other people used
-for their inversion. We culled every seismograms from various data centers,
+for their inversion. We culled seismograms from various data centers,
 thanks to the open environment and data sharing spirit of our seismology community.
 With very careful checks by assessing the integrity of instrument response
 and deployment, evaluating the signal-to-noise ratios, picking the time windows
@@ -1186,19 +1266,22 @@ using over 20 criteria, cleaning windows by their statistical behavior, and
 calculating weights to balance the uneven distribution of earthquakes and
 seismic stations, we really have done a lot to ensure the cleanness of the
 data assimilated into our inversion and make sure every piece of value information
-will be used but rejecting the crap data.
+will be used but rejecting crap data.
 
-There are also quite a lot of technique challenges on the way but we are seeking
-the most cutting-edge technologies to solve them. ADIOS was introduced to save mesh
-and kernel related data, since we are saving petabytes of wavefiled snapshots
-in a few hours of simulation and it is critical even for the most advanced
-supercomputers in the world. ASDF is developed by us to store the seismograms
-since we have ten millions of time series data from thousands of earthquakes.
-We have to get access and process them in a very efficient manner that most of
-the existing data format just won't meet our requirements. To handle the complex
-inversion workflow, we are working RADICAL group to develop the workflow management
-tools that will help manage every piece of task and make the user aware if there
-is anything bad happened during the computation. Those tools that help the
+However, global tomography research has progressed to a stage that not only relying
+on the data and methodology, but also involving a lot of technique challenges
+under the hood.
+It has driven us to seek for the most cutting-edge technologies to solve them.
+ADIOS was introduced to save mesh and kernel related data, since we are saving
+petabytes of wavefiled snapshots in a few hours of simulation and it is critical
+even for the most advanced supercomputers in the world.
+ASDF is developed by us to store the seismograms since we have ten millions of
+time series data from thousands of earthquakes. We have to get access and process
+them in a very efficient manner that most of the existing data format just won't
+meet our requirements.
+To handle the complex inversion workflow, we are working RADICAL group to develop
+the workflow management tools that will help manage every piece of task and make
+the user aware if there is anything bad happened during the computation. Those tools that help the
 automation of the workflow, is the "guard" that stand there and monitor things
 to make sure our scientific results away from contamination. Besides, the
 developer of SPECFEM packages, they dedicate more than ten years of work,
@@ -1208,7 +1291,29 @@ the code to architecture of the most advanced supercomputers. We are soon
 moving our simulation to Summit, the world No.1 supercomputer at the Oak Ridge
 National Lab.
 
+For the future work, inversion for azimuthal anisotropy and attenuation is on the way.
+The methodolody has already be demonstrated in a few regional studies, such as
+\citep{}. We will start with our current dataset but increase our earthquakes to
+more than $6,000$ in a progressive way , which will covered most of the
+earthquakes in Global CMT project. We also plan to push our model resolution to
+9 secs, with the Summit supercomputer available at Oak Ridge national lab. It will be
+unprecedental in sesimology that pushes global tomography to such resolution, meanwhile
+it will pose new chanllenges. Ensuring the reliability and stability on such a large machine
+and associated file system, for example, will be one of those challenges. Even though the
+computing powers has grown significantly, the storage has not. Our 17 sec has already
+generated a few petabytes of wavefields files and 9 sec will generate at least one order
+of magnitudes more files.
+
+There are certains things that we would like to address on in the near future. First is the
+the seismic data distribtuion. As we know, most of the seismic stations are distributed on
+the continents, while the oceans are most left blank, with only a few stations on a few
+islands. Floating arrays\citep{} might be promising in the future but it all comes down to the 
+data processing and data quality. Second, harnessing such a large data set is difficult.
+Artifical intelligence may be introduced and help us to make decisions when assimilating
+measurements\citep{}.
+
 \newpage
+
 \begin{acknowledgments}
 %We want to give thanks to the Oak Ridge National Lab, for providing
 %  excellent support and computational resource that facilitate our research.
@@ -1218,11 +1323,18 @@ National Lab.
 %  We want to thanks Ebru Bozdag, for providing GLAD-M15, data and software
 %  she used in the first generation model.
 
-This research used resources of the Oak Ridge Leadership Computing Facility, which is a DOE Office of Science User Facility supported under contract DE-AC05-00OR22725.
-Additional computational resources were provided by the Princeton Institute for Computational Science \& Engineering (PICSciE).
-We acknowledge IRIS ({\tt iris.edu}) and ORFEUS ({\tt orfeus-eu.org}) for providing the data used in this study.
-{\color{red} Wenjie: Please add all relevant data centers.} We thank Ryan Modrak, Ridvan Orsvuran, Frederik Simons, and James Smith for fruitful discussions.
-The open source spectral-element software package SPECFEM3D\_GLOBE and the seismic measurement software package FLEXWIN used for this article are freely available via the Computational Infrastructure for Geodynamics (CIG; {\tt geodynamics.org}). This research was supported by NSF grant~1644826.
+This research used resources of the Oak Ridge Leadership Computing Facility,
+which is a DOE Office of Science User Facility supported under contract DE-AC05-00OR22725.
+Additional computational resources were provided by the Princeton Institute
+for Computational Science \& Engineering (PICSciE).
+We acknowledge IRIS ({\tt iris.edu}) and ORFEUS ({\tt orfeus-eu.org}) for
+providing the data used in this study.
+{\color{red} Wenjie: Please add all relevant data centers.}
+We thank Ryan Modrak, Ridvan Orsvuran, Frederik Simons, and James Smith for fruitful discussions.
+The open source spectral-element software package SPECFEM3D\_GLOBE and
+the seismic measurement software package FLEXWIN used for this article are
+  freely available via the Computational Infrastructure for Geodynamics
+  (CIG; {\tt geodynamics.org}). This research was supported by NSF grant~1644826.
 
 \end{acknowledgments}
 

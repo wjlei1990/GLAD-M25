@@ -29,91 +29,117 @@
   $^7$ Oak Ridge National Laboratory, Oak Ridge, TN 37831, USA\\
   }
 
-\newcommand{\btx}{\textsc{BibTeX}}
+%\newcommand{\btx}{\textsc{BibTeX}}
 
 \begin{document}
 
 \maketitle
 
+%%---------------------------------------------
+%
+%   Summary
+%
+%%---------------------------------------------
+\begin{summary}
+Building on our first-generation global adjoint tomography model,
+GLAD-M15, we present our second-generation transversely isotropic global model,
+named GLAD-M25, which is the result of ten quasi-Newton tomographic iterations with an
+earthquake database consisting of 1,480 events in the magnitude range $5.8\le M_w \le 7.0$,
+an almost six-fold increase over the previous generation model.
+We calculated fully 3D synthetic seismograms with a shortest period of 17~s based on a GPU-accelerated spectral-element wave
+propagation solver which accommodates effects due to 3-D anelastic crust \& mantle structure, topography \& bathymetry, the ocean load, ellipticity, rotation, and self-gravitation.
+We used an adjoint-state method to calculate Fr\'echet derivatives in 3D anelastic earth models
+facilitated by a parsimonious storage algorithm.
+The simulations were performed on the Cray XK7 ``Titan'' at the Oak Ridge Leadership Computing Facility.
+We quantitatively evaluated GLAD-M25 by assessing misfit reductions and traveltime \& amplitude anomaly histograms in twelve measurement
+categories.
+We performed similar assessments for a held-out dataset consisting of 380 earthquakes,
+with results comparable to the actual inversion.
+We compare GLAD-M25 with numerous other global and regional models,
+and highlight a variety of plumes and subduction zones.
+\end{summary}
+
+\begin{keywords}
+Body waves, Surface waves and free oscillations, Seismic anisotropy, Seismic tomography, Computational seismology, Wave propagation, Waveform inversion
+\end{keywords}
+
 \section{Introduction}
 
-In the last few decades, we have witnessed great improvments in the global
-seismic imaging. There are different types of earth models published using
-various data types and methodologies\citep{}. The theory of Finite-frequcy
-was brought up in the early 1980\citep{}, overcomes very limitations
-in the ray-based theory. However, it is still the very recent
-decade that people are able to use it in the global scale inverison, 
-thanks to the advance in the high-performance computing and numerical methods.
+Construction of the first seismic tomographic models of the Earth dates back to the late 1970s~\citep{Aki77,Dziewonski77,SenTok77} and early 1980s~\citep[e.g.,][]{WD84,Nataf1984}.
+Around the same time,
+\cite{BaChLa77}, \cite{Lailly1983}, and~\cite{Tar84} formulated and adapted the theory of adjoint-state methods~\citep{Chavent1974} for exploration seismology with the goal of capturing the full physics of seismic wave propagation.
+Mainly due to computational challenges,
+it took until the late 2000s to see the first applications of adjoint-state methods in regional- and continental-scale earthquake seismology~\citep{tape2009adjoint,Fichtner09,zhu2012structure}.
+The first global ``adjoint tomography'' model of the Earth's mantle was published in 2016~\citep{bozdaug2016global}, more than 30 years after the development of the original ``full waveform inversion'' (FWI) theory.
 
-There are gaps between the global and regional models. Regional models, tends to
-resolve structures at shorter period bands such as 10 - 15 seconds\citep{},
-but lacks of resolution in depth. 
-On the other hand, global models, resolved structures as deep as 
-the core-mantle boundary, but only starting from ~60 seconds period bands
-at most, mainly due to the high computational cost\citep{}. Recent years
-we have seen models moves to 30 seconds in waveform-type inversion but
-there is still a clear gap between the global and regional inversions.
-Owing to the recent advances in high-performance computing and numerical
-methods, it is possible to simulate seismic waves in an unprecendental
-resolution at global scale, to close the gap between regional and global
-studies.
+Current global models are in general agreement regardless of data type and inversion strategy in terms of long-wavelength heterogeneity \citep{ritzwollerlavely1995,TW01,beckerboschi2002}.
+However, discrepancies between models become noticeable as resolution increases.
+Using accurate 3D simulations of seismic wave propagation and the computation of data sensitivities in 3D background models are key requirements for improving resolution in tomographic images on all scales.
+Such detailed images are essential for understanding mantle dynamics and related surface tectonic processes
+---for example the origin of hotspots and the forces behind plate motions and earthquakes.
+Higher resolution wavespeed models are also important for accurately locating earthquakes, and are required from an engineering point of view to assess seismic hazard in earthquake prone regions and to detect nuclear explosions. 
 
-In our previous model paper\citep{}, advantanges of spetral-element methods
-and adjoint tomography has been thoroughly discussed. Crust and discontinuity
-is honored in our mesh. Thus, there is no crust correction needed in our
-inversion procedures. Adjoint methods, can fully take the 3D earth structure
-an attenuation into account, for both forward simulation and adjoint simulation,
-calculating the frechet direvative in a more precise way.
-However, when pushing for high frequecy, it soon becomes very
-demanding on computational resourse. 
+With these goals in mind,
+in this study we use a GPU-accelerated version of the 3D spectral-element solver
+SPECFEM3D\_GLOBE~\citep{KoTr02a,KoTr02b} on the Cray ``Titan'' at the Oak Ridge Leadership Computing Facility (OLCF) for global adjoint tomography.
+These simulations accommodate the full 3D complexity of global Earth models,
+including 3D anelastic crust and mantle structure, self-gravitation, rotation, ellipticity, topography \& bathymetry, and the load of the oceans.
+No compromises are made with regards to resolving the Earth's crust,
+which is explicitly captured by the spectral-element mesh~\citep{tromp2010a},
+thereby eschewing the need for ubiquitous ``crustal corrections''.
+The ultimate goal is to use anything and everything in seismograms,
+a task made partly feasible based on the automated window selection tool FLEXWIN~\citep{maggi2009automated}.
 
-Other than the simulation part, the data assimilation has been another key factor
-to the success of tomography. Ray-based travel-time inversion has accumulated
-huge amount of data along it way. However, they usually focused on certain type of phases.
-relying on both open and customized travel time database.
-Models, such as GAP-P4 and UU-P07, used millions of travel time measurements, but only
-used P related phases. 
-The finite frequcy methods is developed recently so there are less consense of the dataset
-used in the research. On the other hand, the methods also gives more freedom when it comes
-to data assimilation. It then become a critial question for which part of the data should
-be assimilated into the inverison. 
-Recent years have seen a lot of good quality seismic networks deployed, such as US array.
-However, there is few global model that take the advantage of network yet. It would be
-a pity not to utlized it, but data assimilation should be handled very carefully since it
-will directly impact the image in a few ways. First, it is the data quality. only good
-seismograms and phases should be including into the inversion. Second, the high density
-distribution of regional networks would skew the inversion so proper weightings should be
-taken care of.
+Global adjoint tomography has a well-defined but complex workflow with multiple
+stages involving numerical simulations of synthetic seismograms (forward simulations),
+pre-processing of seismic data, making measurements, data assimilation, and Fr\'echet derivative
+calculations (adjoint simulations), and post-processing of the gradient for quasi-Newton model
+updates.
+It is essential to optimize, automate, and harden the entire process using workflow management tools, especially with large data sets.
+For each iteration,
+1,480 forward and adjoint simulations need to be performed,
+generating a few Petabytes of wavefield files for the parsimonious-storage kernel calculation algorithm of~\cite{KoXiBoPeSaLiTr16}, and consuming 16~million OLCF node hours.
+How to deal with hardware failures during this process is critical
+to prevent contamination of the inversion results.
+For these reasons, we use RADICAL-SAGA and RADICAL-EnTK as our
+workflow management engines~\citep{EnTK2017}.
+These workflow engines can automatically detected job failures,
+both from the high-performance computing (HPC) system and via user-defined functions.
+This facilitates tracking of tasks and semi-automatic job resubmission if necessary.
 
-There are many challenges coming along the way. First, the data volume is huge.
-There are in total of 1480 earthquakes used in the inversion stage, added into
-the database step by step. Second, workflow management is crucial dealing with
-such a large project. One factor is coming from the complex workflow. There are
-4 major building blocks, forward simulation, seismic data processing, adjoint
-simulation and post-processing. Each blocks contains several small blocks.
-The other factor is coming from the number of earthquakes and high demands of
-computation. In each iteration, we are doing 1480 forward and adjoint simulation,
-generating a few Petabytes of wavefield files and consuming 16 million of CPU
-hours on the supercomputer at Oak Ridge National Lab. There are yet more in
-data processing stages. How to deal with hardware failures is very important
-and prevent contamination into our inversion results.
+In this article we compare the results of our inversion with a number of previous tomographic models.
+On a global scale, we present comparisons with model S362ANI$+$M~\citep{moulik2014anisotropic},
+which is an updated version of model S362ANI~\citep{s362ani},
+the starting model for the GLAD-M15 inversion.
+We also consider global shear wavespeed models S40RTS~\citep{ritsema2011s40rts},
+TX2015~\citep{TX2015}, SEMUCB-WM1~\citep{french2015broad},
+and SL2013sv~\citep{SchaefferLebedev13},
+as well as compressional wavespeed models LLNL-G3Dv3 \citep{simmons2012llnl}, GAP-P4~\citep{fukao2013subducted}, and UU-P07~\citep{van2018atlas}.
+On the scale of North America,
+we make comparisons with models US22~\citep{zhu2017radial},
+a radially anisotropic model based on adjoint tomography using USArray data from 180 regional earthquakes,
+and SL2013NA~\citep{schaeffer2014imaging},
+a modification of global model SL2013sv focused on North America.
+In Europe we use regional model EU60~\citep{zhu2015seismic} for comparison.
+EU60 is based on the assimilation of data from 190 regional earthquakes recorded by more than 700 European seismographic stations.
+Finally, in Asia we use regional adjoint tomography model EARA2014~\citep{chen2015multiparameter} as a reference, a model based on data from 227 earthquakes recorded by more than 1,800 stations.
 
-In the following sections, we will present the GLAD-M25 earth model in details.
-From section 2 - 4, we will focus on the data, including the starting model,
-earthquakes and seismic data used in this study.  In section 5 and 6, we will
-discuss the model parametrization and the choice of misfit function we made.
-Section 7 and 8 describes the adjoint tomography workflow and the evolution
-of inversion, and the improvments we made with the iterations. Section 9 will
-focus on model evaluation part, which we used a few techniques to assess the
-quality of inverison. Section 10 will address on presenting images of our model,
-together with whole bunch of other models, global and regional. We conclude in 
-section 10, summarizing our model and diretion of future works.
-
+This article is organized as follows.
+Sections~\ref{section:start}--\ref{section:data} describe the starting model,
+earthquake database, and the seismographic data set. 
+Sections~\ref{section:misfit} and~\ref{section:parameterization} describe the misfit function minimized during the inversion process
+and the related model parameterization.
+In Section~\ref{section:workflow} we describe the adjoint tomography workflow in some detail.
+Sections~\ref{section:misfit_evolution} describes the evolution of the misfit, and in Section~\ref{section:evaluation} we evaluate the model based on a held-out data set of 320 earthquakes.
+Finally, in Section~\ref{section:model}, we describe the model in detail,
+offering many comparisons with various global and regional models, as described in the proceeding paragraph.
+We conclude with a discussion of future opportunities and directions.
 
 \section{Starting model GLAD-M15}
+\label{section:start}
 
 As a continuation of our previous work~\citep{bozdaug2016global},
-we used ``first-generation'' model GLAD-M15 as our
+we used first-generation model GLAD-M15 as our
 starting model.
 GLAD-M15 is a 3D transversely isotropic earth model, which combined
 3D mantle model S362ANI~\citep{kustowski2008anisotropic}
@@ -140,7 +166,7 @@ In this study we also used three-component seismograms with a shortest period of
 
 In addition to the 256 earthquakes used for the construction of first generation
 model GLAD-M15, we initially selected 784 carefully chosen additional earthquakes
-from the global Centroid-Moment Tensor (CMT) catalog~\citep[e.g.,][]{Ekstrom12},
+from the global Centroid-Moment Tensor (CMT) catalog~\citep[e.g.,][]{ekstrom2012global},
 and added them to our database, resulting in a total number of 1,040 earthquakes.
 To ensure a good signal-to-noise ratio on a global scale,
 the smallest moment magnitude in the database is set to~5.5,
@@ -263,7 +289,7 @@ of our database and greatly improve coverage in certain regions.
 
 \begin{figure}
   \includegraphics[width=0.8\textwidth]{figures/station_map.pdf}
-  \caption{Distribution of 11,800 seismographic stations used in this study. Colors denote the number of events for which a given station contributes waveforms to the structural inversion. Stations with a number of event responses $<400$ are plotted in smaller size; these are usually temporary arrays deployed over a short period of time, frequently ocean bottom seismometers. The maximum number of event responses comes from ANMO, in Albuquerque, New Mexico, which contributed to 1,442 out of 1,480 earthquakes in the dataset.}
+  \caption{Distribution of 11,800 seismographic stations used in this study. Colors denote the number of events for which a given station contributes waveforms to the structural inversion. Stations with a number of event responses $<400$ are plotted in smaller size; these are usually temporary arrays deployed over a short period of time, frequently ocean bottom seismometers. The maximum number of event responses comes from ANMO, in Albuquerque, New Mexico, which contributed to 1,442 out of 1,480 earthquakes in the data set.}
   \label{fig:stations}
   \centering
 \end{figure}
@@ -291,7 +317,7 @@ ASDF serves as a self-contained-and-explained data container while taking
 full advantage of parallel computing. In our workflow,
 one ASDF file contains all the information needed for data processing,
 including the seismic traces, event information files (QuakeML), and station response files (StationXML).
-The related APIs are carefully designed for easy data extraction and parallel implementation.
+The related Application Programming Interfaces (API)s are carefully designed for easy data extraction and parallel implementation.
 
 \section{Misfit function}
 \label{section:misfit}
@@ -368,7 +394,8 @@ and~$\Delta_{ss'}$ and~$\Delta_{rr'}$ denote angular distances between source an
 The reference angular distances~$\Delta$ and~$\Delta_{sc}$ need to be chosen based on the condition 
 numbers of the diagonal weighting matrices defined by Eqns.~(\ref{eq:source_weights}) and~(\ref{eq:receiver_weights}).
 
-\section{Model parametrization}
+\section{Model parameterization}
+\label{section:parameterization}
 
 We use the same transversely isotropic model parametrization as starting model GLAD-M15.
 Such a model is described by the five Love parameters $A$, $C$, $L$, $N$, and $F$~\citep{Love27},
@@ -393,6 +420,7 @@ where~$K_c$, $K_{\beta_v}$, $K_{\beta_h}$, and $K_\eta$ denote the four Fr\'eche
 which are calculated based on an adjoint-state method~\citep[e.g.,][]{Plessix_2006_RAS,Tromp2005}.
 
 \section{Adjoint tomography workflow}
+\label{section:workflow}
 
 The adjoint tomography workflow is shown in Fig.~\ref{fig:adjoint_workflow}.
 It starts with the selection of earthquakes, as discussed in Section~\ref{section:earthquakes}.
@@ -402,7 +430,7 @@ as discussed in Section~\ref{section:data}.
 For a given earthquake,
 the corresponding seismograms and related response information are combined in a single ASDF file,
 described in Section~\ref{section:ASDF}.
-For a given earthquake dataset, the conversion to ASDF needs to be performed once and for all.
+For a given earthquake data set, the conversion to ASDF needs to be performed once and for all.
 In the following sections we highlight several important aspects of the workflow.
 
 \begin{figure}
@@ -480,13 +508,13 @@ Fig.~\ref{fig:window_density} shows a time-distance plot
 for vertical component 17--40~s body waves in which the Pyflex window count is used to identify parts of seismograms being assimilated.
 A total of 4,363,719 time windows were picked in this category.
 The figure nicely highlights all the well known body traveltime branches.
-The maximum window count is 9,931 in the 134--135$^\circ$ distance and 1375--1376~s time bin.
+The maximum window count is 9,931 in the 134--135$^\circ$ distance and 1375--1,376~s time bin.
 
 \begin{figure}
   \centering
   \includegraphics[width=0.9\textwidth]{figures/window_colorbar_linear_Z.pdf}
   \caption{Time-distance plot for vertical component 17--40~s body waves showing a measurement window density map.
-  A total of 4,363,719 time windows were discretized into 1~degree epicentral distance and 1~s time bins.
+  A total of 4,363,719 time windows were discretized into 1~degree epicentral distance and 1~s time bins. Major traveltime branches are labeled. Note that the plot contains data from events with a wide variety of depths, so the branches are for identification purposes only.
   }
   \label{fig:window_density}
 \end{figure}
@@ -519,7 +547,7 @@ It involves the follow steps.
     we used a fixed value at a given iteration, following~\cite{zhu2012structure}.
   \item Preconditioning of the smoothed gradient based on a technique proposed by~\cite{luo2013strategies}.
   \item Line search to determine the magnitude of the model update.
-  The search direction is determined using a nonlinear conjugate gradient method~\citep{wright1999numerical} (iterations 16--21) or an L-BFGS quasi-Newton method (iterations 22--25).
+  The search direction is determined using a nonlinear conjugate gradient method~\citep{wright1999numerical} (iterations 16--21) or a Limited-memory Broyden- Fletcher-Goldfarb-Shanno (L-BFGS) quasi-Newton method (iterations 22--25).
   We used a subset of 120 earthquakes to conduct the line search and determine the step length.
 \end{enumerate}
 
@@ -543,6 +571,7 @@ Given that most HPC system time is spent waiting in the job queue, automatic
 failure detection and relaunching greatly shortens the overall time to solution.
 
 \section{Misfit evolution}
+\label{section:misfit_evolution}
 
 The inversion went through ten iterations in a number of stages, as documented
 in this section. The evolution of the overall misfit function~(\ref{eq:misfit})
@@ -734,10 +763,11 @@ while simultaneously adding shear attenuation as a new model parameter.
 {\color{red} Wenjie: Also include the P arrival measurements here.}
 
 \section{Model evaluation}
+\label{section:evaluation}
 
-In this section we evaluate model GLAD-M25 further based on a point-spread
-function resolution analysis as well as a ``held-out'' dataset, that is,
-a set of data not used in the actual structural inversion.
+% In this section we evaluate model GLAD-M25 further based on a point-spread
+% function resolution analysis as well as a ``held-out'' data set, that is,
+% a set of data not used in the actual structural inversion.
 
 \subsection{Point-spread function analysis}
 
@@ -745,14 +775,20 @@ Checkboard tests or tests involving a chosen known structure, e.g., a plume or s
 are frequently used to evaluate resolution in a tomographic inversion.
 Such tests are extremely expensive in FWI and adjoint tomography, because they
 require roughly the same computational resources as the actual inversion.
-In lieu of such tests, we performed two point-spread function analyses~
-\citep{fichtner2011resolution,zhu2015seismic,bozdaug2016global}.
+In lieu of such tests, we previously performed two point-spread function (PSF) analyses
+for model GLAD-M15~\citep{bozdaug2016global}.
+Since GLAD-M25 --- like its predecessor GLAD-M15 --- uses waves with a shortest period of 17~s
+but an earthquake database that is six times larger,
+we can expect improved versions of these already successful PSF tests.
+In the interest of focusing our efforts on obtaining the new model,
+we chose to direct our limited OLCF INCITE allocation towards the actual inversion
+rather than improved PSF tests.
 
-\subsection{Held-out dataset}
+\subsection{Held-out data set}
 
 Following the approach of \cite{tape2009adjoint}, \cite{chen2015multiparameter},
 and \cite{bozdaug2016global}, we selected 360 earthquakes that were not used
-in the actual inversion. This held-out dataset consists of all magnitude 6.3--7.0
+in the actual inversion. This held-out data set consists of all magnitude 6.3--7.0
 earthquakes in the global CMT catalog that were not used in the inversion.
 We chose larger events to generate as many measurements as possible.
 We calibrated the centroid time and scalar moment using a grid search based on
@@ -807,7 +843,7 @@ between the new model, GLAD-M25, and its starting model, GLAD-M15, and, in paren
 %     90--250s               &         30.9 &       34.8 &       34.9 \\
 %     \hline
 %   \end{tabular}\\
-%   \caption{Misfit Reduction from M00 to M25 for 360 earthquakes as held-out dataset}
+%   \caption{Misfit Reduction from M00 to M25 for 360 earthquakes as held-out data set}
 %   \label{table:misfit_reduction_M00_M25_360}
 % \end{table}
 
@@ -830,11 +866,17 @@ and we note a sharpening of the distributions centered around zero.
 \end{figure}
 
 \section{Model GLAD-M25}
+\label{section:model}
 
 In this section we discuss model GLAD-M25 in detail.
 We begin with a global overview of the model before concentrating on
 specific geographical regions.
 We conclude by highlighting various slabs and plumes in the model.
+Vertical cross sections are plotted relative to the spherical average of MODEL-M25,
+as discussed in Appendix~\ref{sec:1Dmodel}.
+For plotting purposes and use in other applications,
+an expansion of the model in spherical harmonics and radial B-splines is
+discussed in Appendix~\ref{sec:shanalysis}.
 
 \subsection{Global structure}
 
@@ -887,7 +929,7 @@ and Tonga-Kermadec.
 In the deep mantle, LLNL-G3Dv3 and GAP-P4 begin to fade out, but the long-wavelength patterns,
 in particular the lowerparts of the Africa and Pacific superplumes, are very similar.
 
-{\color{red} Wenjie: Note: add spherical harmonic analysis later.}
+%{\color{red} Wenjie: Note: add spherical harmonic analysis later.}
 
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/globe_vp_LLNL-GAP.pdf}
@@ -982,7 +1024,7 @@ In addition to models GLAD-M25, S362ANI$+$M, and S40RTS, we included regional
 model EU60~\citep{zhu2015seismic} for comparison.
 EU60 is the result of adjoint tomography of the crust and upper mantle
 beneath the European continent and the North Atlantic based on the assimilation of data from
-190 earthquakes recorded by 745 seismographic station.
+190 earthquakes recorded by 745 seismographic stations.
 
 A defining tectonic feature of Europe is the Trans-European Suture Zone~(TESZ),
 also known as the Tornquist-Teisseyre Zone,
@@ -1041,7 +1083,7 @@ Asia, like Europe, has a complex tectonic history, involving
 interactions among the Indian, Eurasian, Australian, Pacific, and Philippine
 plates.
 Map views of GLAD-M25 centered on Asia are plotted in Fig.~\ref{fig:asia-vs},
-together with S362ANI$+$M, S40RTS, and regional model EARA2014~\citep{chen2015multiparameter}.
+together with S362ANI$+$M, SL2013sv~\citep{SchaefferLebedev13}, and regional model EARA2014~\citep{chen2015multiparameter}.
 EARA2014 is a transversely isotropic model based on adjoint
 tomography, assimilating 1.7~million frequency-dependent traveltime
 measurements from 227 earthquakes recorded by 1,869 seismic stations.
@@ -1082,7 +1124,7 @@ beneath the Philippine plate, indicating ponding of ancient subducted plates.
 \begin{figure}
   \includegraphics[width=0.9\textwidth]{figures/depth_slice/asia_vs.pdf}
   \caption{Map views of shear wavespeed variations beneath Asia for GLAD-M25~(first column),
-  global models S362ANI$+$M (second column) and S40RTS (third column), and regional model EARA2014~\citep[last column;][]{chen2015multiparameter}.}
+  global models S362ANI$+$M (second column) and SL2013sv (third column), and regional model EARA2014~\citep[last column;][]{chen2015multiparameter}.}
   \label{fig:asia-vs}
   \centering
 \end{figure}
@@ -1105,7 +1147,7 @@ The Galapagos,
 San Felix, and Juan Fernandez hotspots are associated with distinct low wavespeed anomalies in GLAD-M25,
 but not in the other models.
 At 300~km depth, we see sharpened subduction of the Nazca plate
-in GLAD-M25 compared to S372ANI+M, similar in shape to  model LLNL-G3Dv3.
+in GLAD-M25 compared to S362ANI+M, similar in shape to model LLNL-G3Dv3.
 Moving to greater depths,
 we see distinct Peru and Chile slabs in GLAD-M25,
 with the Chile slab ponding in the transition zone
@@ -1159,14 +1201,14 @@ Finally,
 in Fig.~\ref{fig:plumes}(f) we see the Marion and Kerguelen hotspots, which might be connected to Afar in the lower mantle.
 Recovering these plumes is challenging due to poor data coverage in the southern hemisphere.
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
-    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Afar.png}\label{fig:plumes_a}}\\[-1pt]
-    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Bermuda_Canary.png}\label{fig:plumes_b}}\\[-1pt]
-    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/CapeVerde_Hoggar.png}\label{fig:plumes_c}}\\[-1pt]
-    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Iceland_Eifel.png}\label{fig:plumes_d}}\\[-1pt]
-    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Easter_Galapagos.png}\label{fig:plumes_a}}\\[-1pt]
-    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Marion3_Kerguelen.png}\label{fig:plumes_g}}\\
+    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Afar.png}}\\[-1pt]
+    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Bermuda_Canary.png}}\\[-1pt]
+    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/CapeVerde_Hoggar.png}}\\[-1pt]
+    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Iceland_Eifel.png}}\\[-1pt]
+    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Easter_Galapagos.png}}\\[-1pt]
+    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Marion3_Kerguelen.png}}\\
     \caption{Vertical cross sections for various plumes for models GLAD-M25 ($V_\textrm{P}$; left column), TX2015~\citep[$V_\textrm{S}$;][]{TX2015} (center column), and SEMUCB-WM1~\citep[$V_\textrm{S}$;][]{french2015broad} (right column).
     The map in the top left corner of each row shows the cross section with color-coded red, green, and white dots for geographical reference;
     hotspots are denoted by red triangles.
@@ -1175,7 +1217,7 @@ Recovering these plumes is challenging due to poor data coverage in the southern
     \label{fig:plumes}
 \end{figure}
 
-%\begin{figure}[h]
+%\begin{figure}[ht]
 %    \centering
 %    \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Easter_Galapagos.png}\label{fig:a}}\\[-1pt]
 %    \sidesubfloat[]{\includegraphics[width=1.0\textwidth]{figures/plumes/Macdonald_Yellowstone.png}\label{fig:b}}\\[-1pt]
@@ -1202,7 +1244,7 @@ At depth greater than 1000km,
 we see a very strong expression of the ancient Farallon slab in model Glad-M25, which is much weaker in the two P models.
 The difference may be attributed to increased data coverage thanks to USArray, as well as the use of finite-frequency Fr\'echet derivatives.
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Aeg.png}\label{fig:subd_a}}\\[-1pt]
     \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Br.png}\label{fig:subd_b}}\\[-1pt]
@@ -1217,98 +1259,68 @@ The difference may be attributed to increased data coverage thanks to USArray, a
     \label{fig:subd}
 \end{figure}
 
-
 \section{Discussion}
 
-Here, we presented our GLAD-M25 models. Starting from GLAD-M25, we
-conducted 10 more iterations, with significantly more earthquakes
-(up to 1480 earthquakes)and seismic data(up to 18.2 million time
-windows) added in the inversion in a progressive way. It is the first
-global transerse isotropoic model that brings the resolution down to
-17 secs, but also invert the $V_p$ and $V_s$ indenpendently. Due to the
-nature of spetral-element methos, our model meshes the crust and mantal
-, without introducing the "crustal correction". Our solver also enables
-us the take the full-attenuation into accout, both in forward and adjoint
-simulations, using undo attenuation at the cost of more computation
-hours and disk space.
+Seismology is a science driven by data.
+There was a time when seismologists would meticulously inspect single seismograms to glean valuable information from them.
+Today, we have easy access to data from thousands of earthquakes recorded by tens of thousands of seismographic stations, and individual inspection of all of these records has become impossible.
+Still, it would be a shame not to utilize as much as possible of the information in this massive seismographic database.
 
-GLAD-M25 is evaluated in many ways. First, it shows significant misfit
-reduction in all measurements categories, but also in the variance
-reduction in travel-time measurements. For the 360 held-out earthquakes,
-the behavior is similar to what we have in our inversion dataset. We
-presented our global $V_s$ and $V_p$, together with other well-known global
-models and at large scale they agree with each other. However, when we focus
-on regional studies and compare with regional models, our model shows superior
-more detailed structures compared to other global models, staying at the 
-same resolution of regional models. Our models shows great resolution in both
-plumes and suduction zones, using the independently inverted $V_p$ and $V_s$
-velocity models.
+To facilitate fast and effective access to such vast data resources,
+we use ASDF~\citep{krischer2016adaptable} in the preprocessing stage of the adjoint tomography workflow,
+and to accommodate I/O during postprocessing stage we use ADIOS~\citep{liu2014hello}.
+For data assimilation,
+tools, such as FLEXWIN, which automatically select data windows suitable for measurements,
+are indispensable, and we see tremendous opportunities for the use of machine learning algorithms in this context~\citep[e.g.,][]{chen2017}.
+
+Some form of automated parallel workflow management is critical for the global adjoint tomography process,
+because classical inversion workflows suffer from I/O inefficiencies, lack of fault tolerance, and an inability to work in distributed resource environments.
+The RADICAL-SAGA and RADICAL-EnTK workflow management engines~\citep{EnTK2017} facilitate tracking of tasks and job failure detection,
+enabling semi-automatic job resubmission if necessary.
+
+It should be clear from this discussion that modern seismic tomography requires close collaborations with computational scientists, HPC specialists, and visualization experts,
+as reflected in the list of authors for this article, in addition to access to the most advanced computational platforms,
+such as those offered through the DOE INCITE and NSF XSEDE programs.
 
 \section{Conclusion}
 
-Seismology is driven by data. Back into time, seismologists would look at
-single seismograms and pick valuable information out the them. Now, we have
-ten thousands of seismograms deployed globally and it will be a pity not
-to take all the information we have. Even though GLAD-M25 is following-up
-of GLAD-M15, It has many superior advantages and improvements. We increase
-the dataset from 253 to 1480 earthquakes, with carefully inverted sources
-in the 3D earth structures. We have 360 earthquakes used in the test
-dataset, which is already larger than the most of the dataset other people used
-for their inversion. We culled seismograms from various data centers,
-thanks to the open environment and data sharing spirit of our seismology community.
-With very careful checks by assessing the integrity of instrument response
-and deployment, evaluating the signal-to-noise ratios, picking the time windows
-using over 20 criteria, cleaning windows by their statistical behavior, and
-calculating weights to balance the uneven distribution of earthquakes and
-seismic stations, we really have done a lot to ensure the cleanness of the
-data assimilated into our inversion and make sure every piece of value information
-will be used but rejecting crap data.
+Building on our experiences during the construction of our first-generation global adjoint tomography model GLAD-M15~\citep{bozdaug2016global},
+for this study we expanded our earthquake database from 253 to 1,480 events,
+which were collectively recorded by more than 11,000 seismographic stations.
+We used three-component seismograms in four period bands,
+namely 17--40~s body waves, 40--100~s body waves, 40--100~s surface waves, and 90--250~s surface waves,
+resulting in twelve measurement categories.
+This culminated in the assimilation of more than 18~million time windows.
 
-However, global tomography research has progressed to a stage that not only relying
-on the data and methodology, but also involving a lot of technique challenges
-under the hood.
-It has driven us to seek for the most cutting-edge technologies to solve them.
-ADIOS was introduced to save mesh and kernel related data, since we are saving
-petabytes of wavefiled snapshots in a few hours of simulation and it is critical
-even for the most advanced supercomputers in the world.
-ASDF is developed by us to store the seismograms since we have ten millions of
-time series data from thousands of earthquakes. We have to get access and process
-them in a very efficient manner that most of the existing data format just won't
-meet our requirements.
-To handle the complex inversion workflow, we are working RADICAL group to develop
-the workflow management tools that will help manage every piece of task and make
-the user aware if there is anything bad happened during the computation. Those tools that help the
-automation of the workflow, is the "guard" that stand there and monitor things
-to make sure our scientific results away from contamination. Besides, the
-developer of SPECFEM packages, they dedicate more than ten years of work,
-to develop the software and make it fast, efficient and robust for global scale of simulation.
-They are working closely with hardware vendors such as Cray, IBM and NVidia to adapt
-the code to architecture of the most advanced supercomputers. We are soon
-moving our simulation to Summit, the world No.1 supercomputer at the Oak Ridge
-National Lab.
+GLAD-M25 --- like its predecessor GLAD-M15 --- invokes no crustal corrections,
+and constrains crust and mantle shear and compressional wavespeeds simultaneously.
+The effects of attenuation are fully accommodated,
+both in forward and in adjoint simulations.
 
-For the future work, inversion for azimuthal anisotropy and attenuation is on the way.
-The methodolody has already be demonstrated in a few regional studies, such as
-\citep{}. We will start with our current dataset but increase our earthquakes to
-more than $6,000$ in a progressive way , which will covered most of the
-earthquakes in Global CMT project. We also plan to push our model resolution to
-9 secs, with the Summit supercomputer available at Oak Ridge national lab. It will be
-unprecedental in sesimology that pushes global tomography to such resolution, meanwhile
-it will pose new chanllenges. Ensuring the reliability and stability on such a large machine
-and associated file system, for example, will be one of those challenges. Even though the
-computing powers has grown significantly, the storage has not. Our 17 sec has already
-generated a few petabytes of wavefields files and 9 sec will generate at least one order
-of magnitudes more files.
+GLAD-M25 was quantitatively evaluated in several ways.
+First, it produces significant misfit
+reductions in all twelve measurements categories.
+Second,
+it produces nicely-centered Gaussian traveltime \& amplitude anomaly histograms
+in all measurement categories.
+Finally,
+for a held-out data set of 360 events
+we see similar misfit reductions and traveltime \& amplitude anomaly histograms as in the actual inversion.
 
-There are certains things that we would like to address on in the near future. First is the
-the seismic data distribtuion. As we know, most of the seismic stations are distributed on
-the continents, while the oceans are most left blank, with only a few stations on a few
-islands. Floating arrays\citep{} might be promising in the future but it all comes down to the 
-data processing and data quality. Second, harnessing such a large data set is difficult.
-Artifical intelligence may be introduced and help us to make decisions when assimilating
-measurements\citep{}.
+When we compare GLAD-M25 with other global models,
+we find overall good agreement at longer wavelengths.
+However, unlike other global models, when we compare GLAD-M25 with regional models
+we also observe generally good agreement at smaller wavelengths,
+and, in particular, plumes and subduction zones feature prominently.
 
-\newpage
+Obvious future directions of research include growing the earthquake database further to the roughly 6,000 earthquakes in the right magnitude range already available via the Global CMT database
+and reducing the shortest simulation period further from 17~s to 8.5~s.
+The most recent machine at OLCF, called ``Summit'', an IBM Power9 accelerated by NVIDIA Tesla V100 GPUs,
+can readily accommodate such simulations.
+
+Other future directions of research involve inversions for azimuthal anisotropy
+and attenuation.
+The feasibility of such inversions on a regional scale have already been demonstrated in a studies focused on Europe by~\cite{ZhuTromp2013} and \cite{Zhuetal2013}.
 
 \begin{acknowledgments}
 %We want to give thanks to the Oak Ridge National Lab, for providing
@@ -1339,6 +1351,7 @@ the seismic measurement software package FLEXWIN used for this article are
 \appendix
 
 \section{Spherically symmetric average model}
+\label{sec:1Dmodel}
 
 In this appendix we determine the spherically symmetric (radial) average of model GLAD-M25.
 To accomplish this,
@@ -1396,8 +1409,7 @@ is the absence of the 220~km discontinuity and a lower~$V_P/V_S$ ratio in the to
 \end{figure}
 
 \section{Spherical harmonic model expansion}
-
-{\color{red} Wenjie, to save space, this appendix could also go in the supplementary online material.} 
+\label{sec:shanalysis}
 
 In this appendix we express model GLAD-M25 in a spherical harmonic basis
 to facilitate easy plotting, analysis, and comparisons with other models.

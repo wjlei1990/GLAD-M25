@@ -504,7 +504,7 @@ includes the following phases.
   \item Construction of the final, properly weighted, adjoint sources.
 \end{enumerate}
 
-Fig.~\ref{fig:window_density} shows a time-distance plot
+Fig.~\ref{fig:window_density_Z} shows a time-distance plot
 for vertical component 17--40~s body waves in which the Pyflex window count is used to identify parts of seismograms being assimilated.
 A total of 4,363,719 time windows were picked in this category.
 The figure nicely highlights all the well known body traveltime branches.
@@ -516,8 +516,25 @@ The maximum window count is 9,931 in the 134--135$^\circ$ distance and 1375--1,3
   \caption{Time-distance plot for vertical component 17--40~s body waves showing a measurement window density map.
   A total of 4,363,719 time windows were discretized into 1~degree epicentral distance and 1~s time bins. Major traveltime branches are labeled. Note that the plot contains data from events with a wide variety of depths, so the branches are for identification purposes only.
   }
-  \label{fig:window_density}
+  \label{fig:window_density_Z}
 \end{figure}
+
+Fig.~\ref{fig:window_density_R} and Fig.~\ref{fig:window_density_T} shows for Radial and Transverse component in 17--40~s period bands.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.9\textwidth]{figures/window_colorbar_linear_R.pdf}
+  \caption{Same as Fig.~\ref{fig:window_density_Z}, except for Radial component 17--40~s body waves.}
+  \label{fig:window_density_R}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.9\textwidth]{figures/window_colorbar_linear_T.pdf}
+  \caption{Same as Fig.~\ref{fig:window_density_Z}, except for Transverse component 17--40~s body waves.}
+  \label{fig:window_density_T}
+\end{figure}
+
 
 \subsection{Adjoint Simulations}
 
@@ -744,9 +761,9 @@ so there are small tradeoffs between different measurement categories.
 \end{figure}
 
 Fig~\ref{fig:P_phase_hist} shows histograms of the phase measurements of first P
-arrivals in 4 of the body wave measurement categories. All the
+arrivals in two of the body wave measurement categories. All the
 categories show consistent reduction in both mean and variance values. 
-Even though there are many kinds of phases assimilated  and
+Although there are various phases assimilated and
 P arrivals only contribute ~8\% of the overall measurements,
 the histogram shows we are still doing a good job at minimizing the
 misfit of the P arrivals.
@@ -754,7 +771,7 @@ misfit of the P arrivals.
 \begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth]{figures/dt_histogram_P.pdf}
-  \caption{Histograms of phase measurements of P arrivals in four measurement categories for S362ANI combined with CRUST2.0 (M00, \textbf{Black}), GLAD-M15 (M15, \textbf{{\color{ForestGreen} Green}}) and GLAD-M25 (M25, \textbf{{\color{Red} Red}}). Other settings are the same as Fig.~\ref{fig:phase_hist}. }
+  \caption{Histograms of phase measurements of P arrivals in two measurement categories for S362ANI combined with CRUST2.0 (M00, \textbf{Black}), GLAD-M15 (M15, \textbf{{\color{ForestGreen} Green}}) and GLAD-M25 (M25, \textbf{{\color{Red} Red}}). Other settings are the same as Fig.~\ref{fig:phase_hist}. }
   \label{fig:P_phase_hist}
 \end{figure}
 
@@ -882,6 +899,16 @@ and we note a sharpening of the distributions centered around zero.
   \label{fig:phase_hist_360}
 \end{figure}
 
+P phase measurements were also extracted and compared in Fig.~\ref{fig:phase_hist_360_P} for 3 models. The behavior is consistent as we expected.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{figures/dt_histogram_360_P.pdf}
+  \caption{Histograms of phase measurements of P arrivals for the 360 events in the held-out database in Vertical and Radial 17--40~s period band .}
+  \label{fig:phase_hist_360_P}
+\end{figure}
+
+
 \section{Model GLAD-M25}
 \label{section:model}
 
@@ -1005,7 +1032,7 @@ Mazatzal Blocks, which define the southern boundary of the large craton.
 In the 200--400~km depth range, we observe a high wavespeed
 anomaly within the Gulf of Mexico, which coincides spatially with the deepest
 bathymetry and corresponds to a portion of ancient oceanic
-Lithosphere~\citep{muller2008}.
+Lithosphere~\citep{muller2008age}.
 A remnant of the Juan de Fuca plate,
 with a high wavespeed footprint, is visible at depths of 300~km and 400~km,
 where SL2013NA shows a much stronger anomaly.

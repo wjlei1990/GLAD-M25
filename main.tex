@@ -16,13 +16,13 @@
 %\usepackage{subfig}
 
 \title[Global Adjoint Tomography -- Model GLAD-M25]
-  {Global adjoint tomography -- Model GLAD-M25}
+  {Global adjoint tomography -- Model GLAD-M25\footnote{This paper is dedicated to Dimitri Komatitsch, computational geophysicist extraordinaire, who passed away unexpectedly shortly before its submission.}}
 
 \author[Lei et al.]
   {Wenjie Lei$^1$, Youyi Ruan$^{1.2}$, Ebru Bozda\u g$^3$, Daniel Peter$^4$, Matthieu Lefebvre$^1$, \\{\LARGE \rm Dimitri Komatitsch$^5$, Jeroen Tromp$^{1,6}$, Judith Hill$^7$, Norbert Podhorszki$^7$}, \\ {\LARGE \rm and David Pugmire$^7$} \\
   $^1$ Department of Geosciences, Princeton University, Princeton, NJ 08544, USA\\
   $^2$ Nanjing University, Nanjing, China\\
-  $^3$ Department of Geophysics, Colorado School of Mines, Colden, CO 80401, USA\\
+  $^3$ Department of Geophysics, Colorado School of Mines, Golden, CO 80401, USA\\
   $^4$ Extreme Computing Research Center, King Abdullah University of Science and Technology, \\Thuwal 23955-6900, Kingdom of Saudi Arabia\\
   $^5$ LMA, CNRS UPR 7051, Aix-Marseille University, Centrale Marseille, 13453 Marseille Cedex 13, France\\
   $^6$ Program in Applied and Computational Mathematics, Princeton University, Princeton, NJ 08544, USA\\
@@ -45,15 +45,15 @@ Building on our first-generation global adjoint tomography model,
 GLAD-M15, we present our second-generation transversely isotropic global model,
 named GLAD-M25, which is the result of ten quasi-Newton tomographic iterations with an
 earthquake database consisting of 1,480 events in the magnitude range $5.8\le M_w \le 7.0$,
-an almost six-fold increase over the previous generation model.
+an almost six-fold increase over the first-generation model.
 We calculated fully 3D synthetic seismograms with a shortest period of 17~s based on a GPU-accelerated spectral-element wave
 propagation solver which accommodates effects due to 3-D anelastic crust \& mantle structure, topography \& bathymetry, the ocean load, ellipticity, rotation, and self-gravitation.
-We used an adjoint-state method to calculate Fr\'echet derivatives in 3D anelastic earth models
+We used an adjoint-state method to calculate Fr\'echet derivatives in 3D anelastic Earth models
 facilitated by a parsimonious storage algorithm.
 The simulations were performed on the Cray XK7 ``Titan'' at the Oak Ridge Leadership Computing Facility.
 We quantitatively evaluated GLAD-M25 by assessing misfit reductions and traveltime \& amplitude anomaly histograms in twelve measurement
 categories.
-We performed similar assessments for a held-out dataset consisting of 380 earthquakes,
+We performed similar assessments for a held-out data set consisting of 380 earthquakes,
 with results comparable to the actual inversion.
 We compare GLAD-M25 with numerous other global and regional models,
 and highlight a variety of plumes and subduction zones.
@@ -70,9 +70,10 @@ Around the same time,
 \cite{BaChLa77}, \cite{Lailly1983}, and~\cite{Tar84} formulated and adapted the theory of adjoint-state methods~\citep{Chavent1974} for exploration seismology with the goal of capturing the full physics of seismic wave propagation.
 Mainly due to computational challenges,
 it took until the late 2000s to see the first applications of adjoint-state methods in regional- and continental-scale earthquake seismology~\citep{tape2009adjoint,Fichtner09,zhu2012structure}.
-The first global ``adjoint tomography'' model of the Earth's mantle was published in 2016~\citep{bozdaug2016global}, more than 30 years after the development of the original ``full waveform inversion'' (FWI) theory.
+The first global ``adjoint tomography'' model of the Earth's mantle,
+GLAD-M15, was published in 2016~\citep{bozdaug2016global}, more than 30 years after the development of the original ``full waveform inversion'' (FWI) theory.
 
-Current global models are in general agreement regardless of data type and inversion strategy in terms of long-wavelength heterogeneity \citep{ritzwollerlavely1995,TW01,beckerboschi2002}.
+Current global seismic models are in general agreement regardless of data type and inversion strategy in terms of long-wavelength heterogeneity \citep{ritzwollerlavely1995,TW01,beckerboschi2002}.
 However, discrepancies between models become noticeable as resolution increases.
 Using accurate 3D simulations of seismic wave propagation and the computation of data sensitivities in 3D background models are key requirements for improving resolution in tomographic images on all scales.
 Such detailed images are essential for understanding mantle dynamics and related surface tectonic processes
@@ -81,29 +82,29 @@ Higher resolution wavespeed models are also important for accurately locating ea
 
 With these goals in mind,
 in this study we use a GPU-accelerated version of the 3D spectral-element solver
-SPECFEM3D\_GLOBE~\citep{KoTr02a,KoTr02b} on the Cray ``Titan'' at the Oak Ridge Leadership Computing Facility (OLCF) for global adjoint tomography.
+SPECFEM3D\_GLOBE~\citep{KoTr02a,KoTr02b} on the Cray supercomputer ``Titan'' at the Oak Ridge Leadership Computing Facility (OLCF) for global adjoint tomography.
 These simulations accommodate the full 3D complexity of global Earth models,
 including 3D anelastic crust and mantle structure, self-gravitation, rotation, ellipticity, topography \& bathymetry, and the load of the oceans.
 No compromises are made with regards to resolving the Earth's crust,
 which is explicitly captured by the spectral-element mesh~\citep{tromp2010a},
 thereby eschewing the need for ubiquitous ``crustal corrections''.
-The ultimate goal is to use anything and everything in seismograms,
+The ultimate goal is to use every single piece of information in seismograms,
 a task made partly feasible based on the automated window selection tool FLEXWIN~\citep{maggi2009automated}.
 
-Global adjoint tomography has a well-defined but complex workflow with multiple
-stages involving numerical simulations of synthetic seismograms (forward simulations),
-pre-processing of seismic data, making measurements, data assimilation, and Fr\'echet derivative
-calculations (adjoint simulations), and post-processing of the gradient for quasi-Newton model
-updates.
+Global adjoint tomography has a well-defined but complex workflow with multiple stages.
+% including numerical simulations of synthetic seismograms (forward simulations) for all events,
+% pre-processing of seismic data, making measurements, data assimilation, Fr\'echet derivative
+% calculations (adjoint simulations), and post-processing of the gradient for quasi-Newton model
+% updates.
 It is essential to optimize, automate, and harden the entire process using workflow management tools, especially with large data sets.
 For each iteration,
 1,480 forward and adjoint simulations need to be performed,
 generating a few Petabytes of wavefield files for the parsimonious-storage kernel calculation algorithm of~\cite{KoXiBoPeSaLiTr16}, and consuming 16~million OLCF node hours.
 How to deal with hardware failures during this process is critical
 to prevent contamination of the inversion results.
-For these reasons, we use RADICAL-SAGA and RADICAL-EnTK as our
-workflow management engines~\citep{EnTK2017}.
-These workflow engines can automatically detected job failures,
+For these reasons, we use EnTK as our
+workflow management engine~\citep{EnTK2017}.
+This workflow engine can automatically detected job failures,
 both from the high-performance computing (HPC) system and via user-defined functions.
 This facilitates tracking of tasks and semi-automatic job resubmission if necessary.
 
@@ -120,13 +121,13 @@ we make comparisons with models US22~\citep{zhu2017radial},
 a radially anisotropic model based on adjoint tomography using USArray data from 180 regional earthquakes,
 and SL2013NA~\citep{schaeffer2014imaging},
 a modification of global model SL2013sv focused on North America.
-In Europe we use regional model EU60~\citep{zhu2015seismic} for comparison.
-EU60 is based on the assimilation of data from 190 regional earthquakes recorded by more than 700 European seismographic stations.
+In Europe we use regional model EU60~\citep{zhu2015seismic} for comparison,
+which is based on the assimilation of data from 190 regional earthquakes recorded by more than 700 European seismographic stations.
 Finally, in Asia we use regional adjoint tomography model EARA2014~\citep{chen2015multiparameter} as a reference, a model based on data from 227 earthquakes recorded by more than 1,800 stations.
 
 This article is organized as follows.
 Sections~\ref{section:start}--\ref{section:data} describe the starting model,
-earthquake database, and the seismographic data set. 
+earthquake database, and seismographic data set. 
 Sections~\ref{section:misfit} and~\ref{section:parameterization} describe the misfit function minimized during the inversion process
 and the related model parameterization.
 In Section~\ref{section:workflow} we describe the adjoint tomography workflow in some detail.
@@ -147,8 +148,8 @@ with 3D crustal model CRUST2.0~\citep{bassin2000current} as its starting model.
 In this study,
 we continue to use the same transversely isotropic model parametrization.
 Instead of relying on ubiquitous ``crustal corrections'',
-the mesh implementation of the crust in the spectral-element solver SPECFEM3D\_GLOBE~\citep{KoTr02a,KoTr02b,PeKoLuMaLeCaLeMaLiBlNiBaTr11} enables us accurately accommodate topography and bathymetry as well as variations in the Moho.
-GLAD-M15 was constructed using a global data base of 256 earthquakes.
+the mesh implementation of the crust in the spectral-element solver SPECFEM3D\_GLOBE~\citep{KoTr02a,KoTr02b,PeKoLuMaLeCaLeMaLiBlNiBaTr11} enables us to accurately accommodate topography and bathymetry as well as variations in the Moho.
+GLAD-M15 was constructed using a global database of 256 earthquakes.
 The first 12 iterations of the GLAD-M15 inversion used three-component seismograms with a shortest period of 27~s,
 and the final 3 iterations reduced this further to 17~s.
 In this study we also used three-component seismograms with a shortest period of 17~s.
@@ -164,17 +165,16 @@ In this study we also used three-component seismograms with a shortest period of
   \label{fig:source_correction}
 \end{figure}
 
-In addition to the 256 earthquakes used for the construction of first generation
-model GLAD-M15, we initially selected 784 carefully chosen additional earthquakes
+In addition to the 256 earthquakes used for the construction of GLAD-M15, we initially carefully selected 784 additional earthquakes
 from the global Centroid-Moment Tensor (CMT) catalog~\citep[e.g.,][]{ekstrom2012global},
-and added them to our database, resulting in a total number of 1,040 earthquakes.
+resulting in a total number of 1,040 earthquakes.
 To ensure a good signal-to-noise ratio on a global scale,
 the smallest moment magnitude in the database is set to~5.5,
-and to avoid complications associated with source size,
+and to avoid complications associated with source dimension and directivity,
 the largest moment magnitude is set to~7.2.
 
 Before using the 1,040 earthquakes in our structural inversion,
-we performed CMT inversions in model GLAD-M15,
+we performed CMT inversions using model GLAD-M15,
 the results of which are summarized in Fig.~\ref{fig:source_correction}.
 To ensure even global coverage,
 we used seismographic stations from the  Global Seismic Network (II, IU, IC, US, CU, and GT),
@@ -224,6 +224,7 @@ As shown in Fig.~\ref{fig:source_correction}b,
 the receivers are unevenly distributed across the globe,
 with several dense arrays in the Northern Hemisphere and poor coverage in the Southern Hemisphere.
 To balance the coverage,
+following a strategy articulated by~\cite{Ruanetal2018},
 we assign receiver weights~$\omega_{cr}$ based on the expression
 \begin{equation}
 \omega_{cr}^{-1} = N_c\,\sum_{r'=1}^{R_c} \exp\left[\mbox{}-\left(\frac{\Delta_{rr'}}{\Delta_c}\right)^2\right]
@@ -234,16 +235,15 @@ where~$N_c$ is a normalization factor for category~$c$,
 and where~$\Delta_{rr'}$ denotes the angular distance between receivers~$r$ and~$r'$\,.
 The reference angular distance~$\Delta_c$ for each category~$c$ needs to be chosen such that the condition 
 number of the diagonal weighting matrix defined by Eqn.~(\ref{eq:spatial_weights}) is not too large.
-The calculation of the weights may be abstracted as: given a spatial distribution of
-points on the unit sphere, determine a weighting associated with each point.
+The calculation of the weights may be abstracted as: given a distribution of
+points on the unit sphere, determine a spatial weighting associated with each point.
 
 The algorithm inverts for the six elements of the moment tensor
 and the centroid location~(latitude, longitude, and depth).
-The calculation of each associated Fr\'echet derivative requires one full 3D forward simulation,
-so, considering we have more than one thousand events,
-these source inversions are computationally very expensive.
+These source inversions are computationally very expensive,
+because for each of the 1,040~events, nine full 3D forward simulations are required.
 
-Because we allow the synthetics to shift by an amount~$\Delta t$ relative to the data,
+Because we allow the synthetics to shift in phase by an amount~$\Delta t$ relative to the data,
 the CMT inversion has unreliable sensitivity to the centroid time.
 To alleviate this problem,
 following~\cite{zhu2012structure},
@@ -266,7 +266,7 @@ Fig.~\ref{fig:event_1480} summarizes the characteristics of all 1,480 earthquake
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{figures/events_1480.pdf}
-  \caption{1,480 earthquakes used in this study. (a) Distribution of earthquakes. The color of each beach ball reflects its depth range, where blue designate events shallower than 50~km, green events between 50~km and 300~km, and red events deeper than 300~km. (b) \& (c) Histograms of earthquake moment magnitudes and depths.}
+  \caption{The 1,480~earthquakes used in this study. (a) Distribution of earthquakes. The color of each beach ball reflects its depth range, where blue designates events shallower than 50~km, green events between 50~km and 300~km, and red events deeper than 300~km. (b) \& (c) Histograms of earthquake moment magnitudes and depths.}
   \label{fig:event_1480}
 \end{figure}
 
@@ -289,7 +289,7 @@ of our database and greatly improve coverage in certain regions.
 
 \begin{figure}
   \includegraphics[width=0.8\textwidth]{figures/station_map.pdf}
-  \caption{Distribution of 11,800 seismographic stations used in this study. Colors denote the number of events for which a given station contributes waveforms to the structural inversion. Stations with a number of event responses $<400$ are plotted in smaller size; these are usually temporary arrays deployed over a short period of time, frequently ocean bottom seismometers. The maximum number of event responses comes from ANMO, in Albuquerque, New Mexico, which contributed to 1,442 out of 1,480 earthquakes in the data set.}
+  \caption{Distribution of the 11,800~seismographic stations used in this study. Colors denote the number of events for which a given station contributes waveforms to the structural inversion. Stations with a number of event responses $<400$ are plotted in smaller size; these are usually temporary arrays deployed over a short period of time, frequently ocean bottom seismometers. The maximum number of event responses comes from ANMO, in Albuquerque, New Mexico, which contributed to 1,442 out of 1,480 earthquakes in the data set.}
   \label{fig:stations}
   \centering
 \end{figure}
@@ -309,15 +309,15 @@ In this context, there are four key issues ASDF resolves.
 \begin{itemize}
     \item Robustness and stability: the data container is developed and maintained to ensure accuracy of scientific results.
     \item Data organization: the container is self-describing. Data, including waveform, source, and station information, are organized into well-defined structures.
-    \item Reproducibility: the container enables scientists to keep track of what has been done to data so that results can be reproduced.
+    \item Reproducibility: the container enables scientists to keep track of which operations have been performed on the data so that results can be reproduced.
     \item Efficiency: the format provides easy mechanisms for parallel processing.
 \end{itemize}
 
 ASDF serves as a self-contained-and-explained data container while taking
 full advantage of parallel computing. In our workflow,
-one ASDF file contains all the information needed for data processing,
-including the seismic traces, event information files (QuakeML), and station response files (StationXML).
-The related Application Programming Interfaces (API)s are carefully designed for easy data extraction and parallel implementation.
+one ASDF file contains all the information needed for processing one event,
+including the seismic traces, an event information file (in QuakeML format), and station response files (in StationXML format).
+The related Application Programming Interfaces (API)s are carefully designed for easy data extraction and parallel processing.
 
 \section{Misfit function}
 \label{section:misfit}
@@ -337,7 +337,7 @@ Although the inversion is designed to minimize the overall misfit,
 we will be tracking the misfit reduction in each of the categories to ensure that
 the model is improving the fit to the data roughly equally across the board.
 One of the biggest challenges in the construction of the misfit function is the
-highly uneven distribution of earthquakes and seismographic stations,
+highly uneven distribution of earthquakes --- discussed in Section~\ref{section:earthquakes} --- and seismographic stations,
 which must be counterbalanced by geographically weighting the data.
 This issue is discussed in detail by~\cite{Ruanetal2018};
 in this section we present a brief synopsis.
@@ -351,7 +351,7 @@ the overall misfit, $\Phi$, is defined as follows:
 \end{equation}
 where~$S$ denotes the number of sources, $C$ the number of categories,
 $R_{sc}$ the number of receivers recording source~$s$ in category~$c$,
-and~$W_{scr}$ the number of measurement windows for source~$s$, category~$c$
+and~$W_{scr}$ the number of measurement windows for source~$s$, category~$c$,
 and receiver~$r$.
 The misfit for a specific source~$s$, category~$c$, receiver~$r$, and window~$w$ is
 \begin{equation}
@@ -365,8 +365,8 @@ $\Delta T_{scrw}$\,, weighted by its standard deviation, i.e., $\chi_{scrw}=(\De
 As in the source inversions,
 the window weights are equal, $\omega_{scrw}=1$\,,
 and the category weight, $\omega_c$\,, is the reciprocal of the number of measurements in that
-category.
-Earthquakes are mainly confined to plate boundaries,
+category, $1/C$.
+Earthquakes mainly occur along plate boundaries,
 and most seismic stations are confined to the continents,
 which leads to a very uneven distribution of sources and stations,
 as illustrated in Figs.~\ref{fig:event_1480} and~\ref{fig:stations}.
@@ -376,7 +376,7 @@ Our source and receiver weighting strategy,
 encapsulated by the weights~$\omega_s$ and $\omega_{scr}$\,,
 is developed to compensate for uneven spatial sampling.
 Following the same strategy as for the receiver weights in the source inversions,
-we define the source and receiver weights as
+we define source and receiver weights as
 \begin{equation}
 \omega_{s}^{-1} = N\,\sum_{s'=1}^{S} \exp\left[\mbox{}-\left(\frac{\Delta_{ss'}}{\Delta}\right)^2\right]
 \quad ,
@@ -422,7 +422,7 @@ which are calculated based on an adjoint-state method~\citep[e.g.,][]{Plessix_20
 \section{Adjoint tomography workflow}
 \label{section:workflow}
 
-The adjoint tomography workflow is shown in Fig.~\ref{fig:adjoint_workflow}.
+The adjoint tomography workflow is depicted in Fig.~\ref{fig:adjoint_workflow}.
 It starts with the selection of earthquakes, as discussed in Section~\ref{section:earthquakes}.
 Given the earthquake selection,
 observed seismographic data and related response information are acquired,
@@ -447,8 +447,8 @@ for the purpose of making measurements.
 The forward simulations are based on the global spectral-element solver
 SPECFEM3D\_GLOBE~\citep{KoTr02a,KoTr02a}, and take a CMT solution, a relevant list
 of stations, and the current earth model as input.
-The solver is GPU accelerated, and the simulations are performed on the Cray `Titan'
-at the Oak Ridge Leadership Computing Facility.
+The solver is GPU accelerated, and the simulations are performed on the Cray supercomputer ``Titan''
+at the OLCF.
 To simulate 120~min seismograms with a shortest period of 17~s on 384 NVIDIA
 Tesla K20X GPUs takes approximately 10~min of wall clock time.
 The calculation of Fr\'echet derivatives at a later stage of the workflow requires
@@ -464,7 +464,7 @@ so for 1,480 earthquakes this amounts to 1.5~PB of storage.
 \begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth]{figures/Preprocess_workflow.pdf}
-  \caption{Preprocessing workflow for seismic data.}
+  \caption{Sub-workflow workflow for preprocessing seismic data.}
   \label{fig:preprocess_workflow}
 \end{figure}
 
@@ -504,10 +504,11 @@ includes the following phases.
   \item Construction of the final, properly weighted, adjoint sources.
 \end{enumerate}
 
-Fig.~\ref{fig:window_density_Z} shows a time-distance plot
+To illustrate which seismic phases end up being picked,
+Fig.~\ref{fig:window_density} shows a time-distance plot
 for vertical component 17--40~s body waves in which the Pyflex window count is used to identify parts of seismograms being assimilated.
 A total of 4,363,719 time windows were picked in this category.
-The figure nicely highlights all the well known body traveltime branches.
+The figure nicely highlights all the well known vertical-component body traveltime branches.
 The maximum window count is 9,931 in the 134--135$^\circ$ distance and 1375--1,376~s time bin.
 
 \begin{figure}
@@ -539,7 +540,7 @@ Fig.~\ref{fig:window_density_R} and Fig.~\ref{fig:window_density_T} shows for Ra
 \subsection{Adjoint Simulations}
 
 Collectively,
-the adjoint simulations are the most expensive stage of the adjoint tomography workflow. 
+the adjoint simulations are the most expensive stage of the workflow. 
 Adjoint simulations take the adjoint sources as input, and generate Fr\'echet
 derivatives of the four model parameters as output.
 The computational cost of one adjoint simulation is roughly twice ($\sim25$~min) that of
@@ -573,12 +574,12 @@ It involves the follow steps.
 There are more than ten stages in the adjoint tomography workflow,
 and each stage involves thousands of small tasks.
 For every model iteration,
-we perform 1,480 forward and adjoint simulations, each involving hundreds of
+we performed up to 1,480 forward and adjoint simulations, each involving hundreds of
 compute cores and graphics cards, as well as heavy I/O.
-The workflow is prone to human error and hardware failure, making it fragile.
-For these reasons, we wish to harden the worflow by taking advantage of modern
+The workflow is prone to human error and hardware failure, making it fragile~~\citep{Lefebvre2018}.
+For these reasons, we hardened the workflow by taking advantage of modern
 workflow management software.
-With this goal in mind, we selected RADICAL-SAGA and RADICAL-EnTK as our
+We selected RADICAL-SAGA and RADICAL-EnTK as our
 workflow management engines, and developed complementary seismic tomography
 workflow tools~\citep{EnTK2017}.
 The workflow engine can automatically detected job failures both from the
@@ -601,7 +602,7 @@ in Fig.~\ref{fig:misfit}.
   \caption{Evolution of the misfit function from GLAD-M15 to GLAD-M25.
   Each color denotes different stages of the inversion, as discussed in Sections~\ref{sec:I}--\ref{sec:III}.
   (a) Evolution of the total misfit. (b)--(j) Misfit in
-  each period band (rows) on three components (columns). (e)--(g) From GLAD-M18,
+  each period band (rows) on three components (columns). (e)--(g) At iteration 18,
   we  split the 40--100~s period band into two
   measurement categories: body waves (red diamonds) and surface waves
   (red squares).
@@ -742,7 +743,7 @@ of measurements in the various categories.
 Again we use all 1,480 events and a set of identical windows on all three components
 to assess GLAD-M25, GLAD-M15, and S362ANI combined with CRUST2.0.
 The total number of selected windows exceeds 18~million.
-Fig~\ref{fig:phase_hist} shows histograms of the resulting phase
+Fig.~\ref{fig:phase_hist} shows histograms of the resulting phase
 measurements in all twelve measurement categories.
 We observe that the distributions generally become better centered on zero,
 and that all standard deviations are steadily reduced.
@@ -752,39 +753,33 @@ so there are small tradeoffs between different measurement categories.
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{figures/dt_histogram.pdf}
-  \caption{Histograms of phase measurements in all twelve measurement categories for S362ANI combined with CRUST2.0 (M00, \textbf{Black}), GLAD-M15 (M15, \textbf{{\color{ForestGreen} Green}}) and GLAD-M25 (M25, \textbf{{\color{Red} Red}}).
-  Each column represents one component, and each row corresponds to a period band.
+  \caption{Histograms of phase measurements in all twelve measurement categories for S362ANI combined with CRUST2.0 (M00, Black), GLAD-M15 (M15, Green), and GLAD-M25 (M25, Red).
+  Each column represents one component and each row corresponds to a period band.
   The numbers above the top right of each panel denote the number of measurements in the corresponding category.
   The total number of measurements is 18.2 million.
   The mean and standard deviations of the phase measurements for the three models are displayed in the top right corner of each panel.}
   \label{fig:phase_hist}
 \end{figure}
 
-Fig~\ref{fig:P_phase_hist} shows histograms of the phase measurements of first P
-arrivals in two of the body wave measurement categories. All the
-categories show consistent reduction in both mean and variance values. 
-Although there are various phases assimilated and
-P arrivals only contribute ~8\% of the overall measurements,
-the histogram shows we are still doing a good job at minimizing the
-misfit of the P arrivals.
+Fig.~\ref{fig:P_phase_hist} shows histograms of 17--40~s P-wave traveltime anomalies on the vertical and radial components.
+Both components exhibit consistent reductions in terms of both mean and variance. 
+These arrivals --- almost 530,000 measurements in the 17--40~s period band, roughly~$\sim3\%$ of the database --- are of great importance, because they help constrain the compressional wavespeed structure in the model.
 
 \begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth]{figures/dt_histogram_P.pdf}
-  \caption{Histograms of phase measurements of P arrivals in two measurement categories for S362ANI combined with CRUST2.0 (M00, \textbf{Black}), GLAD-M15 (M15, \textbf{{\color{ForestGreen} Green}}) and GLAD-M25 (M25, \textbf{{\color{Red} Red}}). Other settings are the same as Fig.~\ref{fig:phase_hist}. }
+  \caption{Histograms of traveltime measurements of 17--40~s P arrivals on the vertical and radial for S362ANI combined with CRUST2.0 (M00, Black), GLAD-M15 (M15, Green), and GLAD-M25 (M25, Red). Other settings are the same as in Fig.~\ref{fig:phase_hist}.}
   \label{fig:P_phase_hist}
 \end{figure}
 
-
-Fig~\ref{fig:amp_hist} shows histograms of the amplitude
+Fig.~\ref{fig:amp_hist} shows histograms of the amplitude
 measurements for all twelve measurement categories,
 which were not used in the current inversion.
 Despite this,
 we observe modest reductions in all standard deviations of the histograms.
 The histograms are nicely centered, indicating that the moment magnitudes are
 suitably selected, because the scalar moment affects all measurement categories equally.
-In the next phase of our ongoing inversion we plan to begin assimilating amplitude measurements,
-while simultaneously adding shear attenuation as a new model parameter.
+In the next phase of our ongoing inversion we plan to begin assimilating amplitude measurements while simultaneously adding shear attenuation as a new model parameter.
 
 \begin{figure}
   \centering
@@ -792,9 +787,6 @@ while simultaneously adding shear attenuation as a new model parameter.
   \caption{Same as Fig.~\ref{fig:phase_hist} except for amplitude measurements. These measurements are currently not used in the inversion.}
   \label{fig:amp_hist}
 \end{figure}
-
-
-
 
 \section{Model evaluation}
 \label{section:evaluation}
@@ -832,7 +824,7 @@ Fig.~\ref{fig:events_360} summarizes the properties of the held-out database.
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{figures/events_360.pdf}
-  \caption{Summary of the held-out database containing 360 earthquakes. Theses events were not used in the structural inversion. (a) Distribution of events, color coded by depth range as in Fig.~\ref{fig:event_1480}. (b) \& (c) Histograms of moment magnitude and depth.}
+  \caption{Summary of the held-out database containing 360 earthquakes. Theses events were not used in the structural inversion. (a) Distribution of events color coded by depth range as in Fig.~\ref{fig:event_1480}. (b) \& (c) Histograms of moment magnitude and depth.}
   \label{fig:events_360}
 \end{figure}
 
@@ -841,7 +833,7 @@ Section~\ref{section:Misfit assessment} for the held-out database.
 Table~\ref{table:misfit_reduction_M15_M25_360} summarizes the reductions
 in misfit for the held-out database for model GLAD-M25 compared to GLAD-M15
 as well a S362ANI combined with CRUST2.0.
-It is comforting to see that the reductions are comparable to the
+It is a validation of our approach to see that the reductions are comparable to the
 values tabulated in Table~\ref{table:misfit_reduction_M15_M25} for the actual inversion.
 Overall, the reductions are slightly smaller, partly due to the fact that we did not
 conduct full CMT inversions for the held-out database.
@@ -916,7 +908,7 @@ In this section we discuss model GLAD-M25 in detail.
 We begin with a global overview of the model before concentrating on
 specific geographical regions.
 We conclude by highlighting various slabs and plumes in the model.
-Vertical cross sections are plotted relative to the spherical average of MODEL-M25,
+Vertical cross sections are plotted relative to the spherical average of GLAD-M25,
 as discussed in Appendix~\ref{sec:1Dmodel}.
 For plotting purposes and use in other applications,
 an expansion of the model in spherical harmonics and radial B-splines is
@@ -930,7 +922,7 @@ shear wavespeed model with model S362ANI$+$M~\citep{moulik2014anisotropic},
 which is an updated version of the starting model for the GLAD-M15 inversion,
 and model S40RTS~\citep{ritsema2011s40rts}.
 Overall, these models are in good agreement
-at the longest wavelengths, especially Glad-M25 and S362ANI$+$M.
+at the longest wavelengths, especially GLAD-M25 and S362ANI$+$M.
 The perturbations in GLAD-M25 tend to be larger than in the other models,
 consistent with observations by~\cite{french2014whole},
 whose model is also based on a form of waveform inversion.
@@ -939,7 +931,7 @@ whose model is also based on a form of waveform inversion.
   \centering
   \includegraphics[width=0.9\textwidth]{figures/depth_slice/globe_vs.pdf}
   \caption{Map views of global shear wavespeed perturbations at various depths for  model
-  GLAD-M25~(left column), S362ANI$+$M~\citep[middle column;][]{moulik2014anisotropic}
+  GLAD-M25~(left column), S362ANI$+$M~\citep[middle column;][]{moulik2014anisotropic},
   and S40RTS~\citep[right column;][]{ritsema2011s40rts}.
   At a given radius,
   perturbations are calculated relative to each model's average.
@@ -961,7 +953,7 @@ whose model is also based on a form of waveform inversion.
 
 An important aspect of our inversion is that it constrains shear and
 compressional waves simultaneously. In Fig.~\ref{fig:global-vs} we
-compare global maps of our compressional wavespeed model with P models
+compare global maps of our compressional wavespeed model with global P models
 LLNL-G3Dv3~\citep{simmons2012llnl} and GAP-P4~\citep{fukao2013subducted}.
 At a depth of 100~km,
 GLAD-M25 shows prominent mid-oceanic ridges, cooling of the Pacific lithosphere,
@@ -978,7 +970,7 @@ in particular the lowerparts of the Africa and Pacific superplumes, are very sim
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/globe_vp_LLNL-GAP.pdf}
   \caption{Map views of global compressional wavespeed variations at various depths for model
-  GLAD-M25 (left column), LLNL-G3Dv3 \citep[middle column;][]{simmons2012llnl} and
+  GLAD-M25 (left column), LLNL-G3Dv3 \citep[middle column;][]{simmons2012llnl}, and
   GAP-P4~\citep[right column;][]{fukao2013subducted}.
   For LLNL-G3Dv3, depth ranges are labeled in the bottom right
   bottom of each panel. Other plotting conventions are as in Fig.~\ref{fig:global-vs}.}
@@ -1072,7 +1064,7 @@ beneath the European continent and the North Atlantic based on the assimilation 
 
 A defining tectonic feature of Europe is the Trans-European Suture Zone~(TESZ),
 also known as the Tornquist-Teisseyre Zone,
-separating the  Precambrian East European Craton~(EEC) in the Northeast from
+separating the Precambrian East European Craton~(EEC) in the Northeast from
 Phanerozoic Europe in the Southwest.
 The TESZ is very consistent across all models,
 even though is much sharper in GLAD-M25 and EU60.
@@ -1082,8 +1074,7 @@ in the North Sea, which is clearly separated from the EEC.
 The tectonic history of the Mediterranean is complex,
 involving several regional plates and multiple past and present subduction zones.
 We see slab ponding in the transition zone beneath the western Mediterranean
-associated with slab roll-back of the Appennines-Maghrebides subduction zone
-~\citep{Giordano2017Magmatic}.
+associated with slab roll-back of the Appennines-Maghrebides subduction zone.
 At shallower depths, we see low wavespeeds along its western border,
 which are interpreted as back-arc extension associated with  roll-back.
 Compared to S362ANI$+$M and S40RTS,
@@ -1106,7 +1097,7 @@ wavespeeds from the Massif Central to the Eifel. Both EU60 and
 GLAD-M25 exhibit a slow anomaly beneath the northern part of the Rhine Graben,
 which is interpreted as the reservoir that fuels the Eifel hotspot.
 
-Beneath the Atlantic Ocean, our model strengthens slow anomalies beneath the
+Beneath the Atlantic Ocean, our model enhances slow anomalies beneath the
 ridges, especially underneath Iceland and the Azores.
 Compared to S362ANI$+$M, Iceland becomes much stronger in the upper mantle at
 depths from 250~km to 400~km, extending all the way to the mantle-transition zone.
@@ -1211,8 +1202,6 @@ Caribbean subduction is clearly discernible in model GLAD-M25 and the two $V_\te
 In this section we highlight various plume systems on Earth. Fig.~\ref{fig:plumes}
 shows cross sections of several plumes, comparing models GLAD-M25 ($V_\textrm{P}$),
 TX2015~\citep[$V_\textrm{S}$;][]{TX2015}, and SEMUCB-WM1~\citep[$V_\textrm{S}$;][]{french2015broad}.
-
-Some plumes originate from the CMB and extend all the way to the Earth's surface.
 The three models tend to agree near the CMB,
 and there is overall good agreement between GLAD-M25 and TX2015,
 but the models can differ substantially in the mid and upper mantle,
@@ -1312,15 +1301,16 @@ Still, it would be a shame not to utilize as much as possible of the information
 
 To facilitate fast and effective access to such vast data resources,
 we use ASDF~\citep{krischer2016adaptable} in the preprocessing stage of the adjoint tomography workflow,
-and to accommodate I/O during postprocessing stage we use ADIOS~\citep{liu2014hello}.
+and to accommodate I/O during postprocessing stage we use the ADIOS library~\citep{liu2014hello}.
 For data assimilation,
 tools, such as FLEXWIN, which automatically select data windows suitable for measurements,
 are indispensable, and we see tremendous opportunities for the use of machine learning algorithms in this context~\citep[e.g.,][]{chen2017}.
 
 Some form of automated parallel workflow management is critical for the global adjoint tomography process,
-because classical inversion workflows suffer from I/O inefficiencies, lack of fault tolerance, and an inability to work in distributed resource environments.
-The RADICAL-SAGA and RADICAL-EnTK workflow management engines~\citep{EnTK2017} facilitate tracking of tasks and job failure detection,
-enabling semi-automatic job resubmission if necessary.
+because classical inversion workflows suffer from I/O inefficiencies, lack of fault tolerance, and an inability to work in distributed resource environments~\citep{Lefebvre2018}.
+The EnTK workflow management engine~\citep{EnTK2017}
+largely overcomes these limitations by facilitating tracking of tasks and job failure detection,
+thereby enabling semi-automatic job resubmission if necessary.
 
 It should be clear from this discussion that modern seismic tomography requires close collaborations with computational scientists, HPC specialists, and visualization experts,
 as reflected in the list of authors for this article, in addition to access to the most advanced computational platforms,
@@ -1359,8 +1349,7 @@ and, in particular, plumes and subduction zones feature prominently.
 
 Obvious future directions of research include growing the earthquake database further to the roughly 6,000 earthquakes in the right magnitude range already available via the Global CMT database
 and reducing the shortest simulation period further from 17~s to 8.5~s.
-The most recent machine at OLCF, called ``Summit'', an IBM Power9 accelerated by NVIDIA Tesla V100 GPUs,
-can readily accommodate such simulations.
+The most recent machine at OLCF, called ``Summit'', uses IBM Power9 CPUs accelerated by NVIDIA Tesla V100 GPU and can readily accommodate such simulations.
 
 Other future directions of research involve inversions for azimuthal anisotropy
 and attenuation.
@@ -1381,12 +1370,11 @@ Additional computational resources were provided by the Princeton Institute
 for Computational Science \& Engineering (PICSciE).
 We acknowledge IRIS ({\tt iris.edu}) and ORFEUS ({\tt orfeus-eu.org}) for
 providing the data used in this study.
-{\color{red} Wenjie: Please add all relevant data centers.}
 We thank Ryan Modrak, Ridvan Orsvuran, Frederik Simons, and James Smith for fruitful discussions.
 The open source spectral-element software package SPECFEM3D\_GLOBE and
 the seismic measurement software package FLEXWIN used for this article are
-  freely available via the Computational Infrastructure for Geodynamics
-  (CIG; {\tt geodynamics.org}). This research was supported by NSF grant~1644826.
+ freely available via the Computational Infrastructure for Geodynamics
+ (CIG; {\tt geodynamics.org}). This research was supported by NSF grant~1644826.
 
 \end{acknowledgments}
 

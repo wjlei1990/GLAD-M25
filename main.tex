@@ -485,6 +485,17 @@ most importantly via the time window selection tool FLEXWIN~\citep{maggi2009auto
 Every seismogram and potential measurement goes through multiple checks and and
 balances before acceptance or rejection.
 
+\begin{figure}
+  \centering
+  \includegraphics[width=0.9\textwidth]{figures/window_colorbar_linear_Z.pdf}
+  \caption{Time-distance plot for vertical component 17--40~s body waves showing a measurement window density map.
+  A total of 4,363,719 time windows were discretized into 1~degree epicentral distance and 1~s time bins.
+  The maximum window count is 9,931 in the 134--135$^\circ$ distance and 1375--1,376~s time bin.
+  Major traveltime branches are labeled. Note that the plot contains data from events with a wide variety of depths, so the branches are for identification purposes only.
+  }
+  \label{fig:window_density_Z}
+\end{figure}
+
 As illustrated in Fig.~\ref{fig:preprocess_workflow}, the preprocessing workflow
 includes the following phases.
 \begin{enumerate}
@@ -505,34 +516,31 @@ includes the following phases.
 \end{enumerate}
 
 To illustrate which seismic phases end up being picked,
-Fig.~\ref{fig:window_density} shows a time-distance plot
-for vertical component 17--40~s body waves in which the Pyflex window count is used to identify parts of seismograms being assimilated.
-A total of 4,363,719 time windows were picked in this category.
-The figure nicely highlights all the well known vertical-component body traveltime branches.
-The maximum window count is 9,931 in the 134--135$^\circ$ distance and 1375--1,376~s time bin.
-
-\begin{figure}
-  \centering
-  \includegraphics[width=0.9\textwidth]{figures/window_colorbar_linear_Z.pdf}
-  \caption{Time-distance plot for vertical component 17--40~s body waves showing a measurement window density map.
-  A total of 4,363,719 time windows were discretized into 1~degree epicentral distance and 1~s time bins. Major traveltime branches are labeled. Note that the plot contains data from events with a wide variety of depths, so the branches are for identification purposes only.
-  }
-  \label{fig:window_density_Z}
-\end{figure}
-
-Fig.~\ref{fig:window_density_R} and Fig.~\ref{fig:window_density_T} shows for Radial and Transverse component in 17--40~s period bands.
+Figs.~\ref{fig:window_density_Z}, \ref{fig:window_density_R}, and \ref{fig:window_density_T} show time-distance plots
+for vertical, radial, and transverse component 17--40~s body waves,
+respectively,
+in which the Pyflex window count is used to identify parts of seismograms being assimilated.
+The figures nicely highlight all the well known body traveltime branches.
+The Pyflex window selection algorithm is currently configured not to pick body waves after the arrival of the surface waves, which is why the PcP and ScS branches are missing at shorter epicentral distances.
+This is something we will reconsider in future applications, perhaps by introducing aspects of machine learning. 
 
 \begin{figure}
   \centering
   \includegraphics[width=0.9\textwidth]{figures/window_colorbar_linear_R.pdf}
-  \caption{Same as Fig.~\ref{fig:window_density_Z}, except for Radial component 17--40~s body waves.}
+  \caption{Same as Fig.~\ref{fig:window_density_Z}, except for radial component 17--40~s body waves.
+   A total of 2,868,252 time windows were discretized into 1~degree epicentral distance and 1~s time bins.
+   The maximum window count is 7,542.
+   }
   \label{fig:window_density_R}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=0.9\textwidth]{figures/window_colorbar_linear_T.pdf}
-  \caption{Same as Fig.~\ref{fig:window_density_Z}, except for Transverse component 17--40~s body waves.}
+  \caption{Same as Fig.~\ref{fig:window_density_Z}, except for transverse component 17--40~s body waves.
+   A total of 2,151,856 time windows were discretized into 1~degree epicentral distance and 1~s time bins.
+   The maximum window count is 7,208.
+   Only SH travetime branches are labeled.}
   \label{fig:window_density_T}
 \end{figure}
 
@@ -763,12 +771,13 @@ so there are small tradeoffs between different measurement categories.
 
 Fig.~\ref{fig:P_phase_hist} shows histograms of 17--40~s P-wave traveltime anomalies on the vertical and radial components.
 Both components exhibit consistent reductions in terms of both mean and variance. 
-These arrivals --- almost 530,000 measurements in the 17--40~s period band, roughly~$\sim3\%$ of the database --- are of great importance, because they help constrain the compressional wavespeed structure in the model.
+Collectively, the numerous compressional wave arrivals identified in Figs.~\ref{fig:window_density_Z} and~\ref{fig:window_density_R} are of great importance, because they help constrain the compressional wavespeed structure in the model.
 
 \begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth]{figures/dt_histogram_P.pdf}
-  \caption{Histograms of traveltime measurements of 17--40~s P arrivals on the vertical and radial for S362ANI combined with CRUST2.0 (M00, Black), GLAD-M15 (M15, Green), and GLAD-M25 (M25, Red). Other settings are the same as in Fig.~\ref{fig:phase_hist}.}
+  \caption{Histograms of 17--40~s P-wave traveltime anomalies of the vertical and radial components for models S362ANI combined with CRUST2.0 (M00, Black), GLAD-M15 (M15, Green), and GLAD-M25 (M25, Red).
+  }
   \label{fig:P_phase_hist}
 \end{figure}
 
@@ -887,7 +896,8 @@ and we note a sharpening of the distributions centered around zero.
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{figures/dt_histogram_360.pdf}
-  \caption{Histograms of phase measurements for the 360 events in the held-out database.}
+  \caption{Same as Fig.~\ref{fig:phase_hist}, except for the held-out database.
+  }
   \label{fig:phase_hist_360}
 \end{figure}
 
@@ -896,7 +906,7 @@ P phase measurements were also extracted and compared in Fig.~\ref{fig:phase_his
 \begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth]{figures/dt_histogram_360_P.pdf}
-  \caption{Histograms of phase measurements of P arrivals for the 360 events in the held-out database in Vertical and Radial 17--40~s period band .}
+  \caption{Same as Fig.~\ref{fig:P_phase_hist}, except for the held-out database.}
   \label{fig:phase_hist_360_P}
 \end{figure}
 
@@ -1024,7 +1034,7 @@ Mazatzal Blocks, which define the southern boundary of the large craton.
 In the 200--400~km depth range, we observe a high wavespeed
 anomaly within the Gulf of Mexico, which coincides spatially with the deepest
 bathymetry and corresponds to a portion of ancient oceanic
-Lithosphere~\citep{muller2008age}.
+Lithosphere~\citep{muller2008}.
 A remnant of the Juan de Fuca plate,
 with a high wavespeed footprint, is visible at depths of 300~km and 400~km,
 where SL2013NA shows a much stronger anomaly.
@@ -1560,7 +1570,7 @@ The normalized power per degree~$\ell$ may then be calculated via
 \end{equation}
 
 To assess the accuracy of the expansion,
-we calculate the model norm in the GLL basis,
+we may calculate the model norm in the GLL basis,
 \begin{equation}
     ||m_\text{\,GLL}||^2=\int_V m_\text{\,GLL}^2(\mathbf{x})\,\mathrm{d}^3\mathbf{x}=
     \sum_{\mathrm{elem}}\sum_{\alpha,\beta,\gamma}\omega_\alpha\,\omega_\beta\,\omega_\gamma\,(m^{\alpha\beta\gamma})^2\,J^{\alpha\beta\gamma}

@@ -53,7 +53,7 @@ facilitated by a parsimonious storage algorithm.
 The simulations were performed on the Cray XK7 ``Titan'' at the Oak Ridge Leadership Computing Facility.
 We quantitatively evaluated GLAD-M25 by assessing misfit reductions and traveltime \& amplitude anomaly histograms in twelve measurement
 categories.
-We performed similar assessments for a held-out data set consisting of 380 earthquakes,
+We performed similar assessments for a held-out data set consisting of 360 earthquakes,
 with results comparable to the actual inversion.
 We compare GLAD-M25 with numerous other global and regional models,
 and highlight a variety of plumes and subduction zones.
@@ -457,7 +457,12 @@ algorithm developed by~\cite{KoXiBoPeSaLiTr16},
 with rapid I/O facilitated by ADIOS~\citep{liu2014hello}.
 For the current simulation setup,
 this requires about 1~TB of storage per earthquake,
-so for 1,480 earthquakes this amounts to 1.5~PB of storage.
+so for 1,480 earthquakes this adds up to 1.5~PB.
+This volume of data is generated during~$\sim6$~hours of simulations.
+Based on our experience, ADIOS is capable of achieving~$\sim120$~GB/s
+of sustained I/O on OLCF resources.
+Given that typical write speeds for modern hard disks are~$\sim100$~MB/s,
+it would be extremely difficult to carry out global adjoint tomography without the ADIOS library.
 
 \subsection{Seismic data processing}
 

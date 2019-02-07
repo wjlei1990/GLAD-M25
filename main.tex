@@ -357,7 +357,7 @@ The misfit for a specific source~$s$, category~$c$, receiver~$r$, and window~$w$
 \quad ,
 \end{equation}
 where~$\Delta \tau_{scrw}$ denotes a multi-taper frequency-dependent phase measurement over the frequency interval~$\Delta\omega=\omega_2-\omega_1$\,,
-with associated standard deviation~$\sigma_{scrw}$\,.
+with associated uncertainties~$\sigma_{scrw}$\,.
 For body waves, the window misfit is simply the cross-correlation traveltime anomaly,
 $\Delta T_{scrw}$\,, weighted by its standard deviation, i.e., $\chi_{scrw}=(\Delta T_{scrw}/\sigma_{scrw})^2$\,.
 As in the source inversions,
@@ -578,7 +578,7 @@ It involves the follow steps.
   \item Preconditioning of the smoothed gradient based on a technique proposed by~\cite{luo2013strategies}.
   \item Line search to determine the magnitude of the model update.
   The search direction is determined using a nonlinear conjugate gradient method~\citep{wright1999numerical} (iterations 16--21) or a Limited-memory Broyden- Fletcher-Goldfarb-Shanno (L-BFGS) quasi-Newton method (iterations 22--25).
-  We used a subset of 120 earthquakes to conduct the line search and determine the step length.
+  We used a subset of 160 earthquakes to conduct the line search and determine the step length.
 \end{enumerate}
 
 \subsection{Workflow management}
@@ -1017,7 +1017,10 @@ surface waveform tomography primarily focused on North America.
 North America is characterized by a large, high-wavespeed lithospheric craton,
 bounded by the Rocky Mountain Front to the West and continental
 margin to the East. On both sides the lithosphere has been deformed by
-low wavespeed structures, thus forming sharp tectonic boundaries.
+low wavespeed structures, thus forming sharp tectonic boundaries
+~\citep{grand1984upper, masters1996shear, grand1997high,
+megnin2000three, gu2001models, schaeffer2014imaging, zhu2017radial}.
+
 
 At a depth of 100~km, we observe that the edges of the craton are sharper in
 GLAD-M25 than in the other two global models,
@@ -1036,7 +1039,7 @@ Mazatzal Blocks, which define the southern boundary of the large craton.
 In the 200--400~km depth range, we observe a high wavespeed
 anomaly within the Gulf of Mexico, which coincides spatially with the deepest
 bathymetry and corresponds to a portion of ancient oceanic
-Lithosphere~\citep{muller2008}.
+Lithosphere~\citep{muller2008, schaeffer2014imaging}.
 A remnant of the Juan de Fuca plate,
 with a high wavespeed footprint, is visible at depths of 300~km and 400~km,
 where SL2013NA shows a much stronger anomaly.

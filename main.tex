@@ -13,17 +13,15 @@
 \floatsetup[figure]{style=plain,subcapbesideposition=top}
 %\usepackage[margin=70mm]{geometry}
 
-%\usepackage{subfig}
-
 \title[Global Adjoint Tomography -- Model GLAD-M25]
   {Global adjoint tomography -- Model GLAD-M25\footnote{This paper is dedicated to Dimitri Komatitsch, computational geophysicist extraordinaire, who passed away unexpectedly shortly before its submission.}}
 
 \author[Lei et al.]
-  {Wenjie Lei$^1$, Youyi Ruan$^{1.2}$, Ebru Bozda\u g$^3$, Daniel Peter$^4$, Matthieu Lefebvre$^1$, \\{\LARGE \rm Dimitri Komatitsch$^5$, Jeroen Tromp$^{1,6}$, Judith Hill$^7$, Norbert Podhorszki$^7$}, \\ {\LARGE \rm and David Pugmire$^7$} \\
+  {Wenjie Lei$^1$, Youyi Ruan$^{1,2}$, Ebru Bozda\u g$^3$, Daniel Peter$^4$, Matthieu Lefebvre$^1$, \\{\LARGE \rm Dimitri Komatitsch$^5$, Jeroen Tromp$^{1,6}$, Judith Hill$^7$, Norbert Podhorszki$^7$}, \\ {\LARGE \rm and David Pugmire$^7$} \\
   $^1$ Department of Geosciences, Princeton University, Princeton, NJ 08544, USA\\
-  $^2$ Nanjing University, Nanjing, China\\
+  $^2$ School of Earth Sciences and Engineering, Nanjing University, Nanjing, Jiangsu 210023, China\\
   $^3$ Department of Geophysics, Colorado School of Mines, Golden, CO 80401, USA\\
-  $^4$ Extreme Computing Research Center, King Abdullah University of Science and Technology, \\Thuwal 23955-6900, Kingdom of Saudi Arabia\\
+  $^4$ Extreme Computing Research Center, King Abdullah University of Science and Technology (KAUST), \\Thuwal 23955-6900, Kingdom of Saudi Arabia\\
   $^5$ LMA, CNRS UPR 7051, Aix-Marseille University, Centrale Marseille, 13453 Marseille Cedex 13, France\\
   $^6$ Program in Applied and Computational Mathematics, Princeton University, Princeton, NJ 08544, USA\\
   $^7$ Oak Ridge National Laboratory, Oak Ridge, TN 37831, USA\\
@@ -44,7 +42,7 @@
 Building on our first-generation global adjoint tomography model,
 GLAD-M15, we present our second-generation transversely isotropic global model,
 named GLAD-M25, which is the result of ten quasi-Newton tomographic iterations with an
-earthquake database consisting of 1,480 events in the magnitude range $5.8\le M_w \le 7.0$,
+earthquake database consisting of 1,480 events in the magnitude range $5.5\le M_w \le 7.2$,
 an almost six-fold increase over the first-generation model.
 We calculated fully 3D synthetic seismograms with a shortest period of 17~s based on a GPU-accelerated spectral-element wave
 propagation solver which accommodates effects due to 3-D anelastic crust \& mantle structure, topography \& bathymetry, the ocean load, ellipticity, rotation, and self-gravitation.
@@ -131,7 +129,7 @@ earthquake database, and seismographic data set.
 Sections~\ref{section:misfit} and~\ref{section:parameterization} describe the misfit function minimized during the inversion process
 and the related model parameterization.
 In Section~\ref{section:workflow} we describe the adjoint tomography workflow in some detail.
-Section~\ref{section:misfit_evolution} describes the evolution of the misfit, and in Section~\ref{section:evaluation} we evaluate the model based on a held-out data set of 320 earthquakes.
+Section~\ref{section:misfit_evolution} describes the evolution of the misfit, and in Section~\ref{section:evaluation} we evaluate the model based on a held-out data set of 360 earthquakes.
 Finally, in Section~\ref{section:model}, we describe the model in detail,
 offering many comparisons with various global and regional models, as described in the proceeding paragraph.
 We conclude with a discussion of future opportunities and directions.
@@ -140,7 +138,7 @@ We conclude with a discussion of future opportunities and directions.
 \label{section:start}
 
 As a continuation of our previous work~\citep{bozdaug2016global},
-we used first-generation model GLAD-M15 as our
+we used the first-generation model GLAD-M15 as our
 starting model.
 GLAD-M15 is a 3D transversely isotropic earth model, which combined
 3D mantle model S362ANI~\citep{kustowski2008anisotropic}
@@ -276,7 +274,7 @@ Fig.~\ref{fig:event_1480} summarizes the characteristics of all 1,480 earthquake
 
 The seismographic stations used in this study were carefully selected to ensure global coverage
 and high data quality (Fig.~\ref{fig:stations}).
-In addition to the seismic stations used for the source inversions,
+In addition to the seismographic  stations used for the source inversions,
 we included all available data for our 1,480 event earthquake database from many data centers,
 including IRIS, ORFEUS, INGV, IPGP, ETH, and GEONET.
 Regional and temporary networks,
@@ -367,7 +365,7 @@ the window weights are equal, $\omega_{scrw}=1$\,,
 and the category weight, $\omega_c$\,, is the reciprocal of the number of measurements in that
 category, $1/C$.
 Earthquakes mainly occur along plate boundaries,
-and most seismic stations are confined to the continents,
+and most seismographic  stations are confined to the continents,
 which leads to a very uneven distribution of sources and stations,
 as illustrated in Figs.~\ref{fig:event_1480} and~\ref{fig:stations}.
 Therefore, weighting is crucial in global tomography to balance this uneven sampling
@@ -509,7 +507,7 @@ includes the following phases.
     filtered, and the horizontal components are rotated to obtain the radial and transverse components of motion.
   \item Window selection on a pair of
     observed and synthetic seismograms. Pyflex (a Python version
-    of FLEXWIN) is
+    of FLEXWIN by \citet{krischer2015}) is
     used to automatically generate windows where observed and
     synthetic data are sufficiently close to make measurements based on user defined
     criteria.
@@ -616,10 +614,10 @@ in Fig.~\ref{fig:misfit}.
   \caption{\small{Evolution of the misfit function from GLAD-M15 to GLAD-M25.
   Each color denotes different stages of the inversion, as discussed in Sections~\ref{sec:I}--\ref{sec:III}.
   (a) Evolution of the total misfit. (b)--(j) Misfit in
-  each period band (rows) on three components (columns). (e)--(g) At iteration 18,
+  each period band (rows) on three components (columns). (e)--(g) Since iteration 18,
   we  split the 40--100~s period band into two
-  measurement categories: body waves (red diamonds) and surface waves
-  (red squares).
+  measurement categories: body waves (diamonds) and surface waves
+  (squares).
   }}
   \label{fig:misfit}
 \end{figure}
@@ -706,10 +704,6 @@ The improvements in fit per component are comparable in all period bands,
 indicating that the various categories are reasonably well balanced in the
 assessment of misfit.
 
-%{\color{red} Wenjie: Make sure the variance reductions are calculated as ln (Phi\_M25 / Phi\_M15).}
-%{\color{red} Wenjie: I was using (Phi\_M25 - Phi\_M15) / Phi\_M15. So let me modify it?}
-%{\color{blue} Wenjie: yes please. It will only change things slightly, if at all. You need to do the same for Table~\ref{table:misfit_reduction_M15_M25_360}.}
-
 \begin{table}
   \centering
   \begin{tabular}{|c|c|c|c|}
@@ -756,7 +750,8 @@ Another way to evaluate model performance is by assessing the distribution
 of measurements in the various categories.
 Again we use all 1,480 events and a set of identical windows on all three components
 to assess GLAD-M25, GLAD-M15, and S362ANI combined with CRUST2.0.
-The total number of selected windows exceeds 18~million.
+The total number of selected windows,
+determined using model GLAD-M25, exceeds 18~million.
 Fig.~\ref{fig:phase_hist} shows histograms of the resulting phase
 measurements in all twelve measurement categories.
 We observe that the distributions generally become better centered on zero,
@@ -984,8 +979,6 @@ and Tonga-Kermadec.
 In the deep mantle, LLNL-G3Dv3 and GAP-P4 begin to fade out, but the long-wavelength patterns,
 in particular the lowerparts of the Africa and Pacific superplumes, are very similar.
 
-%{\color{red} Wenjie: Note: add spherical harmonic analysis later.}
-
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{figures/depth_slice/globe_vp_LLNL-GAP.pdf}
   \caption{\small{Map views of global compressional wavespeed variations at various depths for model
@@ -1148,7 +1141,7 @@ Map views of GLAD-M25 centered on Asia are plotted in Fig.~\ref{fig:asia-vs},
 together with S362ANI$+$M, SL2013sv~\citep{SchaefferLebedev13}, and regional model EARA2014~\citep{chen2015multiparameter}.
 EARA2014 is a transversely isotropic model based on adjoint
 tomography, assimilating 1.7~million frequency-dependent traveltime
-measurements from 227 earthquakes recorded by 1,869 seismic stations.
+measurements from 227 earthquakes recorded by 1,869 seismographic  stations.
 It has superior data coverage, mainly by incorporating data from the China Array.
 
 The Southwestern part of China is dominated by the Himalayas,
@@ -1241,33 +1234,31 @@ The three models tend to agree near the CMB,
 and there is overall good agreement between GLAD-M25 and TX2015,
 but the models can differ substantially in the mid and upper mantle,
 with profoundly different implications for mantle
-convection.
+convection:
 
-In Fig.~\ref{fig:plumes}(a),
+\begin{itemize}
+\item[]{\it Afar} In Fig.~\ref{fig:plumes}(a),
 we see that the Afar plume in model GLAD-M25 originates from the CMB, narrows its diameter
 in the mid mantle, and broadens again above the 660~km discontinuity.
 It exhibits
 very similar behavior in TX2015 but differs significantly in SEMUCB-WM1.  
-
-In Fig.~\ref{fig:plumes}(b), from left to right, we see in model GLAD-M25 1) the Farallon
-slab; 2) the Bermuda hotspot above the 660~km discontinuity; 3) the Canary hotspot originating from the CMT and
-rising all the way up the Earth's surface; 4) the Afar hotspot from another angle.
-
-Fig.~\ref{fig:plumes}(c) features 1) South America subduction; 2) the Cape Verde hotspot extending from the CMB all the way to the surface; 3) the Hoggar hotspot from 660~km to the surface. 
-
-Fig.~\ref{fig:plumes}(d) shows a plume which rises from the CMB right below Iceland, reaches 660~km, amplifies,
+\item[]{\it Bermuda and Canary} In Fig.~\ref{fig:plumes}(b), from left to right, we see in model GLAD-M25 (i) the Farallon
+slab; (ii) the Bermuda hotspot above the 660~km discontinuity; (iii) the Canary hotspot originating from the CMT and
+rising all the way up the Earth's surface; (iv) the Afar hotspot from another angle.
+\item[]{\it Cape Verde and Hoggar} Fig.~\ref{fig:plumes}(c) features (i) South America subduction; (ii) the Cape Verde hotspot extending from the CMB all the way to the surface; (iii) the Hoggar hotspot from 660~km to the surface. 
+\item[]{\it Iceland and Eifel} Fig.~\ref{fig:plumes}(d) shows a plume which rises from the CMB right below Iceland, reaches 660~km, amplifies,
 and ascends to the surface.
 The intensification above 660~km may be an indication of partial melting.
-
-Fig.~\ref{fig:plumes}(e) contains 1) the Easter hotspot; 2) the Galapagos
-hotspot; 3) the Central America slab.
+\item[]{\it Easter and Galapagos} Fig.~\ref{fig:plumes}(e) contains (i) the Easter hotspot; (ii) the Galapagos
+hotspot; (iii) the Central America slab.
 In models GLAD-M25 and TX2015,
 the Easter and Galapagos hotspots appear to originate from the same underlying plume in the deep mantle,
 which is the eastern arm of the Pacific superplume.
-
+\item[]{\it Marion and Kerguelen}
 Finally,
 in Fig.~\ref{fig:plumes}(f) we see the Marion and Kerguelen hotspots, which might be connected to Afar in the lower mantle.
 Recovering these plumes is challenging due to poor data coverage in the southern hemisphere.
+\end{itemize}
 
 %\begin{figure}
 %    \centering
@@ -1289,27 +1280,31 @@ Recovering these plumes is challenging due to poor data coverage in the southern
     \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Aeg.png}\label{fig:subd_a}}\\[-1pt]
     \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Br.png}\label{fig:subd_b}}\\[-1pt]
     \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Ha.png}\label{fig:subd_c}}\\[-1pt]
-    \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Ne.png}\label{fig:subd_d}}\\[-1pt]
     \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Wc.png}\label{fig:subd_e}}\\[-1pt]
+    \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Ne.png}\label{fig:subd_d}}\\[-1pt]
     \caption{\small{Vertical cross sections of compressional wavespeed perturbations in various subduction zones
     for models GLAD-M25 ($V_\textrm{P}$; left column), GAP-P4~\citep{fukao2013subducted} (middle column) and UU-P07~\citep{van2018atlas} (right column).
     The map in the top left corner of each row shows the cross section with color-coded red, green, and white dots for geographical reference.
     The dashed black semicircles in the cross sections denote depths of 410~km, 660~km, and 1000~km.
-    (a) Aegean; (b) South America; (c) Hatteras; (d) Nepal; (e)  Wichita.}}
+    (a) Aegean; (b) South America; (c) Hatteras; (d) Wichita. (e) Nepal; }}
     \label{fig:subd}
 \end{figure}
 
 In this section we highlight various subduction systems on Earth.
 In Fig.~\ref{fig:subd} we compare GLAD-M25~($V_\textrm{P}$) with two compressional wavespeed models,
 namely, GAP-P4~\citep{fukao2013subducted} and UU-P07~\citep{van2018atlas}.
+Fig.~\ref{fig:subd}(a) features the Aegean subduction zone. All models show a slab penetrating into the lower mantle beyond a depth of 1,000~km.
+Fig.~\ref{fig:subd}(b) shows the South American slab, which, in this cross section, ponds in the shallow lower mantle in all three models, before sinking all the way to the CMB.
+Figs.~\ref{fig:subd}(c) and~(d) show cuts across the ancient Farallon slab, which penetrates deeply into the lower mantle.
+At depths greater than 1,000~km, 
+we see a very strong expression of the slab in model Glad-M25, which is much weaker in the two P models.
+The difference may be attributed to increased data coverage thanks to USArray, as well as the use of finite-frequency Fr\'echet derivatives.
+Finally, Fig.~\ref{fig:subd}(e) shows subduction beneath the Himalayas.
 
 Overall, the three models are in reasonably good agreement.
 At shallow depths, model GLAD-M25 shows more distinct continental crust and cratons, thanks to the inclusion of surface waves.
-In the upper and mid mantle,
-the models share very similar features.
-At depth greater than 1000km, 
-we see a very strong expression of the ancient Farallon slab in model Glad-M25, which is much weaker in the two P models.
-The difference may be attributed to increased data coverage thanks to USArray, as well as the use of finite-frequency Fr\'echet derivatives.
+But in the upper and mid mantle,
+the models share very similar attributes.
 
 \section{Discussion}
 
@@ -1372,7 +1367,7 @@ The most recent machine at OLCF, called ``Summit'', uses IBM Power9 CPUs acceler
 
 Other future directions of research involve inversions for azimuthal anisotropy
 and attenuation.
-The feasibility of such inversions on a regional scale have already been demonstrated in a studies focused on Europe by~\cite{ZhuTromp2013} and \cite{Zhuetal2013}.
+The feasibility of such inversions on a regional scale has already been demonstrated in studies focused on Europe by~\cite{ZhuTromp2013} and \cite{Zhuetal2013}.
 
 \begin{acknowledgments}
 This research used resources of the Oak Ridge Leadership Computing Facility,
@@ -1398,7 +1393,7 @@ the seismic measurement software package FLEXWIN used for this article are
 
 In this appendix we determine the spherically symmetric (radial) average of model GLAD-M25.
 To accomplish this,
-we first need to transform the 3D spectral-element mesh --- which includes ellipticity, topography \& bathymetry, and undulations on internal boundaries --- into a spherical volume.
+we first need to transform the 3D spectral-element mesh --- which includes ellipticity, topography/bathymetry and undulations on internal boundaries --- into a spherical volume.
 After these adjustments, we obtain a spectral-element mesh for a perfect cubed sphere~\citep{KoTr02a}.
 
 In the spherical mesh, the model may be expressed in the form
@@ -1440,14 +1435,14 @@ is the absence of the 220~km discontinuity and a lower~$V_P/V_S$ ratio in the to
   \centering
   \includegraphics[width=0.8\textwidth]{figures/1d_profile.pdf}
   \caption{\small{1D radial shear and compressional wavespeed profiles for GLAD-M25, STW105, and PREM.
-  The reference frequency for physical dispersion is~{\color{red} ??}~Hz.}}
+  The reference frequency for physical dispersion is ~7.77~mHz.}}
   \label{fig:global-average}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=0.9\textwidth]{figures/1d_profile_ra.pdf}
-  \caption{\small{1D radial-anisotropic shear and compressional wavespeed profiles for GLAD-M25 and STW105. The reference frequency for physical dispersion is~{\color{red} ??}~Hz.}}
+  \caption{\small{1D radial-anisotropic shear and compressional wavespeed profiles for GLAD-M25 and STW105. The reference frequency for physical dispersion is ~7.77~mHz.}}
   \label{fig:global-ra-average}
 \end{figure}
 
@@ -1459,7 +1454,7 @@ to facilitate easy plotting, analysis, and comparisons with other models.
 The resulting spherical harmonic model should only be used for these purposes, not for numerical simulations, which should always be based on the fully 3D spectral-element mesh.
 
 To accomplish the transformation,
-we first need to transform the 3D mesh --- which includes ellipticity, topography \& bathymetry, and undulations on internal boundaries --- into a spherical volume.
+we first need to transform the 3D mesh --- which includes ellipticity, topography/bathymetry and undulations on internal boundaries --- into a spherical volume.
 After these adjustments, we obtain a spectral element mesh for a perfect sphere,
 that is, the sort of mesh used for spherically symmetric earth models, such as PREM~\citep{PREM}.
 
@@ -1528,10 +1523,19 @@ Finally, the desired model coefficients may be obtained ---one combination of $n
 where~$A^{-1}$ denotes the inverse of the~$N\times N$ matrix~$A$.
 Expressions of the form~(\ref{eq:Cnlm}) are commonplace in spectral-element simulations,
 and thus easily calculated.
+
 The normalized power per degree~$\ell$ may be calculated via
 \begin{equation}
     \sigma_\ell^2=\frac{1}{2\ell+1}\,
-    \sum_{n' = 0}^N\sum_{n = 0}^N\sum_{m = -\ell}^\ell{}_{n'}C^*_{\ell m}\,A_{n'n}\,{}_{n}C_{\ell m}
+    \sum_{n' = 0}^N\sum_{n = 0}^N\sum_{m = -\ell}^\ell\,A_{n'n}\,{}_{n'}C^*_{\ell m}\,{}_{n}C_{\ell m}
+    \quad .
+\end{equation}
+Alternatively,
+one may wish to calculate the power per degree as a function of radius,
+which is determined via
+\begin{equation}
+    \Sigma_\ell^2(r)=\frac{1}{2\ell+1}\,
+    \sum_{n' = 0}^N\sum_{n = 0}^N\sum_{m = -\ell}^\ell\,R_{n'}(r)\,R_{n}(r)\,{}_{n'}C^*_{\ell m}\,{}_{n}C_{\ell m}
     \quad .
 \end{equation}
 
@@ -1567,27 +1571,43 @@ and for~$1\le m\le \ell$
 The normalized power per degree~$\ell$ may then be calculated via
 \begin{equation}
     \sigma_\ell^2=\frac{1}{2\ell+1}\,\sum_{n'=0}^N\,\sum_{n=0}^N\,A_{n'n}\,\left[{}_{n'}a_{\ell 0}\,{}_{n}a_{\ell 0}+\sum_{m=1}^\ell({}_{n'}a_{\ell m}\,{}_na_{\ell m}+{}_{n'}b_{\ell m}\,{}_nb_{\ell m})\right]
-    \quad .
+    \quad ,
+    \label{eq:powerdegree}
 \end{equation}
+and the power per degree as a function of radius is determined via
+\begin{equation}
+    \Sigma_\ell^2(r)=\frac{1}{2\ell+1}\,\sum_{n'=0}^N\,\sum_{n=0}^N\,R_{n'}(r)\,R_{n}(r)\,\left[{}_{n'}a_{\ell 0}\,{}_{n}a_{\ell 0}+\sum_{m=1}^\ell({}_{n'}a_{\ell m}\,{}_na_{\ell m}+{}_{n'}b_{\ell m}\,{}_nb_{\ell m})\right]
+    \quad .
+    \label{eq:powerdegreeradius}
+\end{equation}
+In Fig.~\ref{fig:powerspectra} we compare power spectra per degree~$\ell$ as a function of radius for models S362ANI, GLAD-M15, and GLAD-M25.
 
-To assess the accuracy of the expansion,
-we may calculate the model norm in the GLL basis,
-\begin{equation}
-    ||m_\text{\,GLL}||^2=\int_V m_\text{\,GLL}^2(\mathbf{x})\,\mathrm{d}^3\mathbf{x}=
-    \sum_{\mathrm{elem}}\sum_{\alpha,\beta,\gamma}\omega_\alpha\,\omega_\beta\,\omega_\gamma\,(m^{\alpha\beta\gamma})^2\,J^{\alpha\beta\gamma}
-    \quad ,
-\end{equation}
-and compare it to the model norm in the spherical harmonic basis,
-\begin{equation}
-    ||m_\text{\,SH}||^2=\int_V m_\text{\,SH}^2(\mathbf{x})\,\mathrm{d}^3\mathbf{x}=
-    \sum_{\ell = 0}^L(2\ell+1)\,\sigma_\ell^2
-    \quad ,
-\end{equation}
-by calculating the error
-\begin{equation}
-    \epsilon = \log\,\frac{||m_\text{\,SH}||^2}{||m_\text{\,GLL}||^2}
-    \quad .
-\end{equation}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.9\textwidth]{figures/powerspectra.pdf}
+  \caption{\small{Power spectra per degree~$\ell$ as a function of radius, based on Eqn.~(\ref{eq:powerdegreeradius}), for models S362ANI (left), GLAD-M15 (middle), and GLAD-M25 (right).}}
+  \label{fig:powerspectra}
+\end{figure}
+
+
+% To assess the accuracy of the expansion,
+% we may calculate the model norm in the GLL basis,
+% \begin{equation}
+%     ||m_\text{\,GLL}||^2=\int_V m_\text{\,GLL}^2(\mathbf{x})\,\mathrm{d}^3\mathbf{x}=
+%     \sum_{\mathrm{elem}}\sum_{\alpha,\beta,\gamma}\omega_\alpha\,\omega_\beta\,\omega_\gamma\,(m^{\alpha\beta\gamma})^2\,J^{\alpha\beta\gamma}
+%     \quad ,
+% \end{equation}
+% and compare it to the model norm in the spherical harmonic basis,
+% \begin{equation}
+%     ||m_\text{\,SH}||^2=\int_V m_\text{\,SH}^2(\mathbf{x})\,\mathrm{d}^3\mathbf{x}=
+%     \sum_{\ell = 0}^L(2\ell+1)\,\sigma_\ell^2
+%     \quad ,
+% \end{equation}
+% by calculating the error
+% \begin{equation}
+%     \epsilon = \log\,\frac{||m_\text{\,SH}||^2}{||m_\text{\,GLL}||^2}
+%     \quad .
+% \end{equation}
 
 \bibliographystyle{gji}
 \bibliography{ref.bib}

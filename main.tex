@@ -462,7 +462,20 @@ of stations, and the current earth model as input.
 The solver is GPU accelerated, and the simulations are performed on the Cray supercomputer ``Titan''
 at the OLCF.
 To simulate 120~min seismograms with a shortest period of 17~s on 384 NVIDIA
-Tesla K20X GPUs takes approximately 10~min of wall clock time. {\color{red} Wenjie: is that correct?}
+Tesla K20X GPUs takes approximately 10~min of wall clock time.
+
+The calculation of Fr\'echet derivatives requires
+access to snapshots of the forward wavefield as part of the parsimonious storage
+algorithm developed by~\cite{KoXiBoPeSaLiTr16},
+with rapid I/O facilitated by ADIOS~\citep{liu2014hello}.
+For the current simulation setup,
+this requires about 1~TB of storage per earthquake,
+so for 1,480 earthquakes this adds up to 1.5~PB.
+This volume of data is generated during~$\sim6$~hours of simulations.
+Based on our experience, ADIOS is capable of achieving~$\sim120$~GB/s
+of sustained I/O on OLCF resources.
+Given that typical write speeds for modern hard disks are~$\sim100$~MB/s,
+it would be extremely difficult to carry out global adjoint tomography without the ADIOS library.
 
 \subsection{Seismic data processing}
 
@@ -562,19 +575,6 @@ the adjoint wavefield during the adjoint simulation.
 Using this procedure,
 both the forward and adjoint wavefield are calculated in forward time,
 and attenuation is accurately taken into account in both simulations.
-
-The calculation of Fr\'echet derivatives requires
-access to snapshots of the forward wavefield as part of the parsimonious storage
-algorithm developed by~\cite{KoXiBoPeSaLiTr16},
-with rapid I/O facilitated by ADIOS~\citep{liu2014hello}.
-For the current simulation setup,
-this requires about 1~TB of storage per earthquake,
-so for 1,480 earthquakes this adds up to 1.5~PB.
-This volume of data is generated during~$\sim6$~hours of simulations.
-Based on our experience, ADIOS is capable of achieving~$\sim120$~GB/s
-of sustained I/O on OLCF resources.
-Given that typical write speeds for modern hard disks are~$\sim100$~MB/s,
-it would be extremely difficult to carry out global adjoint tomography without the ADIOS library.
 
 \subsection{Postprocessing}
 
@@ -1382,8 +1382,21 @@ we find overall good agreement at longer wavelengths.
 However, unlike other global models, when we compare GLAD-M25 with regional models
 we also observe generally good agreement at smaller wavelengths,
 and, in particular, plumes and subduction zones feature prominently.
+Thus, our global inversion is bridging the gap between global and regional studies,
+approaching regional-scale resolution is areas with sufficient data coverage.
+We can observe this increase in resolution in GLAD-M25 in the normalized power per spherical harmonic degree as a function of radius, which is displayed in Fig.~\ref{fig:powerspectraradius}.
 
-Obvious future directions of research include growing the earthquake database further to the roughly 6,000 earthquakes in the right magnitude range already available via the Global CMT database
+\begin{figure}
+  \centering
+  \includegraphics[width=0.95\textwidth]{figures/power_radius2.pdf}
+  \caption{\small{Normalized power per degree~$\ell$ as a function of radius, based on Eqn.~(\ref{eq:powerdegreeradius}), for models S362ANI (first column), S40RTS (second column) GLAD-M15 (third column), and GLAD-M25 (fourth column).
+  Shown are depths greater than 120~km.
+  (Courtesy of Caio Ciardelli.)
+  }}
+  \label{fig:powerspectraradius}
+\end{figure}
+
+Obvious future directions of research include growing the earthquake database further to the roughly 6,000 earthquakes in the right magnitude range already available via the Global CMT database,
 and reducing the shortest simulation period further from 17~s to 8.5~s.
 The most recent machine at OLCF, called ``Summit'', uses IBM Power9 CPUs accelerated by NVIDIA Tesla V100 GPU and can readily accommodate such simulations.
 
@@ -1398,12 +1411,13 @@ Additional computational resources were provided by the Princeton Institute
 for Computational Science \& Engineering (PICSciE).
 We acknowledge IRIS ({\tt iris.edu}) and ORFEUS ({\tt orfeus-eu.org}) for
 providing the data used in this study.
-We thank Ryan Modrak, Ridvan \"{O}rsvuran, Frederik J. Simons, and James Smith for fruitful discussions,
+We thank Ryan Modrak, Ridvan \"{O}rsvuran, Frederik J.\ Simons, and James Smith for fruitful discussions,
 and Caio Ciardelli for implementing the spherical harmonic model expansion.
 The open source spectral-element software package SPECFEM3D\_GLOBE and
 the seismic measurement software package FLEXWIN used for this article are
  freely available via the Computational Infrastructure for Geodynamics
- (CIG; {\tt geodynamics.org}). This research was supported by NSF grant~1644826.
+ (CIG; {\tt geodynamics.org}).
+ This research was supported by NSF grant~1644826.
 \end{acknowledgments}
 
 \newpage
@@ -1602,47 +1616,21 @@ and the normalized power per degree as a function of radius is determined via
     \quad .
     \label{eq:powerdegreeradius}
 \end{equation}
-In Fig.~\ref{fig:powerspectra} we plot the normalized power per degree~$\ell$ for models S362ANI, GLAD-M15, and GLAD-M25,
-and in Fig.~\ref{fig:powerspectraradius} we plot the normalized power per degree as a function of radius
+In Fig.~\ref{fig:powerspectra} we plot the normalized power per degree~$\ell$ for models S362ANI, S40RTS, GLAD-M15, and GLAD-M25,
+and Fig.~\ref{fig:powerspectraradius} shows the normalized power per degree as a function of radius
 for the same set of models.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.5\textwidth]{figures/power.pdf}
-  \caption{\small{Normalized power per degree~$\ell$, based on Eqn.~(\ref{eq:powerdegree}), for models S362ANI (red), GLAD-M15 (green), and GLAD-M25 (blue).
-  Model S362ANI has no power beyond degree~18.
+  \includegraphics[width=0.5\textwidth]{figures/power2.pdf}
+  \caption{\small{Normalized power per degree~$\ell$, based on Eqn.~(\ref{eq:powerdegree}), for models S362ANI (red), S40RTS (orange), GLAD-M15 (green), and GLAD-M25 (blue).
+  The calculation includes depths greater than 120~km.
+  Model S362ANI has no power beyond degree~18,
+  and model S40RTS has no power beyond degree~40.
   (Courtesy of Caio Ciardelli.)
   }}
   \label{fig:powerspectra}
 \end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=0.95\textwidth]{figures/power_radius.pdf}
-  \caption{\small{Normalized power per degree~$\ell$ as a function of radius, based on Eqn.~(\ref{eq:powerdegreeradius}), for models S362ANI (left), GLAD-M15 (middle), and GLAD-M25 (right).
-  (Courtesy of Caio Ciardelli.)
-  }}
-  \label{fig:powerspectraradius}
-\end{figure}
-
-% To assess the accuracy of the expansion,
-% we may calculate the model norm in the GLL basis,
-% \begin{equation}
-%     ||m_\text{\,GLL}||^2=\int_V m_\text{\,GLL}^2(\mathbf{x})\,\mathrm{d}^3\mathbf{x}=
-%     \sum_{\mathrm{elem}}\sum_{\alpha,\beta,\gamma}\omega_\alpha\,\omega_\beta\,\omega_\gamma\,(m^{\alpha\beta\gamma})^2\,J^{\alpha\beta\gamma}
-%     \quad ,
-% \end{equation}
-% and compare it to the model norm in the spherical harmonic basis,
-% \begin{equation}
-%     ||m_\text{\,SH}||^2=\int_V m_\text{\,SH}^2(\mathbf{x})\,\mathrm{d}^3\mathbf{x}=
-%     \sum_{\ell = 0}^L(2\ell+1)\,\sigma_\ell^2
-%     \quad ,
-% \end{equation}
-% by calculating the error
-% \begin{equation}
-%     \epsilon = \log\,\frac{||m_\text{\,SH}||^2}{||m_\text{\,GLL}||^2}
-%     \quad .
-% \end{equation}
 
 \bibliographystyle{gji}
 \bibliography{ref.bib}

@@ -51,7 +51,7 @@
 %%---------------------------------------------
 \begin{summary}
 Building on our first-generation global adjoint tomography model,
-GLAD-M15, we present our second-generation transversely isotropic global model,
+GLAD-M15 \citep{bozdaug2016global}, we present our second-generation transversely isotropic global model,
 named GLAD-M25, which is the result of ten quasi-Newton tomographic iterations with an
 earthquake database consisting of 1,480 events in the magnitude range $5.5\le M_w \le 7.2$,
 an almost six-fold increase over the first-generation model.
@@ -132,7 +132,7 @@ and SL2013NA~\citep{schaeffer2014imaging},
 a modification of global model SL2013sv focused on North America.
 In Europe we use regional model EU60~\citep{zhu2015seismic} for comparison,
 which is based on the assimilation of data from 190 regional earthquakes recorded by more than 700 European seismographic stations.
-Finally, in Asia we use regional adjoint tomography model EARA2014~\citep{chen2015multiparameter} as a reference, a model based on data from 227 earthquakes recorded by more than 1,800 stations.
+Finally, in Asia we use regional adjoint tomography model EARA2014~\citep{chen2015multiparameter} as a reference, a model based on data from 227~earthquakes recorded by more than 1,800~stations.
 
 This article is organized as follows.
 Sections~\ref{section:start}--\ref{section:data} describe the starting model,
@@ -179,10 +179,11 @@ from the global Centroid-Moment Tensor (CMT) catalog~\citep[e.g.,][]{ekstrom2012
 resulting in a total number of 1,040 earthquakes.
 To ensure a good signal-to-noise ratio on a global scale,
 the smallest moment magnitude in the database is set to~5.5,
+thereby capturing more deep events,
 and to avoid complications associated with source dimension and directivity,
 the largest moment magnitude is set to~7.2.
 
-Before using the 1,040 earthquakes in our structural inversion,
+Before using 1,040 earthquakes in our structural inversion,
 we performed CMT inversions using model GLAD-M15,
 the results of which are summarized in Fig.~\ref{fig:source_correction}.
 To ensure even global coverage,
@@ -294,7 +295,7 @@ Africa Array~(AF), the Canadian National Seismograph Network~(CN), Geoscience Au
 the Antarctic Seismographic Argentinean Italian Network~(AI),
 and the New Zealand National Seismograph Network~(NZ),
 constitute a significant part
-of our database and greatly improve coverage in certain regions.
+of our database and greatly improve coverage in certain regions. \red{(Looks like there are also OBSs to be mentioned, mainly for my curiosity, it would be good to know their contribution to the overall inversions.)}
 
 \begin{figure}
   \includegraphics[width=0.8\textwidth]{figures/station_map.pdf}
@@ -461,7 +462,7 @@ SPECFEM3D\_GLOBE~\citep{KoTr02a,KoTr02a}, and take a CMT solution, a relevant li
 of stations, and the current earth model as input.
 The solver is GPU accelerated, and the simulations are performed on the Cray supercomputer ``Titan''
 at the OLCF.
-To simulate 120~min seismograms with a shortest period of 17~s on 384 NVIDIA
+To simulate 120-min seismograms with a shortest period of 17~s on 384 NVIDIA
 Tesla K20X GPUs takes approximately 10~min of wall clock time.
 
 The calculation of Fr\'echet derivatives requires
@@ -540,7 +541,7 @@ respectively,
 in which the Pyflex window count is used to identify parts of seismograms being assimilated.
 The figures nicely highlight all the well known body traveltime branches.
 Collectively, the numerous compressional wave arrivals identified in Figs.~\ref{fig:window_density_Z} and~\ref{fig:window_density_R} are of great importance, because they help constrain the compressional wavespeed structure in the model.
-The Pyflex window selection algorithm is currently configured not to pick body waves after the arrival of the surface waves, which is why the PcP and ScS branches are missing at shorter epicentral distances.
+The Pyflex window selection algorithm is currently configured not to pick body waves after the arrival of the surface waves, which is why the PcP and ScS branches are missing at shorter epicentral distances \red{(Again just for my curiosity, why PcP and ScS phases together with any phase after surface waves were excluded? Any special reason or just a decision?)}.
 This is something we will reconsider in future applications, perhaps by introducing aspects of machine learning. 
 
 \begin{figure}
@@ -930,11 +931,17 @@ as expected.
 \section{Model GLAD-M25}
 \label{section:model}
 
-In this section we discuss model GLAD-M25 in detail.
-We begin with a global overview of the model before concentrating on
+In this section we discuss model GLAD-M25 in some detail.
+We begin with a global overview of the model, before concentrating on
 specific geographical regions.
-In this paper we focus predominantly on isotropic shear and compressional wavespeed variations.
-We conclude by highlighting various slabs and plumes in the model.
+We conclude by highlighting various slabs and plumes.
+The focus is on isotropic shear and compressional wavespeed variations.
+We provide comparisons with numerous other global and regional tomographic models,
+but we refrain from detailed tectonic/geodynamic interpretations,
+which will be the subject of more targeted future investigations.
+Our goal in the article is to discuss the construction of model GLAD-M25,
+and to place it into a broader tomographic context. 
+
 Vertical cross sections are plotted relative to the spherical average of GLAD-M25,
 as discussed in Appendix~\ref{sec:1Dmodel}.
 For plotting purposes and use in other applications,
@@ -956,7 +963,7 @@ discussed in Appendix~\ref{sec:shanalysis}.
   hotspots~\citep{montelli2006catalogue}.
   The range of the colorbar is the same for each row,
   and its maximum value is indicated in parentheses on the left, after
-  the depth.}}
+  the depth. \red{(Probably the numbers on top-left of each map are min/max perturbations of the associated sections, but the colorbar is fixed to 2 to 7$\%$)}}}
   \label{fig:global-vs}
 \end{figure}
 
@@ -1166,7 +1173,7 @@ measurements from 227 earthquakes recorded by 1,869 seismographic  stations.
 It has superior data coverage, mainly by incorporating data from the China Array.
 
 The Southwestern part of China is dominated by the Himalayas,
-expressing the collision between India and Eurasia.
+expressing the collision between India and Eurasia~\citep{lebedev2003upper}.
 GLAD-M25 exhibits strong high wavespeed anomalies in this area,
 which extend all the way from 100~km to 600~km, narrowing and sharpening with depth,
 in good agreement with EARA2014.
@@ -1192,7 +1199,7 @@ Along the northern edge we see low wavespeeds associated with the
 Altai-Sayan and Baikal rift systems.
 In terms of intra-plate activities,
 at shallow depths we see clear low wavespeed impressions of the Hainan and Changbai volcanoes,
-suggesting a lithospheric rather than deeper mantle origin.
+suggesting a lithospheric rather than deeper mantle origin~\citep{yin2000geologic}.
 The Sichuan basin, a very localized high-wavespeed structure, extends below
 250~km depth. At 600~km, most models shows a large region of high wavespeed
 beneath the Philippine plate, indicating ponding of ancient subducted plates.
@@ -1201,7 +1208,7 @@ beneath the Philippine plate, indicating ponding of ancient subducted plates.
 
 \begin{figure}[ht!] 
   \includegraphics[width=0.9\textwidth]{figures/depth_slice/south_america_vp.pdf}
-  \caption{\small{Map views of compressional wavespeed variations beneath South America for GLAD-M25~(first column) and global models S362ANI$+$M~\citep{moulik2014anisotropic} (second column), LLNL-G3Dv3~\citep{simmons2012llnl} (third column), and GAP-P4~\citep{fukao2013subducted} (fourth column).}}
+  \caption{\small{Map views of compressional wavespeed variations beneath South America for GLAD-M25~(first column) and global models S362ANI$+$M~\citep{moulik2014anisotropic} (second column), LLNL-G3Dv3~\citep{simmons2012llnl} (third column), and GAP-P4~\citep{fukao2013subducted} (fourth column).\red{(LLNL model looks pretty interesting with the craton signature down to 300 km. Slab and craton anomalies together at 150 km look interesting too, as if they are two different models. In addition I am still wondering why are we the only one seeing Scotia Arc? Or why the others do not see it? It looks to me that it is pretty easy to add a slab signature to Scotia because of USArray. If there are earthquakes in their database at Scotia it should still easy to put it there even without USArray. Or perhaps it is indeed the bias of USArray coming from GLAD-M15?.)}}}
   \label{fig:southamerica-vp}
   \centering
 \end{figure}
@@ -1252,11 +1259,13 @@ Caribbean subduction is clearly discernible in model GLAD-M25 and the two $V_\te
 In this section we highlight various plume systems on Earth. Fig.~\ref{fig:plumes}
 shows cross sections of several plumes, comparing models GLAD-M25 ($V_\textrm{P}$),
 TX2015~\citep[$V_\textrm{S}$;][]{TX2015}, and SEMUCB-WM1~\citep[$V_\textrm{S}$;][]{french2015broad}.
+All three models have common plume features where GLAD-M25 and TX2015 seem to be more in good agreement.  
+
 The three models tend to agree near the CMB,
 and there is overall good agreement between GLAD-M25 and TX2015,
 but the models can differ substantially in the mid and upper mantle,
 with profoundly different implications for mantle
-convection:
+convection.
 
 \begin{itemize}
 \item[]{\it Afar} In Fig.~\ref{fig:plumes}(a),
@@ -1293,7 +1302,6 @@ Recovering these plumes is challenging due to poor data coverage in the southern
 %    \caption{\small{Vertical cross sections of shear wave velocity perturbations of plumes in the pacific region.}}
 %\end{figure}
 
-
 \subsection{Subduction zones}
 \label{section:slabs}
 
@@ -1304,11 +1312,12 @@ Recovering these plumes is challenging due to poor data coverage in the southern
     \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Ha.png}\label{fig:subd_c}}\\[-1pt]
     \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Wc.png}\label{fig:subd_e}}\\[-1pt]
     \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Ne.png}\label{fig:subd_d}}\\[-1pt]
+    \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Su.png}\label{fig:subd_f}}\\[-1pt]
     \caption{\small{Vertical cross sections of compressional wavespeed perturbations in various subduction zones
     for models GLAD-M25 ($V_\textrm{P}$; left column), GAP-P4~\citep{fukao2013subducted} (middle column) and UU-P07~\citep{van2018atlas} (right column).
     The map in the top left corner of each row shows the cross section with color-coded red, green, and white dots for geographical reference.
     The dashed black semicircles in the cross sections denote depths of 410~km, 660~km, and 1000~km.
-    (a) Aegean; (b) South America; (c) Hatteras; (d) Wichita. (e) Nepal; }}
+    (a) Aegean; (b) South America; (c) Hatteras; (d) Wichita. (e) Nepal; (f) Sunda. \red{(GLAD-M25 is still Vp)}}}
     \label{fig:subd}
 \end{figure}
 
@@ -1317,11 +1326,20 @@ In Fig.~\ref{fig:subd} we compare GLAD-M25~($V_\textrm{P}$) with two compression
 namely, GAP-P4~\citep{fukao2013subducted} and UU-P07~\citep{van2018atlas}.
 Fig.~\ref{fig:subd}(a) features the Aegean subduction zone. All models show a slab penetrating into the lower mantle beyond a depth of 1,000~km.
 Fig.~\ref{fig:subd}(b) shows the South American slab, which, in this cross section, ponds in the shallow lower mantle in all three models, before sinking all the way to the CMB.
-Figs.~\ref{fig:subd}(c) and~(d) show cuts across the ancient Farallon slab, which penetrates deeply into the lower mantle.
+Figs.~\ref{fig:subd}(c) and~(d) show cuts across the ancient Farallon slab, which penetrates deeply into the lower mantle,
+as spectacularly documented by~\cite[e.g.]{grand1994,hilst1997,grand1997high}.
 At depths greater than 1,000~km, 
 we see a very strong expression of the slab in model GLAD-M25, which is much weaker in the two P models.
 The difference may be attributed to increased data coverage thanks to USArray, as well as the use of finite-frequency Fr\'echet derivatives.
-Finally, Fig.~\ref{fig:subd}(e) shows subduction beneath the Himalayas.
+Fig.~\ref{fig:subd}(e) shows subduction beneath the Himalayas.
+All three models show two distinct fast anomalies below 660~km,
+one above 1,000~km and the other, further to the southwest, below 1,000~km.
+Finally, Fig.~\ref{fig:subd}(f) shows subduction beneath the Java portion of the Sunda Arc.
+At this location the slab pernetrates into the lower mantle, at which point its spreads out laterally,
+in agreement with models GAP-P4 and UU-P07.
+\cite{fukao1992} explained this flattening using a model of~\cite{ringwood1988},
+suggesting that the subducted slab thickened and buckled to form a dense megalith
+above the 660~km discontinuity before sinking into the lower mantle.
 
 Overall, the three models are in reasonably good agreement.
 At shallow depths, model GLAD-M25 shows more distinct continental crust and cratons, thanks to the inclusion of surface waves.
@@ -1337,20 +1355,40 @@ Still, it would be a shame not to utilize as much as possible of the information
 
 To facilitate fast and effective access to such vast data resources,
 we use ASDF~\citep{krischer2016adaptable} in the preprocessing stage of the adjoint tomography workflow,
-and to accommodate I/O during postprocessing stage we use the ADIOS library~\citep{liu2014hello}.
+and to accommodate massive I/O during the postprocessing stage we use the ADIOS library~\citep{liu2014hello}.
 For data assimilation,
-tools, such as FLEXWIN, which automatically select data windows suitable for measurements,
+tools such as FLEXWIN, which automatically select data windows suitable for measurements,
 are indispensable, and we see tremendous opportunities for the use of machine learning algorithms in this context~\citep[e.g.,][]{chen2017}.
+Without these libraries and tools, the construction of model GLAD-M25 would have been impossible. 
 
 Some form of automated parallel workflow management is critical for the global adjoint tomography process,
 because classical inversion workflows suffer from I/O inefficiencies, lack of fault tolerance, and an inability to work in distributed resource environments~\citep{Lefebvre2018}.
 The EnTK workflow management engine~\citep{EnTK2017}
 largely overcomes these limitations by facilitating tracking of tasks and job failure detection,
 thereby enabling semi-automatic job resubmission if necessary.
+These are the attributes required for bringing global FWI to its full potential,
+enabling the assimilation of data from thousands of earthquakes on the largest HPC systems.
 
 It should be clear from this discussion that modern seismic tomography requires close collaborations with computational scientists, HPC specialists, and visualization experts,
 as reflected in the list of authors for this article, in addition to access to the most advanced computational platforms,
 such as those offered through the DOE INCITE and NSF XSEDE programs.
+
+Although Figs.~\ref{fig:window_density_Z}--\ref{fig:window_density_T} illustrate that much information in seismograms is
+being assimilated, we still have a long way to go before explaining every wiggle in hundreds-of-minutes-long seismograms.
+Currently, we are only fitting the phase in selected time windows, and amplitude information remains completely unused.
+We accommodate the full physics of seismic wave propagation,
+but we are not exploiting the most general earth model parameterization.
+GLAD-M25 is an elastic model with radial anisotropy confined to the upper mantle.
+It is well known that the upper mantle is azimuthally anisotropic~\citep[e.g.,][]{montagner1989petrological,montagner1991},
+and we also know that amplitude information helps constrain second derivatives in phase speed~\citep[e.g.,][]{WW86,TDI,TDII},
+in addition to lateral variations in attenuation~\cite[e.g.,][]{romanowicz1998,reidetal2001,DaEkDz08}.
+Thus, the natural next step in global FWI is to use phase and amplitude information simultaneously to jointly constrain the elastic and anelastic structure of the Earth.
+To accomplish this next step, source parameters need to be constrained more carefully, especially as we push the resolution to shorter periods~\citep[e.g.,][]{valentine2010}.
+
+The global distribution of earthquakes (Fig.~\ref{fig:event_1480}) and stations (Fig.~\ref{fig:stations}) is highly uneven.
+This problem may be alleviated to some extent by using suitably chosen misfit functions with appropriate geographical weighting of sources and receivers~\citep[e.g,,][]{Li1996,Ruanetal2018}.
+The ultimate solution may be a dense network of Ocean Bottom Seismometers,
+but meanwhile an armada of floating seismometers may offer a cheaper and more practical alternative~\citep[e.g.,][]{Nolet19}.
 
 \section{Conclusion}
 
@@ -1362,10 +1400,17 @@ namely 17--40~s body waves, 40--100~s body waves, 40--100~s surface waves, and 9
 resulting in twelve measurement categories.
 This culminated in the assimilation of more than 18~million time windows.
 
-GLAD-M25 --- like its predecessor GLAD-M15 --- invokes no crustal corrections,
-and constrains crust and mantle shear and compressional wavespeeds simultaneously.
-The effects of attenuation are fully accommodated,
-both in forward and in adjoint simulations.
+GLAD-M25 --- like its predecessor GLAD-M15 --- invokes no crustal corrections, and constrains crust and mantle shear and compressional wavespeeds simultaneously.
+Such ubiquitous crustal corrections may affect inferences about upper-mantle anisotropy~\citep[e.g.,][]{BozdagTrampert2008,PaLeRo10,Ferreira10}, and are likely the main reason for significant differences between radially anisotropic upper-mantle models~\citep[e.g.,][]{Chang14}.
+Treating the crust and mantle equally and simultaneously is one of the main strengths of GLAD-M25, accepting the additional computational costs, but thereby avoiding any approximations or corrections.
+Another strength is the fact that the effects of attenuation are fully accommodated, both in forward and in adjoint simulations.
+These points highlight the importance of taking the full physics of seismic wave propagation properly into account in seismic imaging. 
+
+Another very important attribute of GLAD-M25 is that it constrains shear and compressional wavespeeds simultaneously in the same period range,
+thereby enabling us to interpret the two wavespeeds together.
+As illustrated in Figs.~\ref{fig:window_density_Z} and~\ref{fig:window_density_R},
+numerous compressional wave arrivals are assimilated, including P, PP, PPP, PKP, PS, and PPS.
+In future work we will capitalize on this by using the $V_\text{P}/V_\text{S}$ ratio to help constrain thermo-chemical and geodynamical processes in the mantle.
 
 GLAD-M25 was quantitatively evaluated in several ways.
 First, it produces significant misfit
@@ -1379,22 +1424,36 @@ we see similar misfit reductions and traveltime \& amplitude anomaly histograms 
 
 When we compare GLAD-M25 with other global models,
 we find overall good agreement at longer wavelengths.
-However, unlike other global models, when we compare GLAD-M25 with regional models
+In particular, GLAD-M25 and TX2015 feature very similar plume structures.
+Unlike other global models, when we compare GLAD-M25 with regional models
 we also observe generally good agreement at smaller wavelengths,
 and, in particular, plumes and subduction zones feature prominently.
-Thus, our global inversion is bridging the gap between global and regional studies,
+However, it is important to note that GLAD-M25 tends to agree well with regional models based on the same S362ANI~$+$~Crust2.0 starting model, numerical wave propagation solver, and quasi-Newton inversion technique (e.g., EU60, US22, and EARA2014).
+It is also important to point out that even in regions with dense seismographic coverage, such as North America,
+recent models can differ substantially, especially at greater depths.
+Nevertheless, our global inversion is bridging the gap between global and regional studies,
 approaching regional-scale resolution is areas with sufficient data coverage.
 We can observe this increase in resolution in GLAD-M25 in the normalized power per spherical harmonic degree as a function of radius, which is displayed in Fig.~\ref{fig:powerspectraradius}.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.95\textwidth]{figures/power_radius2.pdf}
-  \caption{\small{Normalized power per degree~$\ell$ as a function of radius, based on Eqn.~(\ref{eq:powerdegreeradius}), for models S362ANI (first column), S40RTS (second column) GLAD-M15 (third column), and GLAD-M25 (fourth column).
+  \includegraphics[width=0.95\textwidth]{figures/power_radius.pdf}
+  \caption{\small{Normalized power per degree~$\ell$ as a function of radius, based on Eqn.~(\ref{eq:powerdegreeradius}), for models S362ANI (left), GLAD-M15 (middle), and GLAD-M25 (right).
   Shown are depths greater than 120~km.
   (Courtesy of Caio Ciardelli.)
   }}
   \label{fig:powerspectraradius}
 \end{figure}
+
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=0.95\textwidth]{figures/power_radius2.pdf}
+%   \caption{\small{Normalized power per degree~$\ell$ as a function of radius, based on Eqn.~(\ref{eq:powerdegreeradius}), for models S362ANI (first column), S40RTS (second column), GLAD-M15 (third column), and GLAD-M25 (fourth column).
+%   Shown are depths greater than 120~km.
+%   (Courtesy of Caio Ciardelli.)
+%   }}
+%   \label{fig:powerspectraradius}
+% \end{figure}
 
 Obvious future directions of research include growing the earthquake database further to the roughly 6,000 earthquakes in the right magnitude range already available via the Global CMT database,
 and reducing the shortest simulation period further from 17~s to 8.5~s.
@@ -1465,7 +1524,7 @@ Figure~\ref{fig:global-average} shows the resulting radial averages of the isotr
 compared to 1D starting model~STW105~\citep{kustowski2008anisotropic} and PREM~\citep{PREM}.
 The radial average of~GLAD-M25 remains very close to the radial starting model~STW105.
 The main difference between these two models and~PREM
-is the absence of the 220~km discontinuity and a lower~$V_P/V_S$ ratio in the top 200~km.
+is the absence of the 220~km discontinuity and a lower~$V_\text{P}/V_\text{S}$ ratio in the top 200~km.
 
 \begin{figure}
   \centering
@@ -1616,14 +1675,14 @@ and the normalized power per degree as a function of radius is determined via
     \quad .
     \label{eq:powerdegreeradius}
 \end{equation}
-In Fig.~\ref{fig:powerspectra} we plot the normalized power per degree~$\ell$ for models S362ANI, S40RTS, GLAD-M15, and GLAD-M25,
+In Fig.~\ref{fig:powerspectra} we plot the normalized power per degree~$\ell$ for models S362ANI, GLAD-M15, and GLAD-M25,
 and Fig.~\ref{fig:powerspectraradius} shows the normalized power per degree as a function of radius
 for the same set of models.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.5\textwidth]{figures/power2.pdf}
-  \caption{\small{Normalized power per degree~$\ell$, based on Eqn.~(\ref{eq:powerdegree}), for models S362ANI (red), S40RTS (orange), GLAD-M15 (green), and GLAD-M25 (blue).
+  \includegraphics[width=0.5\textwidth]{figures/power.pdf}
+  \caption{\small{Normalized power per degree~$\ell$, based on Eqn.~(\ref{eq:powerdegree}), for models S362ANI (red), GLAD-M15 (green), and GLAD-M25 (blue).
   The calculation includes depths greater than 120~km.
   Model S362ANI has no power beyond degree~18,
   and model S40RTS has no power beyond degree~40.
@@ -1631,6 +1690,21 @@ for the same set of models.
   }}
   \label{fig:powerspectra}
 \end{figure}
+% In Fig.~\ref{fig:powerspectra} we plot the normalized power per degree~$\ell$ for models S362ANI, S40RTS, GLAD-M15, and GLAD-M25,
+% and Fig.~\ref{fig:powerspectraradius} shows the normalized power per degree as a function of radius
+% for the same set of models.
+
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=0.5\textwidth]{figures/power2.pdf}
+%   \caption{\small{Normalized power per degree~$\ell$, based on Eqn.~(\ref{eq:powerdegree}), for models S362ANI (red), S40RTS (orange), GLAD-M15 (green), and GLAD-M25 (blue).
+%   The calculation includes depths greater than 120~km.
+%   Model S362ANI has no power beyond degree~18,
+%   and model S40RTS has no power beyond degree~40.
+%   (Courtesy of Caio Ciardelli.)
+%   }}
+%   \label{fig:powerspectra}
+% \end{figure}
 
 \bibliographystyle{gji}
 \bibliography{ref.bib}

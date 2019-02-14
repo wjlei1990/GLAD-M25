@@ -51,7 +51,7 @@
 %%---------------------------------------------
 \begin{summary}
 Building on our first-generation global adjoint tomography model,
-GLAD-M15 \citep{bozdaug2016global}, we present our second-generation transversely isotropic global model,
+GLAD-M15~\citep{bozdaug2016global}, we present our second-generation transversely isotropic global model,
 named GLAD-M25, which is the result of ten quasi-Newton tomographic iterations with an
 earthquake database consisting of 1,480 events in the magnitude range $5.5\le M_w \le 7.2$,
 an almost six-fold increase over the first-generation model.
@@ -183,7 +183,7 @@ thereby capturing more deep events,
 and to avoid complications associated with source dimension and directivity,
 the largest moment magnitude is set to~7.2.
 
-Before using 1,040 earthquakes in our structural inversion,
+Before using the 1,040 earthquakes in our structural inversion,
 we performed CMT inversions using model GLAD-M15,
 the results of which are summarized in Fig.~\ref{fig:source_correction}.
 To ensure even global coverage,
@@ -1248,7 +1248,7 @@ Caribbean subduction is clearly discernible in model GLAD-M25 and the two $V_\te
     \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Iceland_Eifel.png}}\\[-1pt]
     \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Easter_Galapagos.png}}\\[-1pt]
     \sidesubfloat[]{\includegraphics[width=0.98\textwidth]{figures/plumes/Marion3_Kerguelen.png}}\\
-    \caption{\small{Vertical cross sections for various plumes for models GLAD-M25 ($V_\textrm{P}$; left column), TX2015~\citep[$V_\textrm{S}$;][]{TX2015} (center column), and SEMUCB-WM1~\citep[$V_\textrm{S}$;][]{french2015broad} (right column).
+    \caption{\small{Vertical cross sections for various plumes for models GLAD-M25 ($V_\textrm{S}$; left column), TX2015~\citep[$V_\textrm{S}$;][]{TX2015} (center column), and SEMUCB-WM1~\citep[$V_\textrm{S}$;][]{french2015broad} (right column).
     The map in the top left corner of each row shows the cross section with color-coded red, green, and white dots for geographical reference;
     hotspots are denoted by red triangles.
     The dashed black semicircles in the cross sections denote depths of 410~km, 660~km, and 1000~km.
@@ -1307,12 +1307,12 @@ Recovering these plumes is challenging due to poor data coverage in the southern
 
 \begin{figure}
     \centering
-    \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Aeg.png}\label{fig:subd_a}}\\[-1pt]
-    \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Br.png}\label{fig:subd_b}}\\[-1pt]
-    \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Ha.png}\label{fig:subd_c}}\\[-1pt]
-    \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Wc.png}\label{fig:subd_e}}\\[-1pt]
-    \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Ne.png}\label{fig:subd_d}}\\[-1pt]
-    \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Su.png}\label{fig:subd_f}}\\[-1pt]
+    \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Aeg.png}\label{fig:subd_a}}\\[-8pt]
+    \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Br.png}\label{fig:subd_b}}\\[-8pt]
+    \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Ha.png}\label{fig:subd_c}}\\[-8pt]
+    \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Wc.png}\label{fig:subd_e}}\\[-8pt]
+    \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Ne.png}\label{fig:subd_d}}\\[-8pt]
+    \sidesubfloat[]{\includegraphics[width=0.88\textwidth]{figures/subductions/Su.png}\label{fig:subd_f}}\\[-8pt]
     \caption{\small{Vertical cross sections of compressional wavespeed perturbations in various subduction zones
     for models GLAD-M25 ($V_\textrm{P}$; left column), GAP-P4~\citep{fukao2013subducted} (middle column) and UU-P07~\citep{van2018atlas} (right column).
     The map in the top left corner of each row shows the cross section with color-coded red, green, and white dots for geographical reference.
@@ -1327,7 +1327,7 @@ namely, GAP-P4~\citep{fukao2013subducted} and UU-P07~\citep{van2018atlas}.
 Fig.~\ref{fig:subd}(a) features the Aegean subduction zone. All models show a slab penetrating into the lower mantle beyond a depth of 1,000~km.
 Fig.~\ref{fig:subd}(b) shows the South American slab, which, in this cross section, ponds in the shallow lower mantle in all three models, before sinking all the way to the CMB.
 Figs.~\ref{fig:subd}(c) and~(d) show cuts across the ancient Farallon slab, which penetrates deeply into the lower mantle,
-as spectacularly documented by~\cite[e.g.]{grand1994,hilst1997,grand1997high}.
+as spectacularly documented by, for instance, \citet{grand1994,hilst1997,grand1997high}.
 At depths greater than 1,000~km, 
 we see a very strong expression of the slab in model GLAD-M25, which is much weaker in the two P models.
 The difference may be attributed to increased data coverage thanks to USArray, as well as the use of finite-frequency Fr\'echet derivatives.
@@ -1349,16 +1349,15 @@ the models share very similar attributes.
 \section{Discussion}
 
 Seismology is a science driven by data.
-There was a time when seismologists would meticulously inspect single seismograms to glean valuable information from them.
-Today, we have easy access to data from thousands of earthquakes recorded by tens of thousands of seismographic stations, and individual inspection of all of these records has become impossible.
+There was a time when seismologists would meticulously inspect single seismograms to glean valuable information from them \red{(Perhaps it is now the case for planetary seismology? )}.
+Today, we have easy access to data from thousands of earthquakes recorded by tens of thousands of seismographic stations, and individual inspection of all of these records has become impossible \red{(probably it depends on the seismologist. I remember Jeroen Ritsema telling that it is not a big deal to go through the entire database in a week or so with some not-so-sophisticated plotting techniques. Those interested in data still look at, I think..)}.
 Still, it would be a shame not to utilize as much as possible of the information in this massive seismographic database.
 
 To facilitate fast and effective access to such vast data resources,
 we use ASDF~\citep{krischer2016adaptable} in the preprocessing stage of the adjoint tomography workflow,
 and to accommodate massive I/O during the postprocessing stage we use the ADIOS library~\citep{liu2014hello}.
 For data assimilation,
-tools such as FLEXWIN, which automatically select data windows suitable for measurements,
-are indispensable, and we see tremendous opportunities for the use of machine learning algorithms in this context~\citep[e.g.,][]{chen2017}.
+tools such as FLEXWIN, which automatically select data windows suitable for measurements, are indispensable, and we see tremendous opportunities for the use of machine learning algorithms in this context~\citep[e.g.,][]{chen2017}.
 Without these libraries and tools, the construction of model GLAD-M25 would have been impossible. 
 
 Some form of automated parallel workflow management is critical for the global adjoint tomography process,

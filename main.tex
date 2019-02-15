@@ -180,7 +180,7 @@ resulting in a total number of 1,040 earthquakes.
 To ensure a good signal-to-noise ratio on a global scale,
 the smallest moment magnitude in the database is set to~5.5,
 thereby capturing more deep events,
-and to avoid complications associated with source dimension and directivity,
+and, to avoid complications associated with source dimension and directivity,
 the largest moment magnitude is set to~7.2.
 
 Before using the 1,040 earthquakes in our structural inversion,
@@ -295,7 +295,7 @@ Africa Array~(AF), the Canadian National Seismograph Network~(CN), Geoscience Au
 the Antarctic Seismographic Argentinean Italian Network~(AI),
 and the New Zealand National Seismograph Network~(NZ),
 constitute a significant part
-of our database and greatly improve coverage in certain regions. \red{(Looks like there are also OBSs to be mentioned, mainly for my curiosity, it would be good to know their contribution to the overall inversions.)}
+of our database and greatly improve coverage in certain regions.
 
 \begin{figure}
   \includegraphics[width=0.8\textwidth]{figures/station_map.pdf}
@@ -312,7 +312,7 @@ plus related files with instrument response and event information.
 Since every earthquake in the database is typically recorded by thousands of
 instruments, I/O during the preprocessing stage of the adjoint tomography workflow
 quickly cripples the file system. The Adaptable Seismic Data Format
-(ASDF)~\citep[][ \texttt{https://seismic-data.org/ }]{krischer2016adaptable}
+(ASDF)~\citep[][ \texttt{https://seismic-data.org/}]{krischer2016adaptable}
 was developed with complete reproducibility and fast parallel processing in mind.
 
 In this context, there are four key issues ASDF resolves.
@@ -541,7 +541,7 @@ respectively,
 in which the Pyflex window count is used to identify parts of seismograms being assimilated.
 The figures nicely highlight all the well known body traveltime branches.
 Collectively, the numerous compressional wave arrivals identified in Figs.~\ref{fig:window_density_Z} and~\ref{fig:window_density_R} are of great importance, because they help constrain the compressional wavespeed structure in the model.
-The Pyflex window selection algorithm is currently configured not to pick body waves after the arrival of the surface waves, which is why the PcP and ScS branches are missing at shorter epicentral distances \red{(Again just for my curiosity, why PcP and ScS phases together with any phase after surface waves were excluded? Any special reason or just a decision?)}.
+The Pyflex window selection algorithm is currently configured not to pick body waves after the arrival of the surface waves, which is why the PcP and ScS branches are missing at shorter epicentral distances.
 This is something we will reconsider in future applications, perhaps by introducing aspects of machine learning. 
 
 \begin{figure}
@@ -963,7 +963,7 @@ discussed in Appendix~\ref{sec:shanalysis}.
   hotspots~\citep{montelli2006catalogue}.
   The range of the colorbar is the same for each row,
   and its maximum value is indicated in parentheses on the left, after
-  the depth. \red{(Probably the numbers on top-left of each map are min/max perturbations of the associated sections, but the colorbar is fixed to 2 to 7$\%$)}}}
+  the depth.}}
   \label{fig:global-vs}
 \end{figure}
 
@@ -1208,7 +1208,7 @@ beneath the Philippine plate, indicating ponding of ancient subducted plates.
 
 \begin{figure}[ht!] 
   \includegraphics[width=0.9\textwidth]{figures/depth_slice/south_america_vp.pdf}
-  \caption{\small{Map views of compressional wavespeed variations beneath South America for GLAD-M25~(first column) and global models S362ANI$+$M~\citep{moulik2014anisotropic} (second column), LLNL-G3Dv3~\citep{simmons2012llnl} (third column), and GAP-P4~\citep{fukao2013subducted} (fourth column).\red{(LLNL model looks pretty interesting with the craton signature down to 300 km. Slab and craton anomalies together at 150 km look interesting too, as if they are two different models. In addition I am still wondering why are we the only one seeing Scotia Arc? Or why the others do not see it? It looks to me that it is pretty easy to add a slab signature to Scotia because of USArray. If there are earthquakes in their database at Scotia it should still easy to put it there even without USArray. Or perhaps it is indeed the bias of USArray coming from GLAD-M15?.)}}}
+  \caption{\small{Map views of compressional wavespeed variations beneath South America for GLAD-M25~(first column) and global models S362ANI$+$M~\citep{moulik2014anisotropic} (second column), LLNL-G3Dv3~\citep{simmons2012llnl} (third column), and GAP-P4~\citep{fukao2013subducted} (fourth column).}}
   \label{fig:southamerica-vp}
   \centering
 \end{figure}
@@ -1252,14 +1252,15 @@ Caribbean subduction is clearly discernible in model GLAD-M25 and the two $V_\te
     The map in the top left corner of each row shows the cross section with color-coded red, green, and white dots for geographical reference;
     hotspots are denoted by red triangles.
     The dashed black semicircles in the cross sections denote depths of 410~km, 660~km, and 1000~km.
-    (a) Afar; (b) Bermuda (left) and Canary (middle); (c) Cape Verde (middle) and Hoggar (right); (d) Iceland (middle) and Eifel (right); (e) Easter (left) and Galapagos (right); (f) Marion (middle), and Kerguelen (right). \red{(GLAD-M25 is still Vp)}}}
+    (a) Afar; (b) Bermuda (left) and Canary (middle); (c) Cape Verde (middle) and Hoggar (right); (d) Iceland (middle) and Eifel (right); (e) Easter (left) and Galapagos (right); (f) Marion (middle), and Kerguelen (right). }}
     \label{fig:plumes}
 \end{figure}
 
 In this section we highlight various plume systems on Earth. Fig.~\ref{fig:plumes}
 shows cross sections of several plumes, comparing models GLAD-M25 ($V_\textrm{P}$),
 TX2015~\citep[$V_\textrm{S}$;][]{TX2015}, and SEMUCB-WM1~\citep[$V_\textrm{S}$;][]{french2015broad}.
-All three models have common plume features where GLAD-M25 and TX2015 seem to be more in good agreement.  
+All three models have common plume features,
+and GLAD-M25 and TX2015 are in overall good agreement.  
 
 The three models tend to agree near the CMB,
 and there is overall good agreement between GLAD-M25 and TX2015,
@@ -1317,7 +1318,7 @@ Recovering these plumes is challenging due to poor data coverage in the southern
     for models GLAD-M25 ($V_\textrm{P}$; left column), GAP-P4~\citep{fukao2013subducted} (middle column) and UU-P07~\citep{van2018atlas} (right column).
     The map in the top left corner of each row shows the cross section with color-coded red, green, and white dots for geographical reference.
     The dashed black semicircles in the cross sections denote depths of 410~km, 660~km, and 1000~km.
-    (a) Aegean; (b) South America; (c) Hatteras; (d) Wichita. (e) Nepal; (f) Sunda.}}
+    (a) Aegean; (b) South America; (c) Hatteras; (d) Wichita. (e) Nepal; (f) Sunda. }}
     \label{fig:subd}
 \end{figure}
 
@@ -1349,8 +1350,8 @@ the models share very similar attributes.
 \section{Discussion}
 
 Seismology is a science driven by data.
-There was a time when seismologists would meticulously inspect single seismograms to glean valuable information from them \red{(Perhaps it is now the case for planetary seismology? )}.
-Today, we have easy access to data from thousands of earthquakes recorded by tens of thousands of seismographic stations, and individual inspection of all of these records has become impossible \red{(probably it depends on the seismologist. I remember Jeroen Ritsema telling that it is not a big deal to go through the entire database in a week or so with some not-so-sophisticated plotting techniques. Those interested in data still look at, I think..)}.
+There was a time when global seismologists would meticulously inspect single seismograms to glean valuable information from them.
+Today, we have easy access to data from thousands of earthquakes recorded by tens of thousands of seismographic stations, and individual inspection of all of these records has become impossible.
 Still, it would be a shame not to utilize as much as possible of the information in this massive seismographic database.
 
 To facilitate fast and effective access to such vast data resources,

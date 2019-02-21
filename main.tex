@@ -111,7 +111,7 @@ For each iteration,
 generating a few Petabytes of wavefield files for the parsimonious-storage kernel calculation algorithm of~\cite{KoXiBoPeSaLiTr16}, and consuming 16~million OLCF node hours.
 How to deal with hardware failures during this process is critical
 to prevent contamination of the inversion results.
-For these reasons, we use EnTK as our
+For these reasons, we are in the process of using EnTK as our
 workflow management engine~\citep{EnTK2017}.
 This workflow engine can automatically detected job failures,
 both from the high-performance computing (HPC) system and via user-defined functions.
@@ -605,7 +605,7 @@ compute cores and graphics cards, as well as heavy I/O.
 The workflow is prone to human error and hardware failure, making it fragile~~\citep{Lefebvre2018}.
 For these reasons, we hardened the workflow by taking advantage of modern
 workflow management software.
-We selected EnTK as our
+We have selected EnTK as our
 workflow management engine~\citep{EnTK2017}, and developed complementary seismic tomography
 workflow tools.
 The workflow engine can automatically detected job failures both from the

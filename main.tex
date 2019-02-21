@@ -275,7 +275,7 @@ Fig.~\ref{fig:event_1480} summarizes the characteristics of all 1,480 earthquake
 
 \begin{figure}
   \centering
-  \includegraphics[width=\textwidth]{figures/events_1480.pdf}
+  \includegraphics[width=\textwidth]{figures/events_1480.png}
   \caption{\small{The 1,480~earthquakes used in this study. (a) Distribution of earthquakes. The color of each beach ball reflects its depth range, where blue designates events shallower than 50~km, green events between 50~km and 300~km, and red events deeper than 300~km. (b) \& (c) Histograms of earthquake moment magnitudes and depths.}}
   \label{fig:event_1480}
 \end{figure}
@@ -837,7 +837,7 @@ rather than improved PSF tests.
 
 \begin{figure}
   \centering
-  \includegraphics[width=\textwidth]{figures/events_360.pdf}
+  \includegraphics[width=\textwidth]{figures/events_360.png}
   \caption{\small{Summary of the held-out database containing 360 earthquakes. Theses events were not used in the structural inversion. (a) Distribution of events color coded by depth range as in Fig.~\ref{fig:event_1480}. (b) \& (c) Histograms of moment magnitude and depth.}}
   \label{fig:events_360}
 \end{figure}
@@ -952,7 +952,7 @@ discussed in Appendix~\ref{sec:shanalysis}.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.9\textwidth]{figures/depth_slice/globe_vs.pdf}
+  \includegraphics[width=0.9\textwidth]{figures/depth_slice/globe_vs.png}
   \caption{\small{Map views of global shear wavespeed perturbations at various depths for  model
   GLAD-M25~(left column), S362ANI$+$M~\citep[middle column;][]{moulik2014anisotropic},
   and S40RTS~\citep[right column;][]{ritsema2011s40rts}.
@@ -1479,8 +1479,13 @@ the seismic measurement software package FLEXWIN used for this article are
  This research was supported by NSF grant~1644826.
 \end{acknowledgments}
 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
+\bibliographystyle{gji}
+\bibliography{ref.bib}
 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
 \appendix
 
 \section{Spherically symmetric average model}
@@ -1541,6 +1546,7 @@ is the absence of the 220~km discontinuity and a lower~$V_\text{P}/V_\text{S}$ r
   \label{fig:global-ra-average}
 \end{figure}
 
+\newpage
 \section{Spherical harmonic model expansion}
 \label{sec:shanalysis}
 
@@ -1705,8 +1711,5 @@ for the same set of models.
 %   }}
 %   \label{fig:powerspectra}
 % \end{figure}
-
-\bibliographystyle{gji}
-\bibliography{ref.bib}
 
 \end{document}

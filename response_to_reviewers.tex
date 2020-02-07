@@ -1,0 +1,510 @@
+\documentclass[11pt,a4paper]{letter}
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage{geometry}
+\usepackage[dvipsnames,usenames]{color}
+\usepackage{listings}
+\usepackage{verbatim}
+
+\geometry{verbose,letterpaper,tmargin=1in,bmargin=2in,lmargin=1in,rmargin=1in}
+%\lstdefinestyle{lat}
+%{
+%	style={[LaTeX]TeX},
+%	basicstyle=\ttfamily
+%}
+
+\newcommand{\red}[1]{\textbf{\textcolor{Red}{#1}}}
+\newcommand{\blue}[1]{\textbf{\textcolor{Blue}{#1}}}
+\newcommand{\cyan}[1]{\textbf{\textcolor{Cyan}{#1}}}
+\newcommand{\green}[1]{\textbf{\textcolor{Green}{#1}}}
+\newcommand{\magenta}[1]{\textbf{\textcolor{Magenta}{#1}}}
+\newcommand{\orange}[1]{\textbf{\textcolor{Orange}{#1}}}
+%\newcommand{\red}[1]{#1}
+%\newcommand{\blue}[1]{#1}
+%\newcommand{\cyan}[1]{#1}
+
+% comments between authors
+\newcommand{\toall}[1]{\textbf{\orange{@@@ To all: #1 @@@}}}
+\newcommand{\towenjie}[1]{\textbf{\red{*** Wenjie: #1 ***}}}
+\newcommand{\tojeroen}[1]{\textbf{\green{*** Jeroen: #1 ***}}}
+\newcommand{\toebru}[1]{\textbf{\cyan{*** Ebru: #1 ***}}}
+\newcommand{\fromebru}[1]{\textbf{\orange{*** Ebru: #1 ***}}}
+\newcommand{\fromyouyi}[1]{\textbf{\blue{*** Youyi: #1 ***}}}
+
+\newlength{\tempheight}
+\newlength{\tempwidth}
+
+\newcommand{\rowname}[1]% #1 = text
+{\rotatebox{90}{\makebox[\tempheight][c]{\textbf{#1}}}}
+
+\newcommand{\columnname}[1]% #1 = text
+{\makebox[\tempwidth][c]{\textbf{#1}}}
+
+%\graphicspath{{./figure/}}
+
+\def\baselinestretch{2}
+\newcommand{\response}[1]{\textbf{Response:} #1}
+
+\newcommand{\rev}[1]{{\it{#1}}}
+
+\newcommand{\tsup}[1]{\textsuperscript{#1}}
+
+%\address{your name and address} 
+\signature{Wenjie Lei, et al.}
+
+\begin{document} 
+
+\begin{letter}{Dr.~Ivan Vasconcelos\\
+Editor, \textit{Geophysical Journal International}} 
+
+\opening{Dear Dr.~Vasconcelos,} 
+
+This is our response to the reviews of \textit{Geophysical Journal International\/} manuscript GJI-19-0247 entitled ``Global Adjoint Tomography -- Model GLAD-M25''.
+We received three reviews of our paper: one was basically favorable and involved a ``light'' revision, a second (by Ritsema) was critical but constructive, suggesting helpful major revisions, and a third was unprofessional and inappropriate, especially in view of the fact the the first author of the article is a graduate student.
+
+The three main issues raised in the reviews and editorial comments are: 1) uncertainty quantification, 2) model interpretation, and 3) manuscript structure.
+We have revised the manuscript accordingly,
+and moved significant portions of the original manuscript to Supplementary Online Material (SOM).
+
+What follows is a detailed point-by-point response to the reviewer's and editor's comments.
+Reviewer/editor's comments are in italics verbatim, and our response is in normal type. The citations and section number in our response refer to the revised manuscript unless we specify otherwise.
+
+{\textbf{\large Response to Editor Vasconcelos}}
+
+\rev{On technical advancement: the authors have made significant technical advances, as recognized by all three referees, however, the referees point out several technical points that could be better addressed (e.g., uncertainty analysis) in order to provide the credibility that the advances presented in this manuscript deserve. I leave it to the authors to decided how to address these points, e.g., either by restructuring the paper, incorporating additional studies/examples, or both.
+}
+
+\response{Uncertainty quantification is a long-standing challenge in seismic tomography that dates back to its inception. Checkerboard tests are basically useless (e.g., L\'ev\^eque, Rivera, and Wittlinger, 1993), and even ``proper'' tools, such as the resolution matrix suffer from the fact that ``resolution'' is controlled by playing with a subjective damping parameter. Bayesian
+ inference would be a preferred method of inversion, but this is obviously not an option for the current study; an unavoidable fact that even Albert Tarantola grudgingly accepted.
+Ideally, we would have tools that enable us to take multiple samples from the posterior model distribution, but unfortunately such tools have thus far eluded the community.
+This is the reality in which the current study was conducted.
+
+In this context we have tried, more so than other studies, to assess the quality of our model.
+First, we calculate variance reductions for more than 20 million time windows and demonstrate quantitatively that M25 provides a significantly better fit to the data than both M15 and S362ANI.
+We note at this point that ISC traveltime inversions often provide less than 10\% reductions in variance to \emph{only} P and S wave traveltimes (Nolet, personal communication).
+Second, we present traveltime histograms for three-component measurements in four different passbands, and we demonstrate that the mean and standard deviations for model M25 are consistently reduced relative to M15 and S362ANI.
+Finally, we use a held-out dataset of 320 earthquakes to demonstrate that these events, which were not used in the inversion, are fit equally well as the 1,480 events in the actual dataset (Incidentally, in this context, we find the comment by reviewer 2 that our paper lacks ``true scientific innovation'' insulting).
+The original manuscript did not contain point-spread function (PSF) tests,
+but several such tests are included in the revived manuscript.
+A PSF does not say much about uncertainty ---like checkerboard tests and the resolution matrix--- but gives an idea of resolution and model parameter tradeoffs.
+}
+
+\rev{On interpretation of the results: the reviewers commend the technical achievements of the authors, but are simply not convinced that the model obtained is a sufficient advancement on the authors previous model, in terms of providing new insight into Earth structure and/or composition.
+Because this is a significant component of the current manuscript, the authors must decide how to best address these concerns: either by better supporting their interpretation with additional evidence (related to the previous point), or by choosing to write a new version that focuses on methodological tomography advances, and not so much on interpretation just yet (as suggested by reviewers).
+}
+
+\response{To say that the new model, GLAD-M25, is not a significant advancement over the previous model, GLAD-M15, is perplexing. First, we provide quantitative evidence in the forms of misfit reductions (Tables 1 \& 2) and traveltime \& amplitude histograms (Figs.~10, 11, 12, 14 \& 15 in the original manuscript) that M25 fits the data better than M15.
+Second, M25 resolves numerous new features that were entirely missing in M15, such as the Fiji-Tonga slab near New Zealand, and various hotspots in the Indian Ocean.
+Rather than focusing on comparisons between M15 and M25, we chose to show comparisons with several global and regional models.
+In response to the reviews,
+we have reduced the number of model comparisons, focusing on plumes and subduction zones instead.
+}
+
+\rev{On manuscript structure and language: as pointed out by reviewers, this papers overall structure is indeed very similar to that of the Bozdag et al. (2016, GJI) one; it is by no means a copy-paste in content (this is a 'new' manuscript), but the structural similarity is there. In addition, reviewers and myself feel that the language used, particularly in the interpretation sections, is indeed a bit 'grandiose': while it is important to clearly highlight important points, there is also a danger of coming across as 'overselling'. As Editor, I personally would prefer if, in their new version, the authors would: i) reconsider the design/structure of the manuscript as to not be so similar to previous publications, ii) consider the language used in discussing results to indeed positively promote their advancements, while maintaining a critical, tempered tone. Please note this last point is 'Editorial preference', where the authors can improve delivery: while the two points above are the criteria used in my recommendation, this point is intended as an 'easy to implement' improvement.
+}
+
+\response{The present study involves a 6-fold increase in the number of earthquakes compared to M15 (1,480 events versus 253 events), but it uses the same model parameterization and has the same goal of constraining global mantle structure.
+To enable the scale-up in the number of events, substantial advances were made in the development of the workflow management tools.
+Rather than belaboring this work, we have moved much of this discussion to the SOM.
+We have also taken suggestions to tone down the language to heart.
+}
+
+{\textbf{\large{Response to Reviewer~1}}}
+
+\rev{In the introduction and conclusion it is mentioned that attenuation is fully accommodated in calculations.
+I understand why the authors claim this, but nowhere is mentioned which attenuation model is used. I presume PREM, which we know is way off.
+Is their model affected by this choice?
+It is one thing dealing approximately with a bad model, it is another dealing exactly with a bad model.
+}
+
+\response{The 1D model is QL6~(Durek \& Ekstr\"om, 1996), which is also not ideal, but there are not really any better options,
+and this is one of the main reasons why we are using phase information only.
+However,
+of course the reviewer is correct that any inversion is affected by the choice of and uncertainties in the attenuation model. 
+This issue will be the subject of future studies.
+}
+
+\rev{In the relocation of the 1040 earthquakes, they allow for an arbitrary time shift of the synthetics. What is the justification of this and how big is this $\Delta t$.
+I  think this needs explaining as later they add another 440 events without relocation and therefore no such time shift.
+Is there not a risk that the centroid times of their whole dataset is now biased?
+}
+
+\response{The time shift parameter in the CMT inversion algorithm developed by~Liu et al.~(2004) accommodates structural uncertainty and has nothing to do with the centroid time.
+It provides a means of estimating source parameters while minimizing contamination by lateral heterogeneity.
+Note, however, that as part of every iteration we perform a grid search for the scalar moment and centroid time in the current 3D model,
+and these corrections contribute to the final CMT solution.
+The fact that the traveltime histograms are reasonably well centered
+on zero suggests that there is no systematic bias in the centroid times.
+}
+
+\rev{They claim that the choice of the misfit function is important. I agree of course, but the reader only sees equations for the weights they use (eqs. 5 and 6). Is there a way to visualize these and what are their effects on the model.
+}
+
+\response{Yes, this is the subject of the Ruan et al.~(2019) paper, and we did not want to reproduce the related figures.}
+
+\rev{In the model parametrization, they go from 5 Love parameters to 4 wave speeds. They   go from 5 to 4 parameters not because the introduce bulk sound speed, but because they explicitly assume A=C I presume.
+}
+
+\response{No, we assume $A=\kappa+\tfrac{4}{3}\,N$ and $C=\kappa+\tfrac{4}{3}\,L$\,. Thus the P wave anisotropy comes via the shear moduli.}
+
+\rev{I wonder what window sorting and cleaning entails. How many outliers are eliminated?
+}
+
+\response{After plotting traveltime histograms towards the end of the window selection process, we clip the tails of the distribution, eliminating ~$3\sigma$~outliers.
+This entails just a handful of ~$3\sigma$~outliers that may contaminate the model update.
+}
+
+\rev{They smooth the gradient differently to what they did in their previous 15 iterations. Has this a large effect? Obviously they must have a reason for changing this based on some tests.
+}
+
+\response{We changed the weighting scheme for sources and receivers,
+which eliminates the need for the previously used variable smoothing of the gradient.
+The weighting strategy is discussed in detail in~Ruan et al.~(2019), and includes examples of improved convergence.
+One may still use multi-scale smoothing with the new weighting scheme to allow for smaller-scale heterogeneities under densely sampled regions.
+}
+
+\rev{Concerning the model evaluation, they refrained from point spread functions. Instead they show detailed misfits and comparisons with other published models.
+I can understand that PSFs are computationally expensive (by the way they could reference the authors who suggested them first for FWI), but they are the only objective way to assess resolution.
+Comparisons with existing models are not very helpful if these models have been done with different theories, data etc.
+I would suggest at least to make a detailed comparison with GLAD-M15. Do we get visually a better resolution by throwing that much more data and GPU time at the problem. I suspect yes, but I still would like to see what improves where. 
+}
+
+\response{We provide detailed comparisons between M15 and M25 in Tables~1 and~2, as well as in all the traveltime and amplitude histograms.
+In the revised manuscript we have also added a couple of new figures directly comparing M15 and M25, thereby highlighting distinct new features in M25.}
+
+\rev{The authors mention that checkerboards are expensive. One could also mention that in fact they are useless for assessing resolution.
+}
+
+\response{Indeed. See our earlier discussion.}
+
+\rev{The authors mention that the perturbations tend to be larger than in other models. I fully understand why this is, but it has a huge consequence for the interpretation of the model. We are now moving away from perturbations and enter the domain of finite difference. Trying to understand these models with partial derivatives for temperature and composition will be very misleading. If we want to infer temperature and composition, we will have to work with absolute values.
+}
+
+\response{That's correct. This is why we would prefer to share our model in the form of absolute values of wavespeeds.
+Perturbations are desirable to show vertical sections, or at least the mean should be removed.
+}
+
+\rev{In that respect, I find the plume pictures for instance over-interpreted. What tells us that red in the upper mantle means the same as red at the CMB.
+If they are confident that it means the same, they can say, for instance, the Iceland plume rises from the CMB, if not, it will be a different story.
+The same holds for slabs. I suggest to be a bit more careful than just falling in the old habit that red is hot and blue is cold. The deviations are now so large that these analogies become misleading.
+}
+
+\response{We have modified the language.}
+
+\rev{They don't mention anisotropy, but clearly invert for TI as claimed in the technical section. Do they see any evidence of anisotropy in the lower mantle for instance?
+}
+
+\response{As in M15, transverse isotropy in M25 is confined to the upper mantle, because it is mainly constrained by surface waves. }
+
+{\textbf{\large{Response to Reviewer~2}}}
+
+\rev{The authors describe a global waveform inversion based on spectral-element simulations and adjoint techniques. The outline follows numerous previous publication of roughly the same group of authors: presentation of the initial model, the distribution of events, of data and measurements, model parametrization, workflow, misfit evolution, and the final model. 
+
+I am fully aware that such an inversion is technologically challenging, and that the authors aim to publish the current state of their model. However, I have some rather serious and fundamental concerns that I would like to see addressed before making any more detailed comments. Specifically, I have difficulties to discover any true scientific innovation. To me, adding some events and slightly reducing the minimum period is clearly too incremental. If our community were to operate in such a mode, we would see a flood of tomographic models, each being an update of its predecessor with a few more iterations. This would slow down progress instead of accelerating it. Furthermore, the absence of even the slightest effort to assess the resolution of the model is hardly acceptable. Of course, nobody would request that the full resolution operator be computed for such an inversion, but some reasonable effort must be made. Simply writing that you ran out of computational resources to check the quality of the model is rather dubious.
+
+As I wrote before, I perfectly know that this inversion is not a trivial task, and I do believe that it should be published somewhere. However, I really do not think that GJI is a suitable journal for this manuscript. My suggestion would be to refocus the manuscript on the technical and computational aspects, and to send it to a computational science journal.
+}
+
+\response{We appreciate the scientific criticisms of the reviewer.
+We believe that both technically and scientifically our community will benefit from our efforts and experiences, because this is the first time this volume of data is
+assimilated in such a computationally large-scale global inversion.
+Therefore,
+we believe that GJI is the right journal for this manuscript,
+especially in view of the fact that many other papers on earthquake FWI/adjoint tomography have been published in GJI.
+We do not agree with the reviewer that the slight reduction in minimum period is too incremental, and should thus not be considered scientific progress.
+In fact, even though the period range of GLAD-M25 is similar to that of GLAD-M15,
+we observe significant differences between the two models,
+thanks to the 6-fold increase in the number of earthquakes,
+including more than 500 deep events with very clean body waves.
+Belittling our work with comments like ``adding some events'' when scaling the inversion up from 253 events to 1,480 events involved a herculean effort, especially on behalf of the first-author graduate student, is totally unprofessional and completely uncalled for.
+
+We naively assumed that it was obvious from the GLAD-M15 GJI article and the histograms and comparisons with other models in this manuscript.
+However, based on the comments of all the reviewers we now directly compare GLAD-M15 and GLAD-M25 in the revised manuscript,
+thereby highlighting visual differences between the models, in addition to the the tables with variance reductions and traveltime and amplitude anomaly histograms.
+
+There is still a vast amount of information to be explained in seismograms at the global scale, which requires more iterations and, probably, a more complete parameterization.
+However, the reviewer is missing the main point --- or, more likely, we did not explain it well --- which is that we decided to publish GLAD-M25 because its resolution (scale-length of heterogeneities) has become comparable to the current resolution of global models from various other groups.
+Thus we did not arbitrarily decide to publish this model,
+and we certainly do not advocate publishing every iteration as a new model.
+%We now highlight it in the manuscript that the vast amount of remaining data in the seismograms should continue changing the models which also points out the necessity of our non-linear iterative inversions. 
+
+Finally, resolution and uncertainty quantification remain a challenge in FWI,
+both in exploration and earthquake seismology.
+In lieu of such tools,
+as in numerous other studies,
+we used traveltime histograms and a held-out dataset to assess performance of our model.
+We did not perform PSF tests, because these are rather limited in value, especially in view of the fact that they only tell you something about one ``point'' in the model for the set up of a particular iteration.
+Therefore, a PSF does not say much about uncertainty, but gives an idea of resolution.
+Nevertheless,
+as mentioned earlier,
+the updated manuscript now contains a few PSF tests.}
+
+
+\rev{(1) By far my biggest concern is the lack of true scientific innovation. While the authors do mention some recent technological improvements (e.g., the storage algorithm for anelastic kernels and the ASDF data format), all of them have been published before, and are therefore not new. Apart from adding more events and going to slightly higher frequencies, this work is very similar to the previously published work by Bozdag et al. (2016). Also, the final model does not reveal anything about the structure of the Earth that was not known before.
+}
+
+\response{The main technical improvement is the workflow management.}
+
+
+\rev{(2) In section 9.1, entitled "Point-spread function analysis", the authors explain that they actually did not perform such tests because they are computationally too expensive. Instead, they refer to 2 previous point-spread function calculations, published by Bozdag et al. (2016), using the earlier dataset. 
+
+Risking that I may sound unprofessional and harsh, I am sorry to say that this is ridiculous!
+
+First of all, if one runs out of computational resources needed to check the quality of a model, it simply means that the inversion has been poorly planned! I am sure the authors know the number of node hours per forward run very well. It is therefore simply a matter of choosing a minimum period that leaves enough resources to run a reasonable model assessment. Simply saying that you better like to use the INCITE resources to just produce a colorful model, is a miserable excuse that I find completely unacceptable.
+
+Second, it is not clear what to learn from 2 point-spread functions (apart from the fact that they were computed for different data). As the authors demonstrate in section 10 of their manuscript (interpretation and comparison), there are many more than 2 interesting points inside the Earth.
+
+Third, the authors dedicate 13 pages (!!!) to the comparison of their new model to the previous and to other models. However, without any quantitative information on how much the new model has improved, this seems to be a rather meaningless exercise.
+}
+
+\response{We welcome scientific criticisms, however it is not acceptable that the reviewer completely ignores the fact that they are targeting a student,
+%they is gender neutral
+who is the first author of this manuscript.
+We believe the reviewer is fully aware of the pitfalls of resolution analysis and uncertainty quantification in all tomographic inversions, unless a Bayesian approach is used, which is not even possible for classical global tomographic inversions.
+The reason we did not perform PSF tests was not because we ran out of core-hours but chose not to use them for this purpose,
+because a few PSF tests do not say much about global resolution.
+}
+
+\rev{(3) Though the authors repeatedly stress the size of their dataset, the number of events is rather small for a global model. Of course, it is an improvement to what the authors call their first-generation model, but compared to earlier global tomographies, the size of the dataset is not overwhelming.
+}
+
+\response{
+Based on our estimation, there are about 6,000~events in the global CMT catalog suitable for global FWI.
+So to say that at 1,480 events our dataset is ``not overwhelming'' seems rather harsh,
+even more so if one considers that the only other global FWI efforts,
+the Bozdag et al. (2016) and French \& Romanowicz (2015),
+used just a few hundred events.
+We also emphasize that the information going into the model,
+as illustrated in the measurement window density maps shown in Figs.~2--4, is large.
+This is another strength of our technique.
+}
+
+
+\rev{(4) I am also quite concerned about the writing and presentation style. The sections on supercomputing sound pretentious, which is a high risk for the authors, given that their model does not tell us many new things about the internal structure of the Earth. 
+}
+
+\response{
+We did not intend for the sections on supercomputing to sound grandiose; we were merely attempting to convey the computational challenges and how these were overcome.
+Much of this work was accomplished by the student first-author of the paper, and we were trying to highlight these rather nontrivial accomplishments.
+Nevertheless, also in view of comments by other reviewers and the editor, we have toned down the language in the revised manuscript.
+
+The statement ``their model does not tell us many new things about the internal structure of the Earth'' is again unnecessarily hash and uncalled for.
+For example,
+this is one of the few tomographic studies to constrain shear and compressional wavespeeds together in the same frequency band.
+Thus, our Vp/Vs ratios certainly add scientific value.
+We also invert body and surface waves simultaneously, which is important for constraining upper mantle structure.
+Additionally, we make no crustal corrections, 
+which too should lead to better constrained images of the deeper Earth.
+Finally, in newly added figures visually comparing M15 and M25 numerous new features emerge,
+such as several hotspots in the Indian Ocean, etc. 
+}
+
+\rev{Other paragraphs sound pretty grandiose, indicating that the authors may over-estimate their own achievements without being aware of what others have done before. Here is just one example from the Discussion: "Seismology is a science driven by data. There was a time when global seismologists would meticulously inspect single seismograms to glean valuable information from them. Today, we have easy access to data from thousands of earthquakes recorded by tens of thousands of seismographic stations, and individual inspection of all of these records has become impossible. Still, it would be a shame not to utilize as much as possible of the information in this massive seismographic database." To me this sounds bizarre, given that many previously computed global models actually used more data. Of course, nobody ever looks at all the wiggles individually. The measurement procedure has always been automated, for decades already! The authors may want to have a look at work by Jeroen Ritsema or by Andrew Schaeffer, for example.
+}
+
+\response{We have removed this paragraph, which an other reviewer objected to too, for different reasons.
+However, the reviewer is apparently unaware that at least one of the seismologists he mentions still examines data by eye.
+In fact,
+many observational seismologists are still working like this!
+}
+
+{\textbf{\large{Response to Reviewer~3 (Dr.~Jeroen Ritsema)}}}
+
+\rev{This manuscript presents GLAD\_M25 (or M25), un update of GLAD\_M15 (or M25) published by Bozdag et al. in 2016. Model M25 is an improvement because it is based on an analysis of 1400 events (250 events were used by Bozdag et al.) and the inversion has progressed by 10 iterations.
+It is clear that the authors have thought deeply about the engineering of M25. I appreciate the phenomenal amount of work that has gone into developing M25 but there is unnecessary repetition of topics in Bozdag et al. (i.e., data formatting, earthquake relocation, crustal corrections, work flows, ...).
+Figure 2 from Bozdag et al. is copied-and-pasted as Figure 4 in this paper and the graphs of misfit reductions and traveltime delay distributions are essentially updates of similar graphs in Bozdag et al..
+}
+
+\response{We have moved Fig.~2 (and numerous other figures) to the SOM. However, the misfit reduction plot is a rather integral part of the paper!}
+
+\rev{I must admit that I am disappointed by the model evaluation in Section 10. The comparison with maps and cross-sections from other tomographic models is somewhat superficial and not as persuasive as the earlier sections of the paper.
+}
+
+\response{We have removed all the regional and full global comparisons, leaving just the plumes and slab figures, while adding a discussion of differences between M15 and M25, as requested by other reviewers.}
+
+\rev{The manuscript is in decent shape but the writing is somewhat rushed after page 20 or so. The senior authors should polish the text and remove paragraphs, primarily in early sections, on topics that have been covered by Bozdag et al.
+The authors don't do the point-spread function analysis so subsection 9.1 can be eliminated. I have annotated the PDF copy to suggest edits and to point out fuzzy wording.
+}
+
+\response{We have further polished the writing later in the manuscript
+Thanks for the annotated manuscript! We have accommodated most comments and suggestions.
+Based on suggestions by the other reviewers,
+we added some PSF tests to the manuscript.}
+
+\rev{The GLAD-M tomography stands out from the other approaches by casting the inverse without compromising the physics of wave propagation. Consequently, the workflow is laborious and iterations are slow. Ten iterations for a moderate data set (compared to the S40RTS data set, for example), took more than two years. Sections 1--9 indicate that the authors are convinced about the value of their approach but the discussion onward from Section 10 is qualitative and not serving the authors' case.
+I worry that readers might wonder whether M25 is a significant step forward from M15 and whether the tremendous engineering and use of computer power justifies the (re)discovery of velocity anomalies that do not appear to change our understanding of mantle structure and dynamics.
+}
+
+\response{We have modified the manuscript substantially, as discussed previously. We focus more concretely on differences between M15 and M25.
+Unfortunately,
+comparisons with other models will always be rather qualitative, because we have no way of using such models in 3D wave simulations, mainly because 3D mantle models are difficult to combine with 3D crustal models. Underneath the oceans there tends to be a `gap' between the mantle model and the crust, whereas underneath the continents there tends to be a region of overlap, and this make `gluing' the two together challenging.}
+
+\rev{I recommend therefore some restructuring of the paper by relating the modeling results to the adjoint tomography approaches. To stay on the topics raised in sections 1--9, I suggest the authors demonstrate with specific examples that the complex GLAD-M workflow is the only viable approach for making progress in global-scale seismic tomography. The paper will become more technical in tone and will cater primarily to the seismological community but that should be acceptable for GJI. Image interpretations in terms of Earth's structure and dynamics could be published in journals with a somewhat broader readership. Restructuring will involve new work for the leading student author, but I think it is worth the effort.
+}
+
+\response{We have substantially restructured the manuscript along the lines suggested.}
+
+\rev{1. Recalculation of sensitivity kernels after each iteration is expensive. Is it necessary?
+It would be helpful to see examples of how surface wave kernels changed from iteration 0 to 25 for ``simple'' paths (e.g., in ocean basins) and for ``complex'' paths (e.g., along ocean-continent margins). Are there good examples of waveforms that demonstrate that M25 is explaining surface-wave multipathing because kernels are recalculated for a 3-D structure?
+}
+
+\response{We do not calculate sensitivity kernels, as in the Dahlen \& Nolet banana-doughnut approach! Instead, we directly calculate contributions to the model gradient, which involves assimilation of the measurements for the current model. Thus, this model update must be recalculated at each iteration.
+There are lots of examples of the effects of 3D structure on such kernels in the literature.}
+
+\rev{2. Along the same lines, do the sensitivity kernels for body waves through the deep mantle change from iteration 0 to 25? Always or only when, for example, when they skirt the LLSVP? Would it be sensible to recalculate the high-frequency body-wave kernels only every 5th or 10th iteration to safe computational time? Are there good reasons not to do this?
+}
+
+\response{See our response to the previous comment. We do not calculate individual sensitivity kernels a la Dahlen \& Nolet.
+%\fromebru{I think we can put such a figure as well (I mean in the response, not sure needed for the paper but may go into SOM as well). The kernels must definitely change for paths across the plumes. Also we may be able to give what I encountered in GLAD-M15 before taking full attenuation into account in adjoint simulations as an evidence that we need to compute exact kernels to further decrease the misfit and improve the model}
+%\toebru{Going back to Carl and Qinya's papers, there are lots of such examples in the literature. There is no need to belabor this.}
+}
+
+\rev{3. I would like to see examples of recorded and synthetic data at long (T > 250 s), and short (T < 10 s) periods to illustrate that M25 is (close to) reproducing waveform segments and data types not yet selected by FLEXWIN. How good is the fit to waveform segments (e.g., ScS) and data types (e.g., normal mode splitting) not included in the inversion?
+}
+
+\response{Calculating synthetics at periods less than 17 s is a very expensive proposition! Going to 9~s involves a 16X increase in the computational cost.
+}
+
+\rev{4. Source finiteness is already important. A MW7.2 earthquake is assumed to have a duration of 21 seconds (an empirically determined value in the CMT catalog) comparable to the shortest periods used here. What is the effect on the traveltime measurement if the duration is overestimated by 5 or 10 seconds (deep earthquakes tend be more compact)? When higher frequencies are incorporated, do the authors plan to invert for source durations or can they rely on standard catalogs of source time functions (e.g., SCARDEC)?
+}
+
+\response{Low pass filtering at 17~s largely eliminates sensitivity to shorter half durations. 
+In addition, when the waveform difference caused by the source time function is too large, it will be rejected by our data screening process. Going forward we are planning to do our own CMT inversions in M25, but including a STF estimation.
+}
+
+\rev{5. As the authors plan to include attenuation in the parameterization, will this be a new 1-D profile for Q or a fully 3-D structure? How might this affect the inversion for dVs (and dVp)? For example, assuming that dVs and dQ-1 are related linearly ---- take Colleen Dalton's model for a first-order scaling between dVs and dQ-1 ---- how would this change the traveltime fits? How should dVs and dQ-1 be parameterized (and regularized) to assure that the inversion converges to sensible models for both parameters?
+}
+
+\response{We are planning a fully 3D Q inversion. This will be a ``proper'' Q inversion,
+where there full effects of attenuation, i.e., physical dispersion and dissipation, will be taken into account. We have some experience with such inversions in Europe (Zhu et al., 2013), and for problems in exploration seismology.
+}
+
+\rev{Below a long list of additional comments and questions in page order. Even more comments are included as annotations in the PDF.}
+
+\response{Thanks! We've taken the suggestions in the PDF into account in our revision.}
+
+\rev{a) Page 4. Are all nine layers of CRUST2.0 parameterized in the starting model? Is the crustal structure part of the model? If not, why not? If so, what is the new structure?
+}
+
+\response{The nine layers are not parameterized as layers in the spectral-element mesh. Instead,
+the Moho is honored as much as possible by the mesh, whereas the crustal wavespeeds are accommodated by the Gauss-Lobatto-Legendre integration points (see Tromp et al. 2010 for a detailed description). The crust and mantle are inverted simultaneously.}
+
+\rev{b) Figure 1. Panel (a) can be deleted. The colours are indistinguishable in my PDF copy due to event overlap, nor is it apparent to me that an interesting pattern has emerged. Panels (c) and (d) show the same info. Since Dh does not vary with source depth, (c) can be eliminated. Are Dh (in d) and Dt (in e) correlated?
+}
+
+\response{We have made a new Fig.~1 with just the sources and stations. Other source information has been moved to the SOM.}
+
+\rev{c) Page 5. The durations of earthquakes with moment magnitude of 7 are long enough to affect T > 15 waveforms. I assume the authors use CMT half durations. These are not measured but derived empirically from MW. In my experience, they are not reliable, especially for deep earthquakes. It might be necessary (especially when going to higher frequencies) to invert for the duration in the inversion or rely on source catalogues that have estimated durations from P- waveforms (e.g., SCARDEC, Martin Vallee).
+}
+
+\response{This is on our list of things to do. We are in the process of upgrading the Princeton Global ShakeMovie system to model M25, and we will start performing our own CMT inversions in this model, including STF estimation.}
+
+\rev{d) Page 6. ``We allow the synthetics to shift ...''. This sounds like a frowned-upon station correction.
+}
+
+\response{Only as part of the CMT inversion, which is then followed by a grid source for the centroid time and the scalar moment.}
+
+\rev{e) Figure 2. Panel (a) is a duplication of Figure 1a. Panels (b) and (c) can be included in Figure 1.
+}
+
+\response{See our earlier response.}
+
+\rev{f) Figure 3. This figure is fairly busy and not informative. If the authors decide to keep it, I suggest the oceans and continents are simply white.
+}
+
+\response{We like this figure, which gives a good idea of station `hit count'. It has been combined with the source figure.
+}
+
+\rev{g) Page 8. I have read the statement on SAC before in Jeroen's papers and I apologize for my quibble. The ASDF format may very well be ideal but there are options other than SAC. Many seismologists, including yours truly 20 years ago, developed data and metadata containers that are self-describing, compact, and ``cat-able'' to improve I/O and processing speeds. The bullets on page 9 are too vague.
+}
+
+\response{Point taken. We have removed the section on ASDF because the format is already discussed in the original ASDF paper, and in the Bozdag et al.~(2016) paper.}
+
+\rev{h) Page 9. It is not clear to me which part(s) of the seismogram the data categories encompass. Can waveform segments classified as ``17-40 s body waves'' overlap with segments from the ``40-100 s body waves'' group? It would be helpful to show four seismograms for the different frequency bands that indicate where windows are typically chosen.
+}
+
+\response{The windows are taken independently of categories, based on the quality of fit. Examples of such windows may be found in Bozdag et al.~(2016).}
+
+\rev{i) Page 10. Was the imbalance in M15 (e.g., thousands of paths between circum-Pacific events and the USArray) the motivation for the source and receiver weights in equations 5 and 6?
+}
+
+\response{Yes. M15 tried to compensate for this based on ray density weighting, but the new approach demonstrably leads to faster and better convergence (see Ruan et al.~2019).}
+
+\rev{j) Figure 6. Both PS and SP can be strong on the vertical and radial components. So, change the label ``PS'' to ``SP+PS''. Why are there few segments close to the PPP arrival (beyond 100 degrees)? Since it is used in the caption, I would use seconds along the y-axis (also in the next two figures).
+}
+
+\response{Points taken. PPP is not prominent, and picked rarely by Pyflex.}
+
+\rev{k) Figure 8. Why are there few segments along the SSS branch? I understand FLEXWIN does not look for ScS, ScS2, ScS3 etc. but one doesn't need to teach a machine to find them.
+At T > 15 s periods they are very apparent for dip-slip earthquakes (especially deep earthquakes) and they are isolated from other phases at the shortest distances.
+PcP is visible at D< 60 deg but it is otherwise a crappy phase. No one has ever found PcP2, as far as I know. Other phases to consider are the major-arc S reflections (i.e. SSm, SSSm). 
+They propagate through the mantle in the southern hemisphere. We selected a few thousand but could not fit their traveltimes well (using ray theory).
+}
+
+\response{S and SS are more prominent than SSS, and Pyflex selects fewer of these arrivals. We are working on adjusting the Pyflex setting to pick ScS, ScS2, and other later arrivals, so these will be included in future iterations.}
+
+\rev{l) Table 1. Clarify ``changes in fit'' or maybe show residual misfit instead which is used frequently. Is it correct that the 40-100 s period surface wave fit has improved the most? This would indicate that the 10 iterations have primarily adjusted the uppermost mantle.
+Is the misfit reduction smallest for the ``overtones surface waves'' (the S multiples arriving before the fundamental mode) (i.e., 40-100 s body waves)?
+This might indicate that the mantle transition is still resolved poorly (or was already resolved very well by S362ANI).
+Section 8.4 could use more discussion regarding the misfits of the various categories and what it implies for the resolution of dVs (and dVp) as a function of depth.
+}
+
+\response{This is the variance reduction for the subset of measurements in each of the 12 categories. Surface waves show more of a reduction because the waveforms are more complex, and moving them in phase gives a greater variance reduction than improving the fit to a simpler body waveform. The categories reflect pass bands and components, not depth resolution..}
+
+\rev{m) Figure 10. The histograms of Figure 10 also suggest the modeling of the 40-100 s surface waves has been most successful. Maybe the overtones should have more weight in the next iterations?
+}
+
+\response{See the earlier explanation.
+Surface wave fits are much worse than body wave fits prior to inversion, because the former waveforms are dispersed.
+Thus there are more gains to be had. We don't strip overtones, so these are not fit individually, nor can they be weighted separately.
+Instead, we fit full surface waveforms.
+}
+
+\rev{n) Figure 11. Its discussion on page 21 is short. The skew in the distribution for DTp may indicate that the 1-D reference model for P-wave speed is inadequate. PP-P traveltime differences (see Ritsema and van Heijst, 2002) indicate that PREM underestimates the traveltimes of PP with oceanic bounce points by several seconds.
+So, Vp in PREM is too high for the upper mantle beneath oceans but it is okay for the continents. Perhaps the 1-D background model used for S362ANI has inherited PREM characteristics and the 1-D bias has not yet been removed after 25 iterations.
+I suggest the authors check similar plots for PP and SS. This might have implications for the P model.
+}
+
+\response{We removed these histograms and the amplitude histograms. However, we believe the slight skew is more likely related to depth phase, which skew the P and SH arrival and may bias the cross-correlation traveltime measurement.}
+
+\rev{o) Figure 12. The discussion on amplitudes is also a bit brief and lacks citations to previous work (e.g., Dalton et al.).
+I disagree that the ``histograms are nicely centered''. Some peaks are near -0.1 or -0.15 meaning that amplitude for some segments are, on average, 10-15\% lower than predicted. I have recorded discrepancies in the SS/S amplitude ratio by the same amount.
+This ratio is insensitive to the source. I would be curious to hear what the data set used here finds for SS/S.
+}
+
+\response{We are not sure what you mean. The M25 peaks in Fig.~12 are at 0.02, -0.01, 0.02, -0.05, -0.03, -0.04, 0.05, 0.10, -0.06, -0.02, 0.07, and -0.06. So only one peak is at -0.1, and considering the standard deviations, these histograms really are ``nicely centered''.
+Note that the amplitude histograms were removed in the interest of succinctness and focus.}
+
+\rev{p) Page 26 and Figure 16. The authors must include panels for M15 in Figure 16 and discuss what has changed.
+Given the variance reductions I suspect most adjustments have been made in the upper mantle. The text needs two points of clarification:
+
+(i) Although the authors invert for dVp and dVs, the resolution of dVp is poorer than of dVs, particularly in the uppermost mantle (constrained by surface waves) and in D'' (constrained by diffracted waves).
+
+(ii) The strength of structure in the models is for a large part determined by regularization. As shown in Ritsema et al. 2011 we can change the amplitude of S40 (and the width of the resolution kernels) by changing the damping without compromising the data fit significantly. Comparing amplitudes of structures from different models without considering resolution differences is a tricky thing.
+
+q) In Figure 18 I suggest to include the model by Krischer et al. (JGR; 2018). Model US22 is perhaps not that useful in the context of this comparison since it is based on a similar modeling approach and data set as M25.
+
+r) Since SL2013NA (a ``ray'' model) doesn't appear too different from M25 it is not clear from the visual comparison) whether modeling improvements (i.e., better theories) matter.
+(Note that I suspect they do matter for surface waves because your variance reduction is large for the surface wave data -- see my point 1).
+
+s) The differences among the models at depths larger than 300 km in Figure 18 is striking.
+The authors draw the reader's attention to anomalies with well-understood tectonic origins but at face value the images are really very different especially for US22 (and M25) and SL2013NA.
+The latter model is based on a large set of overtone surface wave data that should sample the MTZ very well. The misfit reduction obtained for the 40-100 s body + surface waves (presumably waveform segments after SS and before the fundamental mode surface wave) is relatively poor, so perhaps the MTZ in M25 is still poorly resolved (or S362 was an excellent model to begin with).
+At any rate, this need further discussion. Transition zone resolution is still a sticky point and is important for understand convective flow.
+
+t) Figure 19. Perhaps include SL2013sv and the model by Rickers et al. (EPSL; 2013).
+}
+
+\response{Based on comments from the other reviewers and the editor, we have moved
+all model comparisons to the SOM, except for the plumes and slabs figures.
+We have added a figure in which we directly compare M15 and M25 for a few key locations.}
+
+We have tried to address all remarks made by both reviewers and the editors.
+We hope that with these modifications our manuscript will be acceptable for publication in \textit{Geophysical Journal International}.
+
+\closing{Sincerely,}
+
+\end{letter} 
+
+\end{document}

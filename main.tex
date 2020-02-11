@@ -146,7 +146,6 @@ as described in the Supplementary Online Material (SOM).
   \includegraphics[width=0.8\textwidth]{figures/station_map.pdf}
   \caption{\small{(a) Distribution of 1,480~earthquakes used in this study. The color of each beach ball reflects its depth range, where blue designates events shallower than 50~km, green events between 50~km and 300~km, and red events deeper than 300~km.
   (b) Distribution of the 11,800~seismographic stations used in this study. Colors denote the number of events for which a given station contributes waveforms to the structural inversion. Stations with a number of event responses $<400$ are plotted in smaller size; these are usually temporary arrays deployed over a short period of time, frequently ocean bottom seismometers. The maximum number of event responses comes from ANMO, in Albuquerque, New Mexico, which contributed to 1,442 out of 1,480 earthquakes in the data set.
-  \towenjie{Remove panels (b) and (c) and fix up the figure. Make sure the station count starts at 1, not 0.}
   }}
   \label{fig:eventsstations}
 \end{figure}
@@ -182,7 +181,6 @@ This is something we will reconsider in future applications by adjusting the FLE
   A total of 4,363,719 time windows were discretized into 1~degree epicentral distance and 1~s time bins.
   The maximum window count is 9,931 in the 85--86$^\circ$ distance and 22~min 55~s--22~min 56~s time bin.
   Major traveltime branches are labeled. Note that the plot contains data from events with a wide variety of depths, so the branches computed for a surface focal depth are for identification purposes only.
-  \towenjie{Relabel PS as PS+SP.}
   }}
   \label{fig:window_density_Z}
 \end{figure}
@@ -510,13 +508,15 @@ $\Delta m_k(\mathbf{x})$\,,
 we expect that the only nonzero element of the Hessian matrix is~$H_{kk}(\mathbf{x})$, and that~$\mathsf{H}\cdot\mathsf{\Delta}\mathsf{m}\sim\Delta m_k(\mathbf{x})$\,.
 Thus a PSF test illustrates the degree of blurring or smearing of the induced model perturbation~$\Delta m_k(\mathbf{x})$ and identifies tradeoffs with other model parameters.
 
-Figure~\ref{fig:??} shows the results of the four PSF tests we performed for model GLAD-M25.
+Fig.~\ref{fig:??} shows the results of the four PSF tests we performed for model GLAD-M25.
 The first test repeats an analysis performed by~\cite{bozdaug2016global} for GLAD-M15 in the upper mantle underneath Yellowstone.
 That test was based on 253 earthquakes,
-and Figures~\ref{fig:??}a and~\ref{fig:??}b show our results for the same location based on half our dataset (720 events) and the full dataset (1,480 events), respectively.
-Figure~\ref{fig:??} shows the results of a PSF test in the lowermost mantle at the base of the African superplume,
+and Figs.~\ref{fig:??}a and~\ref{fig:??}b show our results for the same location based on half our dataset (720 events) and the full dataset (1,480 events), respectively.
+We observe that the 75~km diameter anomaly is well recovered, with little tradeoff.
+Figs.~\ref{fig:??}c--f shows the results of PSF tests in the lowermost mantle at the base of the African superplume,
 in the lower mantle beneath the Galapagos,
 and in the mid mantle below Indonesia.
+In each case the Gaussian anomaly is well recovered, with minimal tradeoff with other model parameters.
 
 \subsection{Held-out data set}
 
@@ -639,7 +639,7 @@ both in the upper and lower mantle.
 To illustrate this point,
 Fig.~\ref{fig:power} and Fig.~\ref{fig:powerspectraradius} show normalized power per angular degree (Eqn.~\ref{eq:powerdegree}) and normalized power per angular degree as a function of radius (Eqn.~\ref{eq:powerdegreeradius}), respectively, for models S362ANI, GLAD-M15, and GLAD-M25.
 Model S362ANI has no power beyond degree~18,
-and we see and increase in power for GLAD-M25 relative to GLAD-M15 beyond degree~10.
+and we see and increase in power for GLAD-M25 relative to GLAD-M15 beyond degree~10 throughout the mantle.
 
 \begin{figure}
   \centering
@@ -671,7 +671,9 @@ The development of the superplume and its 3D morphology might be associated with
 Subduction along the Andes in South America is imaged from south to north all the way down to the transition zone and beyond, as shown in Fig.~\ref{fig:S_America}.
 In the contour plot of positive shear-wavespeed perturbations we observe three gaps, which may correspond to ridges or volcanic plateaus on the subducted Nazca plate, and indicate a weakened or even torn slab.
 
-Fig.~\ref{fig:M24-Iceland} showcases the north Atlantic, where we see clear expressions of the Jan Mayen and Iceland plumes as well as the Azores, Canary Islands, and Bermuda.
+Fig.~\ref{fig:M24-Iceland} showcases the north Atlantic, where we see clear expressions of the Jan Mayen and Iceland plumes as well as the Azores, Canary Islands, and Bermuda,
+and Fig.~\ref{fig:M24-Reunion} shows the emergence of hotspots in the Indian Ocean in model Glad-M25,
+including Marion, Crozet, Kerguelen, Cocos, R\'eunion, and Seychelles.
 
 \begin{figure}
   \centering
@@ -688,14 +690,14 @@ Fig.~\ref{fig:M24-Iceland} showcases the north Atlantic, where we see clear expr
 \centering
 \includegraphics[width=.8\textwidth]{figures/south_america.pdf}
 \caption{\small{Contour plot (left) and cross-sections at various depths (right) of subduction underneath South America, showing improvements in resolution in GLAD-M25 compared to GLAD-M15.
-The contour plot shows positive perturbations of vertically polarized shear wavespeeds in GLAD-M25. The ball in the contour plot denotes the 660~km discontinuity.}}
+The contour plot shows positive perturbations of vertically polarized shear wavespeeds in GLAD-M25. The ball in the contour map denotes the 660~km discontinuity.}}
 \label{fig:S_America}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth]{figures/M25-Iceland.pdf}
-  \caption{\small{Map views of vertically polarized shear-wave-speed perturbations in GLAD-M15 (top left) and GLAD-M24 (top right) underneath Iceland. Also shown are vertical cross-sections(bottom row) at the same location. As a primary hotspot, Iceland also becomes much more prominent in GLAD-M24, especially in the upper mantle. \towenjie{Please update.}
+  \caption{\small{Map views of vertically polarized shear-wave-speed perturbations in GLAD-M15 (top left) and GLAD-M25 (top right) underneath Iceland. Also shown are vertical cross-sections(bottom row) at the same location. As a primary hotspot, Iceland also becomes more prominent in GLAD-M25, especially in the upper mantle.
   }}
   \label{fig:M24-Iceland}
 \end{figure}
@@ -703,7 +705,8 @@ The contour plot shows positive perturbations of vertically polarized shear wave
 \begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth]{figures/M25-Reunion.pdf}
-  \caption{\small{Map views at 250~km depth of vertically polarized shear-wave-speed perturbations in GLAD-M15 (left) and GLAD-M24 (right) at Indian Ocean. New features are emerging in GLAD-M24, as the hotspot at Reunion, Marion, Kerguelen, and Crozet just came out in GLAD-M24. \towenjie{Please update.} }}
+  \caption{\small{Map views at 250~km depth of vertically polarized shear-wave-speed perturbations in GLAD-M15 (left) and GLAD-M25 (right) in the Indian Ocean. New features have emerged in GLAD-M25, such as the R\'eunion, Marion, Kerguelen, Maldives, Seychelles, Cocos, and Crozet hotspots.}
+  }
   \label{fig:M24-Reunion}
 \end{figure}
 
@@ -977,7 +980,7 @@ Here~$\alpha$ and~$\beta$ denote GLL points in the sphere with radius~$r$\,,
 $\omega_\alpha$ denotes a GLL quadrature weight, and $J^{\alpha\beta}(r)$ is the 2D Jacobian of the mapping to the sphere.
 %It is important to carry out the summations in~(\ref{eq:radial_average}) at the elemental level to ensure that first-order discontinuities are honored in the process.
 
-Figure~\ref{fig:global-average} shows the resulting radial averages of the isotropic shear and compressional wavespeeds for model~GLAD-M25
+Fig.~\ref{fig:global-average} shows the resulting radial averages of the isotropic shear and compressional wavespeeds for model~GLAD-M25
 compared to 1D starting model~STW105~\citep{kustowski2008anisotropic} and PREM~\citep{PREM}.
 The radial average of~GLAD-M25 remains very close to the radial starting model~STW105.
 The main difference between these two models and~PREM

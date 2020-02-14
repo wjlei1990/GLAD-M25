@@ -482,7 +482,7 @@ so there are small tradeoffs between different measurement categories.
 % function resolution analysis as well as a ``held-out'' data set, that is,
 % a set of data not used in the actual structural inversion.
 
-\subsection{Point-spread function analysis}
+\subsection{Point-spread function analyses}
 
 Checker-board tests or tests involving a chosen known structure, e.g., a plume or slab,
 are frequently used to assess the quality of a tomographic inversion,
@@ -492,7 +492,8 @@ require roughly the same computational resources as the actual inversion.
 In lieu of such tests, we previously performed two point-spread function (PSF) analyses~\citep{fichtner2011resolution}
 for model GLAD-M15~\citep{bozdaug2016global}.
 Here we repeat one of those tests (underneath Yellowstone) to show the improved resolution in GLAD-M25 relative to GLAD-M15,
-and we perform three additional PSF tests: in the lower mantle underneath Afar, in the lower mantle beneath the Galapagos, and below the transition zone in Indonesia.
+and we perform three additional PSF tests: in the lower mantle underneath Afar, in the lower mantle beneath Easter Island, and below the transition zone in Sumatra.
+Two additional PSF tests for anomalies below the US may be found in the SOM.
 
 A PSF test is based on the relationship
 \begin{equation}
@@ -508,42 +509,28 @@ $\Delta m_k(\mathbf{x})$\,,
 we expect that the only nonzero element of the Hessian matrix is~$H_{kk}(\mathbf{x})$, and that~$\mathsf{H}\cdot\mathsf{\Delta}\mathsf{m}\sim\Delta m_k(\mathbf{x})$\,.
 Thus a PSF test illustrates the degree of blurring or smearing of the induced model perturbation~$\Delta m_k(\mathbf{x})$ and identifies tradeoffs with other model parameters.
 
-Fig.~\ref{fig:??} shows the results of the four PSF tests we performed for model GLAD-M25.
+Fig.~\ref{fig:psf_tests} shows the results of the four PSF tests we performed for model GLAD-M25.
 The first test repeats an analysis performed by~\cite{bozdaug2016global} for GLAD-M15 in the upper mantle underneath Yellowstone.
 That test was based on 253 earthquakes,
-and Figs.~\ref{fig:??}a and~\ref{fig:??}b show our results for the same location based on half our dataset (720 events) and the full dataset (1,480 events), respectively.
-We observe that the 75~km diameter anomaly is well recovered, with little tradeoff.
-Figs.~\ref{fig:??}c--f shows the results of PSF tests in the lowermost mantle at the base of the African superplume,
-in the lower mantle beneath the Galapagos,
-and in the mid mantle below Indonesia.
-In each case the Gaussian anomaly is well recovered, with minimal tradeoff with other model parameters.
+and Figs.~\ref{fig:psf_tests}a shows our result for the same location based on the current dataset of 1,480 events.
+We observe that the 100~km diameter anomaly at 300~km depth is well recovered, with little tradeoff between~$\beta_\mathrm{V}$ and~$\beta_\mathrm{H}$ and~$c$ (See SOM).
+Figs.~\ref{fig:psf_tests}b--d shows the results of PSF tests in the lower mantle beneath Afar,
+in the lowermost mantle beneath Easter Island,
+and in the mid mantle below Sumatra.
+In each case the Gaussian anomaly is well recovered, with minimal tradeoff with other model parameters (See SOM).
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.75\textwidth]{figures/psf/yellowstone.pdf}
-  \caption{\small{ PSF of Yellowstone. }}
-  \label{fig:psf_yellowstone}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=0.75\textwidth]{figures/psf/easter.pdf}
-  \caption{\small{ PSF of Easter. }}
-  \label{fig:psf_easter}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=0.75\textwidth]{figures/psf/afar.pdf}
-  \caption{\small{ PSF of Afar. }}
-  \label{fig:psf_afar}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=0.75\textwidth]{figures/psf/su.pdf}
-  \caption{\small{ PSF of Su. }}
-  \label{fig:psf_su}
+  \includegraphics[width=0.8\textwidth]{figures/psf_tests.pdf}
+  \caption{\small{PSF tests.
+  Each of the four panels labeled (a)--(d) shows a map view (Top Left) and cross section (Top Right) through a Gaussian perturbation, $\mathsf{\Delta}\mathsf{m}$\,, in~$\beta_\mathrm{V}$\,,
+  and a map view (Bottom Left) and cross section (Bottom Right) through the recovered perturbation, $\mathsf{H}\cdot\mathsf{\Delta}\mathsf{m}$\,, in~$\beta_\mathrm{V}$.
+  (a) 100~km diameter negative Gaussian anomaly at a depth of 300~km beneath Yellowstone.
+  (b) 400~km diameter negative Gaussian anomaly at a depth of 2,000~km beneath Afar.
+  (c) 300~km diameter negative Gaussian anomaly at a depth of 2,500~km beneath Easter Island.
+  (d) 200~km diameter positive Gaussian anomaly at a depth of 900~km beneath Sumatra.
+  }}
+  \label{fig:psf_tests}
 \end{figure}
 
 \subsection{Held-out data set}
@@ -551,7 +538,7 @@ In each case the Gaussian anomaly is well recovered, with minimal tradeoff with 
 \begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth]{figures/events_360.pdf}
-  \caption{\small{Summary of the held-out database containing 360 earthquakes. Theses events were not used in the structural inversion. (a) Distribution of events color coded by depth range as in Fig.~\ref{fig:eventsstations}(a). (b) \& (c) Histograms of moment magnitude and depth. \tojeroen{Do I need to update this figure, to remove subfigure b and c?} }}
+  \caption{\small{Held-out database containing 360 earthquakes. These events were not used in the structural inversion and are color coded by depth range as in Fig.~\ref{fig:eventsstations}(a).}}
   \label{fig:events_360}
 \end{figure}
 

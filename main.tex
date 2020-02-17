@@ -111,7 +111,7 @@ Global adjoint tomography has a well-defined but complex workflow with multiple 
 It is essential to optimize, automate, and harden the entire process using workflow management tools, especially with large data sets.
 In this study, for each iteration,
 1,480 forward and adjoint simulations need to be performed (one pair for each earthquake in the database),
-generating a few Petabytes of wavefield files for the parsimonious-storage kernel calculation algorithm of~\cite{KoXiBoPeSaLiTr16}, and consuming 16~million OLCF node hours (\cyan{on Summit or Titan node hours? I think 1480 was gradually assimilated}).
+generating a few Petabytes of wavefield files for the parsimonious-storage kernel calculation algorithm of~\cite{KoXiBoPeSaLiTr16}, and consuming 16~million OLCF node hours.
 
 This article is organized as follows.
 Section~\ref{section:seismic data} illustrates the earthquakes and seismographic stations used in the inversion,
@@ -132,7 +132,7 @@ Fig.~\ref{fig:eventsstations}(a) shows a map of the 1,480 earthquakes
 selected from the global Centroid-Moment Tensor (CMT) catalog~\citep[e.g.,][]{ekstrom2012global}
 and used in this study.
 To ensure a good signal-to-noise ratio on a global scale,
-the smallest moment magnitude in the database is set to~5.5 \cyan{5.5 is already the minimum period in globalcmt. Is it really the minimum? },
+the smallest moment magnitude in the database is set to~5.5,
 thereby capturing more deep events,
 and, to avoid complications associated with source dimension and directivity,
 the largest moment magnitude is set to~7.2.
@@ -159,9 +159,7 @@ including IRIS, ORFEUS, INGV, IPGP, ETH, and GEONET.
 Regional and temporary networks,
 such as US Array~(TA),
 Africa Array~(AF), the Canadian National Seismograph Network~(CN), Geoscience Australia~(AU),
-the Antarctic Seismographic Argentinean Italian Network~(AI),
-and the New Zealand National Seismograph Network~(NZ), \cyan{Japan?}
-constitute a significant part
+the Antarctic Seismographic Argentinean Italian Network~(AI), the New Zealand National Seismograph Network~(NZ), and the F-net broadband seismograph network by NIED, constitute a significant part
 of our database and greatly improve coverage in certain regions.
 
 To illustrate which seismic phases end up being assimilated,
@@ -210,9 +208,7 @@ This is something we will reconsider in future applications by adjusting the FLE
 
 The misfit function to be minimized must
 be carefully constructed.
-In this study,
-it involves cross-correlation traveltimes \citep[e.g.,][]{luo_wave-equation_1991}
-for body waves and frequency-dependent multitaper phase measurements for surface waves \citep[e.g.,][]{laske_constraints_1996} \cyan{no multitaper measurements for body waves?}.
+Depending on the time window length and wave period range, we use a multi-taper technique \citep[e.g.,][]{laske_constraints_1996} to make frequency-dependent phase measurement when possible and adopt a cross-correlation measurement \citep[e.g.,][]{luo_wave-equation_1991} for the rest of data.
 Measurements are made in several passbands of three-component seismograms rotated
 into vertical, radial, and transverse components, resulting in a number of measurement
 categories.
@@ -226,7 +222,7 @@ we track the misfit reduction in each of the categories to ensure that
 the model is improving the fit to the data roughly equally.
 One of the biggest challenges in the construction of the misfit function is the
 highly uneven distribution of earthquakes and seismographic stations,
-which must be counterbalanced by geographically weighting the data \citep[e.g.][]{Li1996}.
+which must be counterbalanced by geographically weighting the data~\citep[e.g.][]{Li1996}.
 This issue is discussed in detail by~\cite{Ruanetal2018};
 in this section we present a brief synopsis.
 
@@ -456,7 +452,8 @@ measurements in all twelve measurement categories.
 We observe that the distributions generally become better centered on zero,
 and that all standard deviations are steadily reduced.
 The inversion is aimed at reducing the overall misfit,
-so there are small tradeoffs between different measurement categories. \cyan{How were source corrections applied to GLAD-M15 and S362ANI+Crust2.0? Did you apply the correction terms computed for GLAD-M25 to all models?}
+so there are small tradeoffs between different measurement categories.
+%\cyan{How were source corrections applied to GLAD-M15 and S362ANI+Crust2.0? Did you apply the correction terms computed for GLAD-M25 to all models?} I believe so.
 
 \begin{figure}
   \centering
@@ -506,8 +503,8 @@ Thus a PSF test illustrates the degree of blurring or smearing of the induced mo
 Fig.~\ref{fig:psf_tests} shows the results of the four PSF tests we performed for model GLAD-M25.
 The first test repeats an analysis performed by~\cite{bozdaug2016global} for GLAD-M15 in the upper mantle underneath Yellowstone.
 That test was based on 253 earthquakes,
-and Figs.~\ref{fig:psf_tests}a shows our result for the same location based on the current dataset of 1,480 events \cyan{Did you use all events in PSF tests or only a subset of them? I am asking just to confirm since I remember such a comment from Jeroen before}.
-We observe that the 100~km diameter anomaly, which is smaller than that of used in GLAD-M15, at 300~km depth is well recovered, with little tradeoff between~$\beta_\mathrm{V}$ and~$\beta_\mathrm{H}$ and~$c$ (See SOM).
+and Figs.~\ref{fig:psf_tests}a shows our result for the same location based on the current dataset of 1,480 events.
+We observe that the 100~km diameter anomaly ---which is smaller than what was used in GLAD-M15--- at 300~km depth is well recovered, with little tradeoff between~$\beta_\mathrm{V}$ and~$\beta_\mathrm{H}$ and~$c$ (See SOM).
 Figs.~\ref{fig:psf_tests}b--d shows the results of PSF tests for larger Gaussian anomalies (with 200~km to 400~km diameters) in the lower mantle beneath Afar,
 in the lowermost mantle beneath Easter Island,
 and in the mid mantle below Sumatra.
@@ -553,7 +550,8 @@ as well a S362ANI+CRUST2.0.
 It is encouraging to see that the reductions are comparable to the
 values tabulated in Table~\ref{table:misfit_reduction_M15_M25} for the actual inversion.
 Overall, the reductions are slightly smaller, partly due to the fact that we did not
-conduct full CMT inversions for the held-out database \cyan{not sure..}.
+conduct full CMT inversions for the held-out database.
+%\cyan{not sure..}
 
 \begin{table}
   \centering
@@ -638,7 +636,8 @@ Vertical cross sections are plotted relative to the spherical average of GLAD-M2
 as discussed in Appendix~\ref{sec:1Dmodel}.
 For plotting purposes and use in other applications,
 an expansion of the model in spherical harmonics and radial B-splines is
-discussed in Appendix~\ref{sec:shanalysis} \cyan{but the models were not expanded to spherics harmonics to plot in this paper, right?}.
+discussed in Appendix~\ref{sec:shanalysis}
+%\cyan{but the models were not expanded to spherics harmonics to plot in this paper, right?}. No.
 
 \subsection{Comparisons with GLAD-M15}
 
@@ -673,16 +672,21 @@ and we see an increase in power for GLAD-M25 relative to GLAD-M15 beyond degree~
 
 As illustrated in Fig.~\ref{fig:M25-AFAR},
 we see an enhancement of the Afar plume relative to GLAD-M15.
-The 3D morphology of the African superplume shows a mantle plume rising from the core-mantle boundary with a broad base tilting northward \cyan{do you know why the African plume tilts? I think Pacific plume tilts likely because of the plate motion. GLAD-M25 generally shows that this tilt is happening widely in the upper mantle and perhaps the top of the lower mantle. But the African plume's tilt start from the CMB} with a thinning neck, before it reaches the 660~km phase boundary and flattens.
+The 3D morphology of the African superplume shows a mantle plume rising from the core-mantle boundary with a broad base tilting northward
+%\cyan{do you know why the African plume tilts? I think Pacific plume tilts likely because of the plate motion. GLAD-M25 generally shows that this tilt is happening widely in the upper mantle and perhaps the top of the lower mantle. But the African plume's tilt start from the CMB}  No. It's in the Texas model too.
+with a thinning neck, before it reaches the 660~km phase boundary and flattens.
 It then develops into two sub-plumes ---Afar and East Lake Victoria--- supplying the East Africa rift.
-The development of the superplume and its 3D morphology might be associated with water in the mantle transition zone, a possibility we will explore in a future study.
+The development of the superplume and its 3D morphology might be associated with the thermal and chemical states in the lower mantle and volatiles in the mantle transition zone, a possibility we will explore in a future study.
 
-Subduction along the Andes in South America is imaged from south to north all the way down to the transition zone and beyond in a more continuous way compared to GLAD-M15, as shown in Fig.~\ref{fig:S_America}.
-In the contour plot of positive shear-wavespeed perturbations we observe three gaps, which may correspond to ridges or volcanic plateaus on the subducted Nazca plate, and indicate a weakened or even torn slab \cyan{I think it is a great story but would you like to put the contour plot here or reserve for the future paper?}.
+% Subduction along the Andes in South America is imaged from south to north all the way down to the transition zone and beyond in a more continuous way compared to GLAD-M15, as shown in Fig.~\ref{fig:S_America}.
+% In the contour plot of positive shear-wavespeed perturbations we observe three gaps, which may correspond to ridges or volcanic plateaus on the subducted Nazca plate, and indicate a weakened or even torn slab \citep[e.g.,][]{Hu2016} 
+%\cyan{I think it is a great story but would you like to put the contour plot here or reserve for the future paper?}. OK.
 
 Fig.~\ref{fig:M24-Iceland} showcases the north Atlantic, where we see clear expressions of the Jan Mayen and Iceland plumes as well as the Azores, Canary Islands, and Bermuda,
 and Fig.~\ref{fig:M24-Reunion} shows the emergence of hotspots in the Indian Ocean in model GLAD-M25,
-including Marion, Crozet, Kerguelen, Cocos, R\'eunion, and Seychelles.The visual inspection of the models show significant increase in perturbation anomalies in GLAD-M25 compared to GLAD-M15 that explains the misfit reductions in histograms (Figs.~\ref{fig:phase_hist}~\&~\ref{fig:phase_hist_360}).
+including Marion, Crozet, Kerguelen, and R\'eunion.
+Visual inspection of the models reveals a significant increase in perturbation anomalies in GLAD-M25 compared to GLAD-M15,
+which explains the misfit reductions in the histograms (Figs.~\ref{fig:phase_hist}~\&~\ref{fig:phase_hist_360}).
 
 \begin{figure}
   \centering
@@ -695,18 +699,18 @@ including Marion, Crozet, Kerguelen, Cocos, R\'eunion, and Seychelles.The visual
   \label{fig:M25-AFAR}
 \end{figure}
 
-\begin{figure}
-\centering
-\includegraphics[width=.8\textwidth]{figures/south_america.pdf}
-\caption{\small{Contour plot (left) and cross-sections at various depths (right) of subduction underneath South America, showing improvements in resolution in GLAD-M25 compared to GLAD-M15.
-The contour plot shows positive perturbations of vertically polarized shear wavespeeds in GLAD-M25. The ball in the contour map denotes the 660~km discontinuity.}}
-\label{fig:S_America}
-\end{figure}
+% \begin{figure}
+% \centering
+% \includegraphics[width=.8\textwidth]{figures/south_america.pdf}
+% \caption{\small{Contour plot (left) and cross-sections at various depths (right) of subduction underneath South America, showing improvements in resolution in GLAD-M25 compared to GLAD-M15.
+% The contour plot shows positive perturbations of vertically polarized shear wavespeeds in GLAD-M25. The ball in the contour map denotes the 660~km discontinuity.}}
+% \label{fig:S_America}
+% \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth]{figures/M25-Iceland.pdf}
-  \caption{\small{Map views of vertically polarized shear-wave-speed perturbations in GLAD-M15 (top left) and GLAD-M25 (top right) underneath Iceland. Also shown are vertical cross-sections(bottom row) at the same location. As a primary hotspot, Iceland also becomes more prominent in GLAD-M25, especially in the upper mantle.
+  \caption{\small{Map views of vertically polarized shear-wave-speed perturbations in GLAD-M15 (top left) and GLAD-M25 (top right) underneath Iceland at a depth of 250~km. Also shown are vertical cross-sections(bottom row) at the same location. As a primary hotspot, Iceland also becomes more prominent in GLAD-M25, especially in the upper mantle.
   }}
   \label{fig:M24-Iceland}
 \end{figure}
@@ -714,7 +718,8 @@ The contour plot shows positive perturbations of vertically polarized shear wave
 \begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth]{figures/M25-Reunion.pdf}
-  \caption{\small{Map views at 250~km depth of vertically polarized shear-wave-speed perturbations in GLAD-M15 (left) and GLAD-M25 (right) in the Indian Ocean. New features have emerged in GLAD-M25, such as the R\'eunion, Marion, Kerguelen, Maldives, Seychelles, Cocos, and Crozet hotspots.}
+  \caption{\small{Map views at 250~km depth of vertically polarized shear-wave-speed perturbations in GLAD-M15 (left) and GLAD-M25 (right) in the Indian Ocean. New features have emerged in GLAD-M25, such as the R\'eunion, Marion, Kerguelen, Maldives, Seychelles, Cocos, and Crozet hotspots.
+  }
   }
   \label{fig:M24-Reunion}
 \end{figure}
@@ -824,7 +829,8 @@ above the 660~km discontinuity before sinking into the lower mantle.
 Overall, the three models are in reasonably good agreement.
 At shallow depths, model GLAD-M25 shows more distinct continental crust and cratons, thanks to the inclusion of surface waves.
 But in the upper and mid mantle,
-the models share similar attributes. Relatively smoother slabs in GLAD-M25 are likely related to our choice of smoothing considering the minimum period of body waves in our simulations, $\sim17$~s, which is longer than typical teleseismic body-wave tomography studies.
+the models share similar attributes.
+%Relatively smoother slabs in GLAD-M25 are likely related to our choice of smoothing considering the minimum period of body waves in our simulations, $\sim17$~s, which is longer than typical teleseismic body-wave tomography studies.
 
 \section{Discussion}
 
@@ -856,7 +862,7 @@ being assimilated, we still have a long way to go before explaining every broadb
 Currently, we are only fitting the phase in selected time windows, and amplitude information remains completely unused.
 We accommodate the full physics of seismic wave propagation,
 but we are not exploiting the most general earth model parameterization.
-GLAD-M25 is an elastic model with radial anisotropy confined to the upper mantle similar to its precessor GLAD-M15.
+GLAD-M25 is an elastic model with radial anisotropy confined to the upper mantle, similar to its predecessor GLAD-M15.
 It is well known that the upper mantle is azimuthally anisotropic~\citep[e.g.,][]{montagner1989petrological,montagner1991},
 and we also know that amplitude information helps constrain second derivatives in phase speed~\citep[e.g.,][]{WW86,TDI,TDII},
 in addition to lateral variations in attenuation~\cite[e.g.,][]{romanowicz1998,reidetal2001,DaEkDz08}.

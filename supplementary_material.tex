@@ -65,19 +65,19 @@ we use model GLAD-M15 as our
 starting model.
 GLAD-M15 is a 3D transversely isotropic earth earth model, which combined
 3D mantle model S362ANI~\citep{kustowski2008anisotropic}
-with 3D crustal model CRUST2.0~\citep{bassin2000current} as its starting model.
+with 3D crustal model CRUST2.0~\citep{bassin2000current} (S362ANI+CRUST2.0) as its starting model.
 We continue to use the same transversely isotropic model parametrization.
 To accommodate attenuation,
-we use radial anelastic model QL6~\citep{QL6}.
+we use the radial anelastic model QL6~\citep{QL6}.
 
 Instead of relying on crustal corrections,
 the mesh implementation of the crust in the spectral-element solver SPECFEM3D\_GLOBE~\citep{KoTr02a,KoTr02b,PeKoLuMaLeCaLeMaLiBlNiBaTr11} enables us to accurately accommodate topography and bathymetry as well as variations in the Moho.
-The mantle and crust are inverted simultaneously.
+To improve the sampling of the thin oceanic crust the mesh honors Moho whenever the crust is thinner than 15~km and thicker than 35~km. The mesh runs through the GLL (Gauss-Lobatto-Legendre) points at the ocean-continent transition (15--35~lm crustal thickness) as described in \citet{tromp2010a}. The mantle and crust are inverted simultaneously avoiding any simplifications and crustal corrections.
 
 GLAD-M15 was constructed using a global database of 253 earthquakes.
 The first 12 iterations of the GLAD-M15 inversion used three-component seismograms with a shortest period of 27~s,
 and the final 3 iterations reduced this further to 17~s.
-In this study we also used three-component seismograms with a shortest period of 17~s.
+In this study we also used three-component seismograms with a shortest period of 17~s. Note that the shortest period of simulations is most crucial for taking advantage of high-frequency body waves since the minimum period of surface waves we currently fit in adjoint inversions is 40~s. 
 
 \section{Source inversions}
 \label{section:earthquakes}
@@ -100,7 +100,7 @@ and, to avoid complications associated with source dimension and directivity,
 the largest moment magnitude is set to~7.2.
 
 Before using the 1,040 earthquakes in our structural inversion,
-we performed CMT inversions using model GLAD-M15,
+we performed CMT inversions using model GLAD-M15, similar to the 253 events reinverted in \citet{bozdaug2016global} using its starting model S362ANI+CRUST2.0,
 the results of which are summarized in Fig.~\ref{fig:source_correction}.
 To optimize even global coverage,
 we used seismographic stations from the  Global Seismic Network (II, IU, IC, US, CU, and GT),
@@ -108,9 +108,9 @@ GEOFON~(GE), GEOSCOPE~(G), and several regional networks, such as MedNet~(MN),
 the Brazilian Lithospheric Seismic Project~(BL), the Chilean National Seismic Network~(C),
 and the Japan Meteorological Agency Seismic Network~(JP) (Fig.~\ref{fig:source_correction}b).
 The number of stations used for CMT inversion usually ranges
-from~150 to~500.
+from~150 to~500 depending on the event dates.
 
-To determine the source parameters in the starting model,
+To update the source parameters (six moment tensor components, latitude, longitude and depth) using the starting model to compute the Green's functions for each source parameter,
 we used the CMT inversion algorithm of \cite{liu2004spectral}.
 This algorithm combines a normalized waveform difference misfit with an envelope difference misfit.
 Specifically, the algorithm minimizes the misfit function
@@ -130,12 +130,12 @@ Specifically, the algorithm minimizes the misfit function
 where~$d_w(t)$ denotes data in time window~$w$\,,
 and~$s_w(t - \Delta t)$ the corresponding synthetic for model~GLAD-M15.
 We allow the synthetics to shift relative to the data by an amount~$\Delta t$
---- effectively a station correction --- determined by cross correlation.
+--- effectively a station correction --- determined by cross correlation. We do not invert for the origin times as we minimize the phase misfit due to the station correction which helps to reduce the nonlinearity of the problem. As we describe later, we take into account the uncertainty in origin times, as well as the scalar moment, by performing an additional grid search at every iteration.
 The envelope function is denoted by~$e(\,\cdot\,)$\,,
 and the parameter~$\lambda$ determines the balance between fitting waveforms versus fitting envelopes.
 The number of measurement categories is denoted by~$C$\,.
 Following~\cite{ekstrom2012global},
-seismograms were filtered between 50~s and 100~s
+seismograms were filtered between 40~s and 100~s
 to select three-component body-wave windows,
 and between 60~s and 100~s to select three-component
 surface-wave windows,
@@ -167,7 +167,7 @@ points on the unit sphere, determine a spatial weighting associated with each po
 The algorithm inverts for the six elements of the moment tensor
 and the centroid location~(latitude, longitude, and depth; duration is kept constant).
 These source inversions are computationally very expensive,
-because for each of the 1,040~events nine full 3D forward simulations are required to obtain the source parameter Fr\'echet derivatives.
+because for each of the 1,040~events nine full 3D forward simulations are required to obtain the source parameter Fr\'echet derivatives in addition to forward simulation of synthetic seismograms (i.e., 10 forward simulations per event).
 
 Because we allow the synthetics to shift in phase by an amount~$\Delta t$ relative to the data,
 the CMT inversion has unreliable sensitivity to the centroid time.
@@ -177,13 +177,13 @@ we perform a subsequent grid search for the centroid time and the scalar moment.
 The grid-search calibration involves simple shift and multiply operations on seismograms
 and, unlike the CMT inversion, requires minimal simulation time.
 
-Most earthquakes are shallower after inversion
+Most earthquakes, specifically the oceanic ridge events, are shallower after inversion
 (Fig.~\ref{fig:source_correction}c),
-consistent with our previous experiences~\citep[e.g.,][]{zhu2015seismic,chen2015multiparameter,bozdaug2016global} and with experiments by~\cite{hjorleifsdottir2010effects}.
+consistent with our previous experiences~\citep[e.g.,][]{zhu2015seismic,chen2015multiparameter,bozdaug2016global} and with experiments by~\cite{hjorleifsdottir2010effects}. This is partly because the minimum depth of CMT events are fixed to $\sim12$~km as the sensitivity of source parameters significantly decreases closer to the free surface. 
 We observed an average depth change of~$-2.62\pm2.49$~km relative to the global CMT solutions,
 an average scalar moment change of~$5.31\pm3.91$\%,
 and an average centroid time shift of~$-0.60\pm1.17$~s.
-These are relatively minor corrections, especially in view of the significant expense of the source inversions.
+These are relatively minor corrections mainly due to our choice of being conservative in source corrections to avoid nonlinearities and our not-so-detailed crustal model (an updated version of CRUST2.0 through the 15 iterations performed for GLAD-M15), especially in view of the significant expense of the source inversions.
 For this reason, when we added another 440 earthquakes during iteration~22,
 thereby bringing the total to~1,480 events,
 we only performed a grid search to calibrate the centroid times and scalar moments.
@@ -237,10 +237,10 @@ In the following sections we highlight several important aspects of the workflow
 The forward simulations are based on the global spectral-element solver
 SPECFEM3D\_GLOBE~\citep{KoTr02a,KoTr02a}, and take a CMT solution, a list
 of stations, and the current earth model as input.
-The solver is GPU accelerated, and the simulations are performed on the Cray supercomputer ``Titan''
+The solver is GPU accelerated, and the simulations are performed on the Cray ``Titan'' and IBM ``Summit" supercomputers
 at the OLCF.
 To simulate 120-min seismograms with a shortest period of 17~s on 384 NVIDIA
-Tesla K20X GPUs takes approximately 10~min of wall clock time.
+Tesla K20X GPUs takes approximately 10~min of wall clock time (On Summit it takes about \cyan{1~min (??)}).
 
 The calculation of Fr\'echet derivatives requires
 access to snapshots of the forward wavefield as part of the parsimonious storage
@@ -249,7 +249,7 @@ with rapid I/O facilitated by ADIOS~\citep{liu2014hello}.
 For the current simulation setup,
 this requires about 1~TB of storage per earthquake,
 so for 1,480 earthquakes this adds up to 1.5~PB.
-This volume of data is generated during~$\sim6$~hours of simulations.
+This temporary volume of data is generated during~$\sim6$~hours of simulations.
 Based on our experience, ADIOS is capable of achieving~$\sim120$~GB/s
 of sustained I/O on OLCF resources.
 Given that typical write speeds for modern hard disks are~$\sim100$~MB/s,
@@ -269,7 +269,7 @@ and generates adjoint sources for data assimilation as output.
 From a computational perspective, the preprocessing workflow consumes only~1\%
 of the overall computational requirements.
 But from the perspective of the tomographic inversion, this is by far the most
-important stage of the adjoint tomography workflow,
+important and tedious stage of the adjoint tomography workflow,
 impacting the outcome.
 
 We use millions of seismograms generating tens of millions of measurement windows,
@@ -281,8 +281,7 @@ As illustrated in Fig.~\ref{fig:preprocess_workflow}, the preprocessing workflow
 includes the following phases.
 \begin{enumerate}
   \item Signal processing to remove the instrument response from observed data
-    to recover ground displacement using ObsPy~\citep{obspy2010}. Both observed and synthetic data are bandpass
-    filtered, and the horizontal components are rotated to obtain the radial and transverse components of motion.
+    to recover ground displacement using ObsPy~\citep{obspy2010}. Both observed and synthetic data are filtered using the same bandpass only once, and the horizontal components are rotated to obtain the radial and transverse components of motion.
   \item Window selection on a pair of
     observed and synthetic seismograms. Pyflex (a Python version
     of FLEXWIN by \citet{krischer2015}) is
@@ -302,29 +301,29 @@ Collectively,
 the adjoint simulations are the most expensive stage of the workflow. 
 Adjoint simulations take the adjoint sources as input, and generate Fr\'echet
 derivatives of the four model parameters as output.
-The computational cost of one adjoint simulation is roughly twice ($\sim25$~min) that of
+The computational cost of one adjoint simulation is roughly twice ($\sim25$~min on Titan, \cyan{less than $10$~min on Summit}) that of
 a forward simulation, since the forward wavefield is recalculated for convolution with
 the adjoint wavefield during the adjoint simulation.
 Using this procedure,
-both the forward and adjoint wavefield are calculated in forward time,
-and attenuation is accurately taken into account in both simulations.
+both the forward and adjoint wavefields are calculated in forward time,
+and attenuation is accurately taken into account in both simulations \citep{KoXiBoPeSaLiTr16}.
 
 \subsection{Postprocessing}
 
 The postprocessing stage of the workflow takes Fr\'echet derivatives as input and
 generates a model update as output.
-It involves the follow steps.
+It involves the following steps.
 \begin{enumerate}
-  \item Summation of the individual Fr\'echet derivatives for each earthquake to obtain the overall gradient of the misfit function. The contribution of each source is weighted to balance
+  \item Summation of the individual Fr\'echet derivatives for each earthquake, called ``event kernels", to obtain the overall gradient of the misfit function. The contribution of each source is weighted to balance
     the uneven distribution of earthquakes~\citep{Ruanetal2018}.
   \item Smoothing of the raw misfit gradient using a 3D Gaussian, which
     serves as a regularization procedure. Instead of using a changing
-    smoothing radius based upon the ``ray density''~\citep{bozdaug2016global},
-    we used a fixed value at a given iteration, following~\cite{zhu2012structure}.
+    smoothing radius based upon the ``kernel density''~\citep{bozdaug2016global},
+    we used a fixed value at a given iteration, following~\cite{zhu2012structure} to initially better observe the effect of our weighting scheme. One can also combine the source-receiver weighting with the multi-stage smoothing strategy to highlight the structure underneath densely covered regions as in~\citet{bozdaug2016global}.
   \item Preconditioning of the smoothed gradient based on a technique proposed by~\cite{luo2013strategies}.
   \item Line search in the direction of the negative gradient to determine the magnitude of the model update.
-  The search direction is determined using a nonlinear conjugate gradient method~\citep{wright1999numerical} (iterations 16--21) or a Limited-memory Broyden- Fletcher-Goldfarb-Shanno (L-BFGS) quasi-Newton method (iterations 22--25).
-  We used a subset of 160 earthquakes to conduct the line search and determine the step length.
+  The search direction is determined using a nonlinear conjugate gradient method (iterations 16--21) or a Limited-memory Broyden- Fletcher-Goldfarb-Shanno (L-BFGS) quasi-Newton method (iterations 22--25)~\citep{wright1999numerical}.
+  We used a subset of 160 earthquakes to conduct the line search and determine the step length. One can also determine the step length using the Wolf criteria which is commonly used in exploration studies \cyan{reference}. We prefer to perform the line search to be able to keep track of the evolution of misfit at every measurement category.
 \end{enumerate}
 
 \subsection{Workflow management}
@@ -381,9 +380,9 @@ failure detection and relaunching greatly shortens the overall time to solution.
 
 \section{Point Spread Function tests}
 
-This section summarizes the complete Point Spread Function (PSF) tests conducted as part of this study.
+This section summarizes the complete Point Spread Function (PSF) tests conducted as part of this study, including the tradeoff between parameters.
 Figs.~\ref{fig:psf_yellowstone}--\ref{fig:psf_su} show the results of PSF tests underneath Yellowstone, Easter Island, Afar, and Sumatra.
-Each figure shows the original Gaussian perturbation, $\mathsf{\Delta}\mathsf{m}$\,, in map view and cross section, as well as the action of the Hessian on this model perturbation, $\mathsf{H}\mathsf{\Delta}\mathsf{m}$\,.
+Each figure shows the original Gaussian perturbation in vertically polarized shear wavespeed, $\mathsf{\Delta}\mathsf{m}$\,, in map view and cross section, as well as the action of the Hessian on this model perturbation, $\mathsf{H}\mathsf{\Delta}\mathsf{m}$\,.
 \begin{figure}
   \centering
   \includegraphics[width=0.65\textwidth]{figures/psf/yellowstone.pdf}
@@ -498,9 +497,9 @@ In Fig.~\ref{fig:global-vs} we compare global maps of the isotropic part of our
 shear wavespeed model with model S362ANI$+$M~\citep{moulik2014anisotropic},
 and model S40RTS~\citep{ritsema2011s40rts}.
 Overall, these models are in good agreement
-at the longest wavelengths, especially GLAD-M25 and S362ANI$+$M.
+at the longest wavelengths, especially GLAD-M25 and S362ANI$+$M where S362ANI$+$M is the updated version of S362ANI~\citep{s362ani}, the starting model of GLAD-M15.
 The perturbations in GLAD-M25 tend to be larger than in the other models,
-consistent with observations by~\cite{french2014whole},
+consistent with observations by~\cite{french2014whole,french2015broad},
 whose model is also based on a form of waveform inversion.
 
 %\begin{figure}
@@ -512,7 +511,7 @@ whose model is also based on a form of waveform inversion.
 
 An important aspect of our inversion is that it constrains shear and
 compressional waves simultaneously. In Fig.~\ref{fig:global-vp} we
-compare global maps of our compressional wavespeed model with global P models
+compare global maps of our compressional wavespeed model with global P-wavespeed models
 LLNL-G3Dv3~\citep{simmons2012llnl} and GAP-P4~\citep{fukao2013subducted}.
 At a depth of 100~km,
 GLAD-M25 shows mid-oceanic ridges, cooling of the Pacific lithosphere,

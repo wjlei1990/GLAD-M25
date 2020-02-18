@@ -135,7 +135,7 @@ The envelope function is denoted by~$e(\,\cdot\,)$\,,
 and the parameter~$\lambda$ determines the balance between fitting waveforms versus fitting envelopes.
 The number of measurement categories is denoted by~$C$\,.
 Following~\cite{ekstrom2012global},
-seismograms were filtered between 40~s and 100~s
+seismograms were filtered between 50~s and 100~s
 to select three-component body-wave windows,
 and between 60~s and 100~s to select three-component
 surface-wave windows,
@@ -183,7 +183,7 @@ consistent with our previous experiences~\citep[e.g.,][]{zhu2015seismic,chen2015
 We observed an average depth change of~$-2.62\pm2.49$~km relative to the global CMT solutions,
 an average scalar moment change of~$5.31\pm3.91$\%,
 and an average centroid time shift of~$-0.60\pm1.17$~s.
-These are relatively minor corrections mainly due to our choice of being conservative in source corrections to avoid nonlinearities and our not-so-detailed crustal model (an updated version of CRUST2.0 through the 15 iterations performed for GLAD-M15), especially in view of the significant expense of the source inversions.
+These are relatively minor corrections mainly due to our choice of being conservative in source inversions to avoid nonlinearities and our not-so-detailed crustal model (an updated version of CRUST2.0 through the 15 iterations performed for GLAD-M15), especially in view of the significant expense of the source inversions.
 For this reason, when we added another 440 earthquakes during iteration~22,
 thereby bringing the total to~1,480 events,
 we only performed a grid search to calibrate the centroid times and scalar moments.
@@ -383,6 +383,9 @@ failure detection and relaunching greatly shortens the overall time to solution.
 This section summarizes the complete Point Spread Function (PSF) tests conducted as part of this study, including the tradeoff between parameters.
 Figs.~\ref{fig:psf_yellowstone}--\ref{fig:psf_su} show the results of PSF tests underneath Yellowstone, Easter Island, Afar, and Sumatra.
 Each figure shows the original Gaussian perturbation in vertically polarized shear wavespeed, $\mathsf{\Delta}\mathsf{m}$\,, in map view and cross section, as well as the action of the Hessian on this model perturbation, $\mathsf{H}\mathsf{\Delta}\mathsf{m}$\,.
+
+We used different sizes of Gaussian perturbations in the PSF tests, from 160~to~400 km diameters depending on the kernel coverage of the selected regions both in the upper and lower mantles. Although we observe some smearing effects the Gaussian anomalies are overall well-recovered. As expected PSF tests are most successful in North America, where we have the best coverage, thanks to USArray. However, it is also encouraging to see good recovery in the lower mantle to assess the resolution of lower-mantle plumes. We observe limited smearing onto other parameters where we observe a slight tradeoff in radial anisotropy in the upper mantle for the tests performed underneath North America.
+
 \begin{figure}
   \centering
   \includegraphics[width=0.65\textwidth]{figures/psf/yellowstone.pdf}
@@ -569,19 +572,19 @@ At a depth of 100~km, we observe that the edges of the craton are sharper in
 GLAD-M25 than in the other two global models,
 and quite similar in shape and sharpness to the two regional models.
 We can see impressions of the Snake River Plain (with Yellowstone)
-and the Raton hotspot, which also have slow expressions at depths of 200~km.
+and the Raton hotspot, which also have slow expressions at depths of 200~km. The PSF test we performed in this region~(Fig.~\ref{fig:psf_yellowstone})~gives us confidence on the resolution of the observed anomalies. It is also promising to see the convergence of our global model to the resolution of continental-scale studies specifically in densely covered regions.
 The core of the craton exhibits fast wavespeeds at depths reaching 300~km Northwest of
 Hudson Bay.
 In the regional models the craton has basically faded away at these depths.
 The Wyoming and Medicine Hat Blocks show a very strong and thick lithospheric
 root from shallow depths to $\sim$400~km, similar to US22 but
-difficult to discern in SL2013NA.
+difficult to discern in SL2013NA which may be due to similar theory and measurement techniques were used in the construction of GLAD-M25 and US22.
 Similar observations can be made for the Yavapai and
 Mazatzal Blocks, which define the southern boundary of the large craton
 ~\citep{schaeffer2014imaging}.
 
 In the 200--400~km depth range, we observe a low wavespeed anomaly beneath the Arctic
-and s high wavespeed
+and high shear-wavespeed
 anomaly within the Gulf of Mexico, which coincides spatially with the deepest
 bathymetry and corresponds to a portion of ancient oceanic
 lithosphere~\citep{muller2008, schaeffer2014imaging}.

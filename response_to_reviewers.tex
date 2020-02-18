@@ -160,10 +160,8 @@ This entails just a handful of ~$3\sigma$~outliers that may contaminate the mode
 \rev{They smooth the gradient differently to what they did in their previous 15 iterations. Has this a large effect? Obviously they must have a reason for changing this based on some tests.
 }
 
-\response{We changed the weighting scheme for sources and receivers,
-which eliminates the need for the previously used variable smoothing of the gradient.
-The weighting strategy is discussed in detail in~Ruan et al.~(2019), and includes examples of improved convergence.
-One may still use multi-scale smoothing with the new weighting scheme to allow for smaller-scale heterogeneities under densely sampled regions.
+\response{We did not use multi-scale smoothing to better observe the effect of our new weighting scheme in the inversion. The weighting strategy is discussed in detail in~Ruan et al.~(2019), and includes examples of improved convergence.
+One may still use multi-scale smoothing with the new weighting scheme to allow for smaller-scale heterogeneities under densely sampled regions. We have now noted this in the main text. 
 }
 
 \rev{Concerning the model evaluation, they refrained from point spread functions. Instead they show detailed misfits and comparisons with other published models.
@@ -173,12 +171,12 @@ I would suggest at least to make a detailed comparison with GLAD-M15. Do we get 
 }
 
 \response{We provide detailed comparisons between M15 and M25 in Tables~1 and~2, as well as in all the traveltime and amplitude histograms.
-In the revised manuscript we have also added a couple of new figures directly comparing M15 and M25, thereby highlighting distinct new features in M25.}
+In the revised manuscript we have also added a couple of new figures directly comparing M15 and M25, thereby highlighting distinct new features in M25. In addition we have performed six PSF tests in the upper and the lower mantle which can be found in the main text and in the supplementary material.}
 
 \rev{The authors mention that checkerboards are expensive. One could also mention that in fact they are useless for assessing resolution.
 }
 
-\response{Indeed. See our earlier discussion.}
+\response{Indeed. See our earlier discussion. We also added this in the main text.}
 
 \rev{The authors mention that the perturbations tend to be larger than in other models. I fully understand why this is, but it has a huge consequence for the interpretation of the model. We are now moving away from perturbations and enter the domain of finite difference. Trying to understand these models with partial derivatives for temperature and composition will be very misleading. If we want to infer temperature and composition, we will have to work with absolute values.
 }
@@ -192,12 +190,12 @@ If they are confident that it means the same, they can say, for instance, the Ic
 The same holds for slabs. I suggest to be a bit more careful than just falling in the old habit that red is hot and blue is cold. The deviations are now so large that these analogies become misleading.
 }
 
-\response{We have modified the language.}
+\response{We have modified the language.\cyan{??}}
 
 \rev{They don't mention anisotropy, but clearly invert for TI as claimed in the technical section. Do they see any evidence of anisotropy in the lower mantle for instance?
 }
 
-\response{As in M15, transverse isotropy in M25 is confined to the upper mantle, because it is mainly constrained by surface waves. }
+\response{As in M15, transverse isotropy in M25 is confined to the upper mantle, because it is mainly constrained by surface waves. Since the misfit reductions in all categories are consistent with each other we have not observed effects of anisotropy in the lower mantle yet.}
 
 {\textbf{\large{Response to Reviewer~2}}}
 
@@ -235,19 +233,22 @@ Finally, resolution and uncertainty quantification remain a challenge in FWI,
 both in exploration and earthquake seismology.
 In lieu of such tools,
 as in numerous other studies,
-we used traveltime histograms and a held-out dataset to assess performance of our model (thus, it is not a fair comment that even the slightest effort to assess the resolution of the model is absent in the original submission).
+we used traveltime histograms and a held-out dataset to assess performance of our model (thus, it is not a fair comment to say that ``even the slightest effort to assess the resolution of the model" is absent in the original submission).
 In the original submission, we did not perform PSF tests, because these are rather limited in value, especially in view of the fact that they only tell you something about one ``point'' in the model for the set up of a particular iteration.
 Therefore, a PSF does not say much about uncertainty, but gives an idea of resolution.
 Nevertheless,
 as mentioned earlier,
 the updated manuscript now contains four PSF tests,
-and the SOM contains two more.}
+and the SOM contains two more,
+including model parameter tradeoff.}
 
 
 \rev{(1) By far my biggest concern is the lack of true scientific innovation. While the authors do mention some recent technological improvements (e.g., the storage algorithm for anelastic kernels and the ASDF data format), all of them have been published before, and are therefore not new. Apart from adding more events and going to slightly higher frequencies, this work is very similar to the previously published work by Bozdag et al. (2016). Also, the final model does not reveal anything about the structure of the Earth that was not known before.
 }
 
-\response{The main technical improvement is the workflow management.}
+\response{The main technical improvement is workflow management. We do not understand what the reviewer considers ``true scientific innovation", but we take it as an unfortunate, insulting comment. Technical developments are not scientific innovations by themselves, but facilitate them. (For example, this paper would have been impossible without porting our solvers to GPUs.) For this reason we emphasize the technical advances which now enable us to process data from 1,480 events, and more! We understand the concern that the structure of the original paper was close to that of the GLAD-M15 paper,
+and we have revised the structure and added a section with direct comparisons between M15 and M25 to highlight their  differences.
+}
 
 
 \rev{(2) In section 9.1, entitled "Point-spread function analysis", the authors explain that they actually did not perform such tests because they are computationally too expensive. Instead, they refer to 2 previous point-spread function calculations, published by Bozdag et al. (2016), using the earlier dataset. 
@@ -267,6 +268,8 @@ who is the first author of this manuscript.
 We believe the reviewer is fully aware of the pitfalls of resolution analysis and uncertainty quantification in all tomographic inversions, unless a Bayesian approach is used, which is not even possible for classical global tomographic inversions.
 The reason we did not perform PSF tests was not because we ran out of core-hours but chose not to use them for this purpose,
 because a few PSF tests do not say much about global resolution.
+%The reason we mentioned the cost of PSF tests in the original manuscript was rather to make the point that despite the cost we will not get the full resolution. Otherwise, the core hours have never been an issue for our INCITE allocations but the ability to handle large data sets in FWI while carefully investigating the model evolution is the main challenge. 
+Nevertheless, we added six PSF tests in the revised manuscript in addition to our existing quantitative comparisons of traveltime and amplitude misfits.
 }
 
 \rev{(3) Though the authors repeatedly stress the size of their dataset, the number of events is rather small for a global model. Of course, it is an improvement to what the authors call their first-generation model, but compared to earlier global tomographies, the size of the dataset is not overwhelming.
@@ -292,7 +295,7 @@ We did not intend for the sections on supercomputing to sound grandiose; we were
 Much of this work was accomplished by the student first-author of the paper, and we were trying to highlight these rather nontrivial accomplishments.
 Nevertheless, also in view of comments by other reviewers and the editor, we have toned down the language in the revised manuscript.
 
-The statement ``their model does not tell us many new things about the internal structure of the Earth'' is again unnecessarily hash and uncalled for.
+The statement ``their model does not tell us many new things about the internal structure of the Earth'' is again unnecessarily harsh and uncalled for. We already emphasize the advantages of our models, as we believe the reviewer knows well. 
 For example,
 this is one of the few tomographic studies to constrain shear and compressional wavespeeds together in the same frequency band.
 Thus, our Vp/Vs ratios certainly add scientific value.
@@ -333,13 +336,13 @@ The authors don't do the point-spread function analysis so subsection 9.1 can be
 \response{We have further polished the writing later in the manuscript
 Thanks for the annotated manuscript! We have accommodated most comments and suggestions.
 Based on suggestions by the other reviewers,
-we added some PSF tests to the manuscript.}
+we added six PSF tests to the manuscript and the supplementary material.}
 
 \rev{The GLAD-M tomography stands out from the other approaches by casting the inverse without compromising the physics of wave propagation. Consequently, the workflow is laborious and iterations are slow. Ten iterations for a moderate data set (compared to the S40RTS data set, for example), took more than two years. Sections 1--9 indicate that the authors are convinced about the value of their approach but the discussion onward from Section 10 is qualitative and not serving the authors' case.
 I worry that readers might wonder whether M25 is a significant step forward from M15 and whether the tremendous engineering and use of computer power justifies the (re)discovery of velocity anomalies that do not appear to change our understanding of mantle structure and dynamics.
 }
 
-\response{We have modified the manuscript substantially, as discussed previously. We focus more concretely on differences between M15 and M25.
+\response{We have modified the manuscript substantially, as discussed previously. We focus more concretely on differences between M15 and M25 to better highlight the power of 10 additional iterations with $>1,000$ events.  
 Unfortunately,
 comparisons with other models will always be rather qualitative, because we have no way of using such models in 3D wave simulations, mainly because 3D mantle models are difficult to combine with 3D crustal models. Underneath the oceans there tends to be a `gap' between the mantle model and the crust, whereas underneath the continents there tends to be a region of overlap, and this make `gluing' the two together challenging.}
 
@@ -366,21 +369,23 @@ There are lots of examples of the effects of 3D structure on such kernels in the
 \rev{3. I would like to see examples of recorded and synthetic data at long (T > 250 s), and short (T < 10 s) periods to illustrate that M25 is (close to) reproducing waveform segments and data types not yet selected by FLEXWIN. How good is the fit to waveform segments (e.g., ScS) and data types (e.g., normal mode splitting) not included in the inversion?
 }
 
-\response{Calculating synthetics at periods less than 17 s is a very expensive proposition! Going to 9~s involves a 16X increase in the computational cost.
+\response{Calculating synthetics at periods less than 17 s is a very expensive proposition! Going to 9~s involves a 16X increase in the computational cost. The long period corner of the period band is set by the Cowling approximation,
+which limits simulations to periods up to $\sim250--300$~s.
 }
 
 \rev{4. Source finiteness is already important. A MW7.2 earthquake is assumed to have a duration of 21 seconds (an empirically determined value in the CMT catalog) comparable to the shortest periods used here. What is the effect on the traveltime measurement if the duration is overestimated by 5 or 10 seconds (deep earthquakes tend be more compact)? When higher frequencies are incorporated, do the authors plan to invert for source durations or can they rely on standard catalogs of source time functions (e.g., SCARDEC)?
 }
 
 \response{Low pass filtering at 17~s largely eliminates sensitivity to shorter half durations. 
-In addition, when the waveform difference caused by the source time function is too large, it will be rejected by our data screening process. Going forward we are planning to do our own CMT inversions in M25, but including a STF estimation.
+In addition, when the waveform difference caused by the source time function is too large, it will be rejected by our data screening process. Going forward we are planning to do our own CMT inversions in M25, but including an STF estimation.
 }
 
 \rev{5. As the authors plan to include attenuation in the parameterization, will this be a new 1-D profile for Q or a fully 3-D structure? How might this affect the inversion for dVs (and dVp)? For example, assuming that dVs and dQ-1 are related linearly ---- take Colleen Dalton's model for a first-order scaling between dVs and dQ-1 ---- how would this change the traveltime fits? How should dVs and dQ-1 be parameterized (and regularized) to assure that the inversion converges to sensible models for both parameters?
 }
 
 \response{We are planning a fully 3D Q inversion. This will be a ``proper'' Q inversion,
-where there full effects of attenuation, i.e., physical dispersion and dissipation, will be taken into account. We have some experience with such inversions in Europe (Zhu et al., 2013), and for problems in exploration seismology.
+where there full effects of attenuation, i.e., physical dispersion and dissipation, will be taken into account. We have some experience with such inversions in Europe (Zhu et al., 2013), and for problems in exploration seismology. We have also started experimenting at the global scale. The reviewer is right that the Q model will directly affect the traveltimes;
+all tomographic inversions are affected by this.
 }
 
 \rev{Below a long list of additional comments and questions in page order. Even more comments are included as annotations in the PDF.}
@@ -432,12 +437,12 @@ the Moho is honored as much as possible by the mesh, whereas the crustal wavespe
 \rev{i) Page 10. Was the imbalance in M15 (e.g., thousands of paths between circum-Pacific events and the USArray) the motivation for the source and receiver weights in equations 5 and 6?
 }
 
-\response{Yes. M15 tried to compensate for this based on ray density weighting, but the new approach demonstrably leads to faster and better convergence (see Ruan et al.~2019).}
+\response{Yes. M15 tried to compensate for this based on kernel density weighting, but the new approach demonstrably leads to faster and better convergence (see Ruan et al.~2019).}
 
 \rev{j) Figure 6. Both PS and SP can be strong on the vertical and radial components. So, change the label ``PS'' to ``SP+PS''. Why are there few segments close to the PPP arrival (beyond 100 degrees)? Since it is used in the caption, I would use seconds along the y-axis (also in the next two figures).
 }
 
-\response{Points taken. PPP is not prominent, and picked rarely by Pyflex.}
+\response{Points taken. PPP is not prominent, and picked rarely by Pyflex with conservative selection criteria to avoid bad-quality windows. It is ongoing research to improve automated phase picking algorithms.}
 
 \rev{k) Figure 8. Why are there few segments along the SSS branch? I understand FLEXWIN does not look for ScS, ScS2, ScS3 etc. but one doesn't need to teach a machine to find them.
 At T > 15 s periods they are very apparent for dip-slip earthquakes (especially deep earthquakes) and they are isolated from other phases at the shortest distances.
@@ -495,6 +500,8 @@ s) The differences among the models at depths larger than 300 km in Figure 18 is
 The authors draw the reader's attention to anomalies with well-understood tectonic origins but at face value the images are really very different especially for US22 (and M25) and SL2013NA.
 The latter model is based on a large set of overtone surface wave data that should sample the MTZ very well. The misfit reduction obtained for the 40-100 s body + surface waves (presumably waveform segments after SS and before the fundamental mode surface wave) is relatively poor, so perhaps the MTZ in M25 is still poorly resolved (or S362 was an excellent model to begin with).
 At any rate, this need further discussion. Transition zone resolution is still a sticky point and is important for understand convective flow.
+
+\response{Due to our cross-correlation measurements higher-modes may well be underrepresented in the current inversions. We are working on other misfit functions to effectively incorporate smaller-amplitude signals (e.g., Yuan et al. 2020) together with better window-selection strategies.}
 
 t) Figure 19. Perhaps include SL2013sv and the model by Rickers et al. (EPSL; 2013).
 }

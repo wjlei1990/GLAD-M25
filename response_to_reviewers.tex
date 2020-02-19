@@ -342,9 +342,9 @@ we added six PSF tests to the manuscript and the supplementary material.}
 I worry that readers might wonder whether M25 is a significant step forward from M15 and whether the tremendous engineering and use of computer power justifies the (re)discovery of velocity anomalies that do not appear to change our understanding of mantle structure and dynamics.
 }
 
-\response{We have modified the manuscript substantially, as discussed previously. We focus more concretely on differences between M15 and M25 to better highlight the power of 10 additional iterations with $>1,400$ events. The ``two-years'' is not just the time spent for 10 iterations but code development and optimization as well as investigations of global FWI to define strategies for how to make progress. This is not a straightforward process as in exploration seismic yet because of the size and complex physics of the entire crust and mantle we have to take into account.
+\response{We have modified the manuscript substantially, as discussed previously. We focus more concretely on differences between M15 and M25 to better highlight the power of 10 additional iterations with $>1,400$ events. The ``two-years'' is not just the time spent for 10 iterations but code development and optimization as well as investigations of global FWI to define strategies for how to make progress. This is not a straightforward process yet, as in exploration seismic, because of the size and complex physics of the entire crust and mantle we have to take into account.
 Unfortunately,
-comparisons with other models will always be rather qualitative, because we have no way of using such models in 3D wave simulations, mainly because 3D mantle models are difficult to combine with 3D crustal models. Underneath the oceans there tends to be a `gap' between the mantle model and the crust, whereas underneath the continents there tends to be a region of overlap, and this make `gluing' the two together challenging. Thus it may be unfair to assess the models with crustal corrections with 3D numerical wave simulations.}
+comparisons with other models will always be rather qualitative, because we have no way of using such models in 3D wave simulations, mainly because 3D mantle models are difficult to combine with 3D crustal models. Underneath the oceans there tends to be a `gap' between the mantle model and the crust, whereas underneath the continents there tends to be a region of overlap, and this makes `gluing' the two together challenging. Thus it may be unfair to assess the models with crustal corrections with 3D numerical wave simulations.}
 
 \rev{I recommend therefore some restructuring of the paper by relating the modeling results to the adjoint tomography approaches. To stay on the topics raised in sections 1--9, I suggest the authors demonstrate with specific examples that the complex GLAD-M workflow is the only viable approach for making progress in global-scale seismic tomography. The paper will become more technical in tone and will cater primarily to the seismological community but that should be acceptable for GJI. Image interpretations in terms of Earth's structure and dynamics could be published in journals with a somewhat broader readership. Restructuring will involve new work for the leading student author, but I think it is worth the effort.
 }
@@ -356,12 +356,12 @@ It would be helpful to see examples of how surface wave kernels changed from ite
 }
 
 \response{We do not calculate sensitivity kernels, as in the Dahlen \& Nolet banana-doughnut approach! Instead, we directly calculate contributions to the model gradient, which involves assimilation of the measurements for the current model. Thus, this model update must be recalculated at each iteration.
-There are lots of examples of the effects of 3D structure on such kernels in the literature (see, for instance, Tape et al. 2007 for multi-pathing surface waves or in synthetic studies such as Koroni et al. 2017 to see the effect of superposition of multiple arrivals, etc.). However, thanks for the comment where we indeed want to study such observations in follow-up papers.}
+There are lots of examples of the effects of 3D structure on such kernels in the literature. See, for instance, Tape et al. (2007) for multi-pathing surface waves, or synthetic studies such as Koroni et al. (2017) for the effects of superposition of multiple arrivals. However, thanks for the comment; we want to study such observations in follow-up papers.}
 
 \rev{2. Along the same lines, do the sensitivity kernels for body waves through the deep mantle change from iteration 0 to 25? Always or only when, for example, when they skirt the LLSVP? Would it be sensible to recalculate the high-frequency body-wave kernels only every 5th or 10th iteration to safe computational time? Are there good reasons not to do this?
 }
 
-\response{See our response to the previous comment. We do not calculate individual sensitivity kernels a la Dahlen \& Nolet. We compute ``event kernels" for each event combining all body- and surface-wave measurements together. Even if one may argue that lower mantle kernels should be simple, D'' and upper mantle definitely not. For instance, multiply reflected body waves from the free surface can show complicated patterns as one can expect. Furthermore, even though the lower mantle portion might be relatively simple, the crustal and upper-mantle portion of the kernels may still be affected by strong heterogeneities. Overall it does not cost extra for us to run 3D kernels for body-wave phases sampling the lower mantle. 
+\response{See our response to the previous comment. We do not calculate individual sensitivity kernels a la Dahlen \& Nolet. We compute ``event kernels" for each event combining all body- and surface-wave measurements together. Even if one may argue that lower mantle kernels should be simple, D'' and the upper mantle are definitely not. For instance, multiply reflected body waves from the free surface can show complicated patterns, as one might expect. Furthermore, even though the lower mantle portion might be relatively simple, the crustal and upper-mantle portions of the kernels may still be affected by strong heterogeneities. Overall it does not cost extra for us to run 3D kernels for body-wave phases sampling the lower mantle. 
 %\fromebru{I think we can put such a figure as well (I mean in the response, not sure needed for the paper but may go into SOM as well). The kernels must definitely change for paths across the plumes. Also we may be able to give what I encountered in GLAD-M15 before taking full attenuation into account in adjoint simulations as an evidence that we need to compute exact kernels to further decrease the misfit and improve the model}
 %\toebru{Going back to Carl and Qinya's papers, there are lots of such examples in the literature. There is no need to belabor this.}
 }
@@ -370,7 +370,7 @@ There are lots of examples of the effects of 3D structure on such kernels in the
 }
 
 \response{Calculating synthetics at periods less than 17 s is a very expensive proposition! Going to 9~s involves a 16X increase in the computational cost. The long period corner of the period band is set by the Cowling approximation,
-which limits simulations to periods up to $\sim250--300$~s. However, all these suggestions can be good further smaller projects to be investigated.
+which limits simulations to periods up to $\sim250--300$~s. However, all these suggestions make interesting projects for further investigation.
 }
 
 \rev{4. Source finiteness is already important. A MW7.2 earthquake is assumed to have a duration of 21 seconds (an empirically determined value in the CMT catalog) comparable to the shortest periods used here. What is the effect on the traveltime measurement if the duration is overestimated by 5 or 10 seconds (deep earthquakes tend be more compact)? When higher frequencies are incorporated, do the authors plan to invert for source durations or can they rely on standard catalogs of source time functions (e.g., SCARDEC)?
@@ -427,7 +427,7 @@ the Moho is honored as much as possible by the mesh, whereas the crustal wavespe
 \rev{g) Page 8. I have read the statement on SAC before in Jeroen's papers and I apologize for my quibble. The ASDF format may very well be ideal but there are options other than SAC. Many seismologists, including yours truly 20 years ago, developed data and metadata containers that are self-describing, compact, and ``cat-able'' to improve I/O and processing speeds. The bullets on page 9 are too vague.
 }
 
-\response{Point taken.  Indeed there has been other data formats similar to the ASDF logic before the ASDF. We emphasize ASDF because of its compatibility to HPC systems. We have removed the section on ASDF because the format is already discussed in the original ASDF paper, and in the Bozdag et al.~(2016) paper.}
+\response{Point taken.  Indeed other data formats have been developed based on a similar logic. We emphasize ASDF because of its compatibility with HPC systems. We have removed the section on ASDF because the format is already discussed in the original ASDF paper, and in the Bozdag et al.~(2016) paper.}
 
 \rev{h) Page 9. It is not clear to me which part(s) of the seismogram the data categories encompass. Can waveform segments classified as ``17-40 s body waves'' overlap with segments from the ``40-100 s body waves'' group? It would be helpful to show four seismograms for the different frequency bands that indicate where windows are typically chosen.
 }
@@ -437,12 +437,12 @@ the Moho is honored as much as possible by the mesh, whereas the crustal wavespe
 \rev{i) Page 10. Was the imbalance in M15 (e.g., thousands of paths between circum-Pacific events and the USArray) the motivation for the source and receiver weights in equations 5 and 6?
 }
 
-\response{Yes. M15 tried to compensate for this based on a kernel density used as the preconditioner in our post-processing stage, but the new approach demonstrably leads to faster and better convergence (see Ruan et al.~2019).}
+\response{Yes. M15 tried to compensate for this by using kernel density as a preconditioner in the post-processing stage, but the new approach demonstrably leads to faster and better convergence (see Ruan et al.~2019).}
 
 \rev{j) Figure 6. Both PS and SP can be strong on the vertical and radial components. So, change the label ``PS'' to ``SP+PS''. Why are there few segments close to the PPP arrival (beyond 100 degrees)? Since it is used in the caption, I would use seconds along the y-axis (also in the next two figures).
 }
 
-\response{Points taken. PPP is not prominent, and picked rarely by Pyflex with conservative selection criteria to avoid bad-quality windows. In addition, to linearize our inversions, we do not select any window with large time shift and amplitude anomalies until observed and synthetic waveforms becomes comparable to make measurements. It is ongoing research to improve automated phase picking algorithms.}
+\response{Points taken. PPP is not prominent, and picked rarely by Pyflex with conservative selection criteria to avoid bad-quality windows. In addition, to linearize our inversions, we do not select any window with large time shifts or amplitude anomalies until observed and synthetic waveforms become comparable. It is ongoing research to improve automated phase picking algorithms.}
 
 \rev{k) Figure 8. Why are there few segments along the SSS branch? I understand FLEXWIN does not look for ScS, ScS2, ScS3 etc. but one doesn't need to teach a machine to find them.
 At T > 15 s periods they are very apparent for dip-slip earthquakes (especially deep earthquakes) and they are isolated from other phases at the shortest distances.
@@ -466,7 +466,7 @@ Section 8.4 could use more discussion regarding the misfits of the various categ
 \response{See the earlier explanation.
 Surface wave fits are much worse than body wave fits prior to inversion, because the former waveforms are dispersed.
 Thus there are more gains to be had. We don't strip overtones, so these are not fit individually, nor can they be weighted separately.
-Instead, we fit full surface waveforms. However, we are working on new measurement techniques where higher modes and any scattered waves with smaller amplitudes can be better taken into account than cross-correlation measurements. See Bozdag et al. 2011 and the recent paper Yuan et al. 2020 for such measurements which we aim to incorporate in our future iterations. 
+Instead, we fit full surface waveforms. However, we are working on new measurement techniques where higher modes and any scattered waves with smaller amplitudes can be better taken into account than cross-correlation measurements. See Bozdag et al.~(2011) and the recent paper by Yuan et al.~(2020) for such measurements, which we aim to incorporate in our future iterations. 
 }
 
 \rev{n) Figure 11. Its discussion on page 21 is short. The skew in the distribution for DTp may indicate that the 1-D reference model for P-wave speed is inadequate. PP-P traveltime differences (see Ritsema and van Heijst, 2002) indicate that PREM underestimates the traveltimes of PP with oceanic bounce points by several seconds.
@@ -492,21 +492,21 @@ Given the variance reductions I suspect most adjustments have been made in the u
 
 \rev{(i) Although the authors invert for dVp and dVs, the resolution of dVp is poorer than of dVs, particularly in the uppermost mantle (constrained by surface waves) and in D'' (constrained by diffracted waves).}
 
-\response{Not sure if this is a general comment for seismic tomography or for our models. S-wave perturbations are in general larger than those of P waves. It is also likely that we have less P-wave measurements than S-wave measurements because of the smaller amplitudes of P waves. Therefore P-wave evolution can be slower than that of S waves. The smoother P-wave model of GLAD-M25 compared to other P-wave models is also likely due to our minimum period of body waves which is 17~s.}
+\response{We are not sure if this is a general comment for seismic tomography or for our models specifically. S-wave perturbations are in general larger than those of P waves. It is also likely that we have less P-wave measurements than S-wave measurements because of the smaller amplitudes of P waves. Therefore P-wave evolution can be slower than that of S waves. The smoother P-wave model of GLAD-M25 compared to other P-wave models is also likely due to our minimum period of body waves, which is 17~s.}
 
 \rev{(ii) The strength of structure in the models is for a large part determined by regularization. As shown in Ritsema et al. 2011 we can change the amplitude of S40 (and the width of the resolution kernels) by changing the damping without compromising the data fit significantly. Comparing amplitudes of structures from different models without considering resolution differences is a tricky thing.}
 
-\response{We agree that the amplitude of classical tomographic models heavily depend on subjective decisions of damping, and other factors while it is required for the interpretation of the thermochemical structure and dynamics of the mantle. Unfortunately we cannot make a reliable assessment of amplitudes. All we can say is that our results show significant increase in amplitudes compared to M15 specifically on plume and slab structures where our non-linear gradient-based optimization does not involve the damping factor.}
+\response{We agree that the amplitude of classical tomographic models heavily depend on subjective decisions of damping and other factors while it is required for the interpretation of the thermochemical structure and dynamics of the mantle. Unfortunately we cannot make a reliable assessment of amplitudes. All we can say is that our results show significant increases in amplitudes compared to M15 specifically for plume and slab structures where our non-linear gradient-based optimization does not involve a damping factor.}
 
 
 \rev{q) In Figure 18 I suggest to include the model by Krischer et al. (JGR; 2018). Model US22 is perhaps not that useful in the context of this comparison since it is based on a similar modeling approach and data set as M25.}
 
-\response{We could use Krischer et al. (2018) however looks like it is smoother than US22. Our point is that we have started achieving the resolution of continental-scale studies in global inversions wherever we have dense coverage.}
+\response{We could use Krischer et al. (2018), however it looks like it is smoother than US22. Our point is that we have started achieving the resolution of continental-scale studies in global inversions wherever we have dense coverage.}
 
 \rev{r) Since SL2013NA (a ``ray'' model) doesn't appear too different from M25 it is not clear from the visual comparison) whether modeling improvements (i.e., better theories) matter.
 (Note that I suspect they do matter for surface waves because your variance reduction is large for the surface wave data -- see my point 1).}
 
-\response{Not sure if they are very similar, in fact they show strong discrepancies below 100 km. }
+\response{Not sure if they are very similar, in fact they show strong discrepancies below 100~km. }
 
 \rev{s) The differences among the models at depths larger than 300 km in Figure 18 is striking.
 The authors draw the reader's attention to anomalies with well-understood tectonic origins but at face value the images are really very different especially for US22 (and M25) and SL2013NA.
@@ -517,7 +517,7 @@ At any rate, this need further discussion. Transition zone resolution is still a
 
 \rev{t) Figure 19. Perhaps include SL2013sv and the model by Rickers et al. (EPSL; 2013).
 }
-\response{Rickers et al. model is more focusing on the upper mantle thus we chose to compare the Icelandic plume to those in other global models to see the continuation of the plume. However we now discuss it in the revised manuscript.}
+\response{The Rickers et al. model is more focused on the upper mantle, thus we chose to compare the Icelandic plume to those in other global models to see the continuation of the plume. However, we now discuss it in the revised manuscript.}
 
 \response{Note that based on comments from the other reviewers and the editor, we have moved
 all model comparisons to the SOM, except for the plumes and slabs figures.

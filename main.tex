@@ -81,7 +81,7 @@ Construction of the first seismic tomographic models of the Earth dates back to 
 Around the same time,
 \cite{BaChLa77}, \cite{Lailly1983}, and~\cite{Tar84} formulated and adapted the theory of adjoint-state methods~\citep{Chavent1974} for exploration seismology with the goal of capturing the full physics of seismic wave propagation.
 Mainly due to computational challenges,
-it took until the late 2000s to see the first applications of adjoint-state methods in regional- and continental-scale earthquake seismology~\citep{tape2009adjoint,Fichtner09,zhu2012structure}.
+it took until the late 2000s to see the first applications of adjoint-state methods in regional- and continental-scale earthquake seismology~\citep[e.g.,][]{tape2009adjoint,Fichtner09,zhu2012structure}.
 The first global ``adjoint tomography'' model of the Earth's mantle,
 GLAD-M15, was published in 2016~\citep{bozdaug2016global}, more than 30 years after the development of the original ``full waveform inversion'' (FWI) theory.
 
@@ -111,7 +111,7 @@ Global adjoint tomography has a well-defined but complex workflow with multiple 
 It is essential to optimize, automate, and harden the entire process using workflow management tools, especially with large data sets.
 In this study, for each iteration,
 1,480 forward and adjoint simulations need to be performed (one pair for each earthquake in the database),
-generating a few Petabytes of wavefield files for the parsimonious-storage kernel calculation algorithm of~\cite{KoXiBoPeSaLiTr16}, and consuming 16~million OLCF node hours.
+generating a few Petabytes of wavefield files for the parsimonious-storage kernel calculation algorithm of~\cite{KoXiBoPeSaLiTr16}.
 
 This article is organized as follows.
 Section~\ref{section:seismic data} illustrates the earthquakes and seismographic stations used in the inversion,
@@ -130,14 +130,12 @@ We conclude with a discussion of future opportunities and directions.
 
 Fig.~\ref{fig:eventsstations}(a) shows a map of the 1,480 earthquakes
 selected from the global Centroid-Moment Tensor (CMT) catalog~\citep[e.g.,][]{ekstrom2012global}
-and used in this study.
-To ensure a good signal-to-noise ratio on a global scale,
-the smallest moment magnitude in the database is set to~5.5,
-thereby capturing more deep events,
-and, to avoid complications associated with source dimension and directivity,
+within the moment magnitude range of $5.5 \leq M_w \leq 7.2$ used in this study.
+To ensure a good coverage, specifically in the lower mantle, we incorporated data from
+about 500 deep events, and, to avoid complications associated with source dimension and directivity,
 the largest moment magnitude is set to~7.2.
 Prior to the structural inversion,
-we performed source inversions using model GLAD-M15 and the CMT inversion algorithm of \cite{liu2004spectral},
+we performed source inversions by computing Green's functions for the nine CMT source parameters (six moment tensor components, latitude, longitude, and depth) using model GLAD-M15 and the CMT inversion algorithm of~\cite{liu2004spectral},
 as described in the Supplementary Online Material (SOM).
 
 \begin{figure}
@@ -153,13 +151,16 @@ as described in the Supplementary Online Material (SOM).
 The seismographic stations used in this study are plotted in Fig.~\ref{fig:eventsstations}(b) and
 were selected to optimize global coverage
 and high data quality.
-In addition to the seismographic  stations used for the source inversions,
-we included available data for our 1,480 event earthquake database from many data centers,
+%In addition to the seismographic  stations used for the source inversions,
+We included available data from many data centers,
 including IRIS, ORFEUS, INGV, IPGP, ETH, and GEONET.
-Regional and temporary networks,
+Global Seismic Network (II, IU, IC, US, CU, and GT),
+GEOFON~(GE), GEOSCOPE~(G), regional and temporary networks,
 such as US Array~(TA),
 Africa Array~(AF), the Canadian National Seismograph Network~(CN), Geoscience Australia~(AU),
-the Antarctic Seismographic Argentinean Italian Network~(AI), the New Zealand National Seismograph Network~(NZ), and the F-net broadband seismograph network by NIED, constitute a significant part
+the Antarctic Seismographic Argentinean Italian Network~(AI), the New Zealand National Seismograph Network~(NZ), and the F-net broadband seismograph network by NIED,  MedNet~(MN),
+the Brazilian Lithospheric Seismic Project~(BL), the Chilean National Seismic Network~(C),
+and the Japan Meteorological Agency Seismic Network~(JP) constitute a significant part
 of our database and greatly improve coverage in certain regions.
 
 To illustrate which seismic phases end up being assimilated,
@@ -207,8 +208,8 @@ This is something we will reconsider in future applications by adjusting the FLE
 \label{section:misfit}
 
 The misfit function to be minimized must
-be carefully constructed.
-Depending on the time window length and wave period range, we use a multi-taper technique \citep[e.g.,][]{laske_constraints_1996} to make frequency-dependent phase measurement when possible and adopt a cross-correlation measurement \citep[e.g.,][]{luo_wave-equation_1991} for the rest of data.
+be carefully constructed, because it strongly affects the convergence of the inverse problem.
+Depending on the time window length and wave period range, we use a multi-taper technique~\citep[e.g.,][]{laske_constraints_1996} to make frequency-dependent phase measurements to capture wave dispersion and adopt a cross-correlation measurement \citep[e.g.,][]{luo_wave-equation_1991} for non-dispersive waves.
 Measurements are made in several passbands of three-component seismograms rotated
 into vertical, radial, and transverse components, resulting in a number of measurement
 categories.
@@ -393,7 +394,7 @@ Table~\ref{table:misfit_reduction_M15_M25} summarizes the changes in fit in
 the twelve measurement categories between the new model, GLAD-M25, and its
 starting model, GLAD-M15, and between GLAD-M25 and model S362ANI+CRUST2.0, which was the starting model for the GLAD-M15 inversion.
 
-We observed misfit reductions in all categories,
+We observe misfit reductions in all categories,
 with dispersive 40--100~s surface waves exhibiting the largest improvements.
 The improvements in fit per component are comparable in all period bands,
 indicating that the various categories are reasonably well balanced in the
@@ -679,7 +680,7 @@ and Fig.~\ref{fig:M24-Reunion} shows the emergence of hotspots in the Indian Oce
 including Marion, Crozet, Kerguelen, and R\'eunion.
 Visual inspection of the models reveals a significant increase in perturbation anomalies in GLAD-M25 compared to GLAD-M15,
 which explains the misfit reductions in the histograms (Figs.~\ref{fig:phase_hist}~\&~\ref{fig:phase_hist_360}).
-There are more details comparisons between GLAD-M15 and GLAD-M25 listed in the Supplementary Online Material.
+More detailed comparisons between GLAD-M15 and GLAD-M25 are provided in the SOM.
 
 \begin{figure}
   \centering
@@ -823,6 +824,9 @@ Overall, the three models are in reasonably good agreement.
 At shallow depths, model GLAD-M25 shows more distinct continental crust and cratons, thanks to the inclusion of surface waves.
 But in the upper and mid mantle,
 the models share similar attributes.
+The P-wave model of GLAD-M25 might be smoother than the other models due to a relatively longer minimum body-wave period (17~s).
+Since there are fewer P- than S-wave measurements,
+due to the smaller amplitudes of P waves, convergence of the P-wave model is likely to be slower than the S-wave model.
 
 \section{Discussion}
 
@@ -833,7 +837,10 @@ we use the Adaptable Seismic Data Format~\citep{krischer2016adaptable} in the pr
 and to accommodate I/O during the postprocessing stage we use the ADIOS library~\citep{liu2014hello}.
 For data assimilation,
 tools such as FLEXWIN, which automatically select data windows suitable for measurements, are indispensable, and we see opportunities for the use of machine learning algorithms in this context~\citep[e.g.,][]{chen2017}.
-Without these libraries and tools, the construction of model GLAD-M25 would have been impossible. 
+Without these libraries and tools, the construction of model GLAD-M25 would have been impossible.
+
+Due to our cross-correlation measurements, smaller amplitude signals, such as higher-mode surface waves (which are crucial for imaging the mantle transition zone) and scattered waves (which illuminate plume features) may well be underrepresented in the current inversion.
+Thus, there is still room for extracting more information from every time series by defining appropriate measurements to effectively incorporate smaller-amplitude signals~\citep[e.g.,][]{Bozdagetal2011,yuan_double-difference_2016}. 
 
 Some form of automated parallel workflow management is critical for the global adjoint tomography process,
 because classical inversion workflows suffer from I/O inefficiencies, lack of fault tolerance, and an inability to work in distributed resource environments~\citep{Lefebvre2018}.
@@ -860,6 +867,18 @@ and we also know that amplitude information helps constrain second derivatives i
 in addition to lateral variations in attenuation~\cite[e.g.,][]{romanowicz1998,reidetal2001,DaEkDz08}.
 Thus, the natural next step in global FWI is to use phase and amplitude information simultaneously to jointly constrain the elastic and anelastic structure of the Earth.
 To accomplish this next step, source parameters need to be constrained more precisely, especially as we push the resolution to shorter periods~\citep[e.g.,][]{valentine2010}.
+
+After ten additional iterations,
+GLAD-M25 shows a clear enhancement of plume and slab features compared to GLAD-M15 (see also the SOM).
+It is promising to observe similarities between the P- and S-wavespeed models of GLAD-M25 and models from various other groups, while the remaining discrepancies need further investigation.
+This highlights the importance of resolution and uncertainty quantification, which is one of the major challenges in seismic tomography.
+Uncertainty quantification is an active area of research in FWI \cite[e.g.,][]{FivL2015,Fang2018,Thurin2019,Eikrem2019,Liu2019a,Liu2019b}, however, to date it has been challenging in practice, especially for large-scale inversions~\citep{Rawlinson2014}. 
+
+Our comparisons of different models largely focus on similarities of major patterns, such as plumes and slabs. Their shapes and depth  vary in detail, especially in the lithosphere, highlighting the importance of dealing with the crust properly in tomographic inversions.
+Amplitudes of seismic models are required for thermochemical and geodynamical interpretations of the structure and dynamics of the mantle.
+We observe a significant increase in the amplitude of GLAD-M25 compared to GLAD-M15 and other models.
+Such an increase in amplitude is also evident in the models of~\cite{french2014whole,french2015broad}.
+This illustrates the fact that the current generation of global models is no longer in the realm of linear perturbation theory. 
 
 The global distribution of earthquakes and stations is highly uneven (Fig.~\ref{fig:eventsstations}).
 This problem may be alleviated to some extent by using suitably chosen misfit functions with appropriate geographical weighting of sources and receivers~\citep[e.g.,][]{Li1996,Ruanetal2018}.

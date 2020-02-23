@@ -72,13 +72,14 @@ we use the radial anelastic model QL6~\citep{QL6}.
 
 Instead of relying on crustal corrections,
 the mesh implementation of the crust in the spectral-element solver SPECFEM3D\_GLOBE~\citep{KoTr02a,KoTr02b,PeKoLuMaLeCaLeMaLiBlNiBaTr11} enables us to accurately accommodate topography and bathymetry as well as variations in the Moho.
-To improve the sampling of the thin oceanic crust the mesh honors the Moho whenever the crust is thinner than 15~km and thicker than 35~km. The mesh runs through the GLL (Gauss-Lobatto-Legendre) points at the ocean-continent transition (15--35~km crustal thickness) as described in \citet{tromp2010a}. The mantle and crust are inverted simultaneously,
+To improve sampling of the thin oceanic crust, the mesh honors the Moho whenever the crust is thinner than 15~km and thicker than 35~km. The mesh runs through the Gauss-Lobatto-Legendre points at the ocean-continent transition (15--35~km crustal thickness) as described in \citet{tromp2010a}. The mantle and crust are inverted simultaneously,
 thereby avoiding any simplifications or crustal corrections.
 
 GLAD-M15 was constructed using a global database of 253 earthquakes.
 The first 12 iterations of the GLAD-M15 inversion used three-component seismograms with a shortest period of 27~s,
 and the final 3 iterations reduced this further to 17~s.
-In this study we also used three-component seismograms with a shortest period of 17~s. Note that the shortest period of the simulations is most crucial for taking advantage of high-frequency body waves, since the minimum surface-wave period we currently fit is 40~s. 
+In this study we also used three-component seismograms with a shortest period of 17~s.
+Note that the shortest period of the simulations is most crucial for taking advantage of high-frequency body waves, since the minimum surface-wave period we currently fit is 40~s. 
 
 \section{Source inversions}
 \label{section:earthquakes}
@@ -131,7 +132,8 @@ Specifically, the algorithm minimizes the misfit function
 where~$d_w(t)$ denotes data in time window~$w$\,,
 and~$s_w(t - \Delta t)$ the corresponding synthetic for model~GLAD-M15.
 We allow the synthetics to shift relative to the data by an amount~$\Delta t$
---- effectively a station correction --- determined by cross correlation. We do not invert for the origin times as we minimize the phase misfit due to the station correction, which helps to reduce the nonlinearity of the problem. As we describe later, we take into account the uncertainty in origin times, as well as the scalar moment, by performing an additional grid search at every iteration.
+--- effectively a station correction --- determined by cross correlation. We do not invert for the origin times as we minimize the phase misfit due to the station correction, which helps to reduce the nonlinearity of the problem.
+As described later, we take into account uncertainties in the centroid time and scalar moment by performing an additional grid search at the start of every iteration.
 The envelope function is denoted by~$e(\,\cdot\,)$\,,
 and the parameter~$\lambda$ determines the balance between fitting waveforms versus fitting envelopes.
 The number of measurement categories is denoted by~$C$\,.
@@ -180,11 +182,11 @@ and, unlike the CMT inversion, requires minimal simulation time.
 
 Most earthquakes, specifically oceanic ridge events, are shallower after inversion
 (Fig.~\ref{fig:source_correction}c),
-consistent with our previous experiences~\citep[e.g.,][]{zhu2015seismic,chen2015multiparameter,bozdaug2016global} and with experiments by~\cite{hjorleifsdottir2010effects}. This is partly because the minimum depth of CMT events is fixed to $\sim12$~km, because the sensitivity of source parameters significantly decreases closer to the free surface. 
+consistent with our previous experiences~\citep[e.g.,][]{zhu2015seismic,chen2015multiparameter,bozdaug2016global} and with experiments by~\cite{hjorleifsdottir2010effects}. This is partly because the minimum depth of CMT events is fixed to $\sim12$~km, because the sensitivity of source parameters is significantly reduced closer to the free surface. 
 We observed an average depth change of~$-2.62\pm2.49$~km relative to the global CMT solutions,
 an average scalar moment change of~$5.31\pm3.91$\%,
 and an average centroid time shift of~$-0.60\pm1.17$~s.
-These are relatively minor corrections, mainly due to being conservative in the source inversions to avoid nonlinearities and the not-so-detailed crustal model (an updated version of CRUST2.0 through the 15 iterations performed for GLAD-M15), especially in view of the significant expense of the source inversions.
+These are relatively minor corrections, mainly due to being conservative in the source inversions to avoid nonlinearities and the not-so-detailed crustal model (an updated version of CRUST2.0 as a result of the 15 iterations performed for GLAD-M15), especially in view of the significant expense of the source inversions.
 For this reason, when we added another 440 earthquakes during iteration~22,
 thereby bringing the total to~1,480 events,
 we only performed a grid search to calibrate the centroid times and scalar moments.
@@ -321,8 +323,9 @@ It involves the following steps.
     we used a fixed value at a given iteration, following~\cite{zhu2012structure}. One can also combine source-receiver weighting with the multi-stage smoothing strategy to highlight structure underneath densely covered regions, as in~\citet{bozdaug2016global}.
   \item Preconditioning of the smoothed gradient based on a technique proposed by~\cite{luo2013strategies}.
   \item Line search in the direction of the negative gradient to determine the magnitude of the model update.
-  The search direction is determined using a nonlinear conjugate gradient method (iterations 16--21) or a Limited-memory Broyden- Fletcher-Goldfarb-Shanno (L-BFGS) quasi-Newton method (iterations 22--25)~\citep{wright1999numerical}.
-  We used a subset of 160 earthquakes to conduct the line search and determine the step length. One can also determine the step length using the Wolf criteria, which are commonly used in exploration studies \cyan{reference}. We prefer to perform the line search to be able to keep track of the evolution of the misfit in every measurement category.
+  The search direction is determined using a nonlinear conjugate gradient method (iterations 16--21) or a Limited-memory Broyden- Fletcher-Goldfarb-Shanno (L-BFGS) quasi-Newton method (iterations 22--25)~\citep{wright1999numerical,NoWr06}.
+  We used a subset of 160 earthquakes to conduct the line search and determine the step length.
+  One can also determine the step length using the Wolfe criteria, which are commonly used in exploration studies~\citep{NoWr06}. We prefer to perform the line search to be able to keep track of the evolution of the misfit in every measurement category.
 \end{enumerate}
 
 \subsection{Workflow management}
@@ -380,10 +383,11 @@ failure detection and relaunching greatly shortens the overall time to solution.
 \section{Point Spread Function tests}
 
 This section summarizes the complete Point Spread Function (PSF) tests conducted as part of this study, including the tradeoff between parameters.
-Figs.~\ref{fig:psf_yellowstone}--\ref{fig:psf_usa_east} show the results of PSF tests underneath Yellowstone, Easter Island, Afar, ,Sumatra and two extra locations in United States..
+Figs.~\ref{fig:psf_yellowstone}--\ref{fig:psf_usa_east} show the results of PSF tests underneath Yellowstone, Easter Island, Afar, ,Sumatra and two additional locations in United States..
 Each figure shows the original Gaussian perturbation in vertically polarized shear wavespeed, $\mathsf{\Delta}\mathsf{m}$\,, in map view and cross section, as well as the action of the Hessian on this model perturbation, $\mathsf{H}\mathsf{\Delta}\mathsf{m}$\,.
 
-We used different sized Gaussian perturbations in the PSF tests, from 160~to~400~km in diameter depending on the kernel coverage of the selected regions, both in the upper and lower mantle. Although we observe some smearing effects, the Gaussian anomalies are overall well-recovered. As expected, PSF tests are most successful in North America, where we have the best coverage, thanks to USArray. However, it is also encouraging to see good recovery in the lower mantle to assess the resolution of lower-mantle plumes. We observe limited smearing onto other parameters, e.g., we observe a slight tradeoff in radial anisotropy in the upper mantle for the tests performed underneath North America.
+We used different sized Gaussian perturbations in the PSF tests, from 160~to~400~km in diameter depending on the kernel coverage of the selected regions, both in the upper and lower mantle. Although we observe some smearing effects, the Gaussian anomalies are overall well-recovered.
+As expected, our PSF tests are most successful in North America, where we have the best coverage, thanks to USArray. However, it is also encouraging to see good recovery in the lower mantle to assess the resolution of lower-mantle plumes. We observe limited smearing onto other parameters, e.g., we observe a slight tradeoff in radial anisotropy in the upper mantle for the tests performed underneath North America.
 
 \begin{figure}
   \centering

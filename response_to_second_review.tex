@@ -1,0 +1,203 @@
+\documentclass[11pt,a4paper]{letter}
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage{geometry}
+\usepackage[dvipsnames,usenames]{color}
+\usepackage{listings}
+\usepackage{verbatim}
+
+\geometry{verbose,letterpaper,tmargin=1in,bmargin=2in,lmargin=1in,rmargin=1in}
+%\lstdefinestyle{lat}
+%{
+%	style={[LaTeX]TeX},
+%	basicstyle=\ttfamily
+%}
+
+\newcommand{\red}[1]{\textbf{\textcolor{Red}{#1}}}
+\newcommand{\blue}[1]{\textbf{\textcolor{Blue}{#1}}}
+\newcommand{\cyan}[1]{\textbf{\textcolor{Cyan}{#1}}}
+\newcommand{\green}[1]{\textbf{\textcolor{Green}{#1}}}
+\newcommand{\magenta}[1]{\textbf{\textcolor{Magenta}{#1}}}
+\newcommand{\orange}[1]{\textbf{\textcolor{Orange}{#1}}}
+%\newcommand{\red}[1]{#1}
+%\newcommand{\blue}[1]{#1}
+%\newcommand{\cyan}[1]{#1}
+
+% comments between authors
+\newcommand{\toall}[1]{\textbf{\orange{@@@ To all: #1 @@@}}}
+\newcommand{\towenjie}[1]{\textbf{\red{*** Wenjie: #1 ***}}}
+\newcommand{\tojeroen}[1]{\textbf{\green{*** Jeroen: #1 ***}}}
+\newcommand{\toebru}[1]{\textbf{\cyan{*** Ebru: #1 ***}}}
+\newcommand{\fromebru}[1]{\textbf{\orange{*** Ebru: #1 ***}}}
+\newcommand{\fromyouyi}[1]{\textbf{\blue{*** Youyi: #1 ***}}}
+
+\newlength{\tempheight}
+\newlength{\tempwidth}
+
+\newcommand{\rowname}[1]% #1 = text
+{\rotatebox{90}{\makebox[\tempheight][c]{\textbf{#1}}}}
+
+\newcommand{\columnname}[1]% #1 = text
+{\makebox[\tempwidth][c]{\textbf{#1}}}
+
+%\graphicspath{{./figure/}}
+
+\def\baselinestretch{2}
+\newcommand{\response}[1]{\textbf{Response:} #1}
+
+\newcommand{\rev}[1]{{\it{#1}}}
+
+\newcommand{\tsup}[1]{\textsuperscript{#1}}
+
+%\address{your name and address} 
+\signature{Wenjie Lei et al.}
+
+\begin{document} 
+
+\begin{letter}{Dr.~Lapo Boschi\\
+Editor, \textit{Geophysical Journal International}} 
+
+\opening{Dear Dr.~Boschi,} 
+
+This is our response to the second set of reviews of \textit{Geophysical Journal International\/} manuscript GJI-S-20-0203 entitled ``Global Adjoint Tomography -- Model GLAD-M25''.
+We received two reviews of our paper, which required moderate revisions.
+
+What follows is a detailed point-by-point response to the reviewers' and editor's comments.
+Reviewer/editor's comments are in italics verbatim, and our response is in normal type. The citations and section number in our response refer to the revised manuscript unless we specify otherwise.
+
+{\textbf{\large Response to Editor Boschi}}
+
+\rev{
+I have received two careful reviews of your manuscript that are essentially positive. Both referee provide a number of constructive comments that, I am convinced, will help to further improve your paper. This will amount to a further, moderate revision of your work. I am sorry for our delay in getting back to you, and promise that we shall do our best to handle the next version of your manuscript more rapidly.
+}
+
+\response{
+We have incorporated the constructive and helpful comments from the reviewers in the revised manuscript.
+}
+
+
+{\textbf{\large Response to Reviewer: 1 Steve Grand}}
+
+\rev{
+1) My understanding is that SPECFEM3D-GLOBE uses an approximation for the ocean-crust interface that is good at long periods. Is that used here and if so it may be problematic for the shorter period body wave phases that bounce beneath oceans. Perhaps a sentence or two could included to discuss this issue.
+}
+
+\response{
+This approximation is the so-called ``ocean-load approximation'', which works quite well for the body waves and surface waves used in this study, as independently documented by Zhou et al.~({\it Geophysical Journal International}, 206, 1315--1326, 2016).
+We have added a reference.
+}
+
+\rev{
+2) As far as I saw, there was no mention of discontinuities in the paper. Are the depths of discontinuities fixed? This should be mentioned if so. We found that velocities changed depending on depths of the upper mantle discontinuities (Tao et al., 2018) and the Moho is likely more problematic. Again, some mention of this issue should be made even if discontinuity depths were allowed to vary.
+}
+
+\response{
+Topography on internal discontinuities is inherited from the starting model and not updated as part of the inversion. We added a sentence to clarify this.
+}
+
+\rev{
+3) It is interesting to me that the improvement in fits shown in figure 6 are not that great i.e. there are still many bodywave data being misfit by several seconds.  In the response to previous reviewers, the authors mention the poor variance reduction for ISC data but there I always though it was due to data error (picking) as well as approximate theory. Those issues are not applicable here. I am curious what the authors think of this. Would more iterations help significantly? Is it a problem with fixing discontinuities? Neglect of anisotropy? Uncertainties in Q? I realize the authors can't answer this exactly but maybe a little discussion of what they think would be helpful.
+}
+
+\response{
+We have added a sentence stating that remaining anomalies are presumably due to a combination of source uncertainty and an incomplete model parameterization. Uneven data coverage is another factor limiting resolution.
+}
+
+\rev{
+4) The width of the Gaussian smoothing of the gradient vector is not given I think. I would be curious to know what it is.
+}
+
+\response{
+The vertical smoothing radius gradually increases from a few kilometers in the crust to 120~km at 1500~km depth, and then decreases to about 100~km in the lower mantle and further to 75~km near the CMB.
+}
+
+\rev{
+5) I am sympathetic to the reviewer comments about the lack of new insight into how the Earth works. I was most struck by how poor a model GLAD-M15 is but that is not a criticism of this paper. There is a long history of upgrades to tomography models and I don't think it is a reason not to publish this model - the community is likely curious to see where FWI global tomography is today. The one thing that really struck me, however, was the increase in amplitude in P in the African LLSVP at 2000 km depth relative to previous P models (figure 12 in the supplemental section). I think this is a significant finding and if the authors are required to focus on an advance in understanding the Earth, this might be something to focus on. This is just a suggestion.
+}
+
+\response{
+If GLAD-M15 is a ``poor'' model, than so are S20RTS, S40RTS, and S362ANI. We do not agree with this: these models explain a significant portion of longer-period body- and surface-wave data!
+Assessing a model like GLAD-M15 or GLAD-M25 requires full 3D simulations, taking into account the 3D crust, topography \& bathemetry, ellipticity.
+
+With regards to the African LLSVP,
+in current research we are investigating the Vp/Vs ratio in the superplumes, and the increased P wavespeed in the African superplume is a key aspect of this.
+}
+
+\rev{
+6) I think some of the previous reviewer comments on resolution were a bit harsh. However, I don't understand why PSF tests are done on single anomalies at a time. Why not run an inversion with a 100 or more well isolated small scale anomalies? The cost is the same as a single anomaly test and even if there is some interference among the anomalies, if they are well separated and small scale, the interference is slight. I think this would give a more general impression of the resolution. Again, this is just a suggestion and perhaps there is some reason not to do it that way.
+}
+
+\response{
+As mentioned by the reviewer, the problem with a pattern of anomalies is interference between neighboring anomalies.
+Nevertheless, we added a figure to the SOM showing the results of such a patterned PSF test at depths of 1,200~km depth.
+We are currently working on proper uncertainty quantification using the approach of Liu et al.~(2019).
+
+Finally, we fixed the two typos noted by the reviewer.
+}
+
+{\textbf{\large Response to Reviewer: 2 Anonymous}}
+
+\rev{
+This manuscript is a significantly improved version of the original. It is well written, concise, and a pleasure to read! Most of my comments on the revision are closely related to the author's response, and so I will start from there.
+}
+
+\response{
+Thanks.
+}
+
+\rev{
+First, I think that calling my first review "unprofessional" really makes things too simple. Grandiose language combined with the presentation of point-spread functions from another model in order to demonstrate the quality of the present model is questionable to an extent that tough words are clearly justified, even when the first author is a student. I am sorry, but too much is too much!
+}
+
+\response{
+We beg to differ.
+}
+
+\rev{
+Second, we do not need to discuss that technological advances constitute scientific progress. Of course they do. The problem is that these technological advances have either been made by others, or they are not described in the manuscript. 
+For instance, in their response, the authors mention that they ported their solver to GPUs. However, this was done by Daniel Peter, years ago. Have the authors made any modification to the GPU implementation of SpecFEM in the context of this work? If so, what exactly are these modifications?
+Also in their response, the authors list improvements in the workflow. However, in the manuscript it is not described what exactly these improvements are. Critical components such as FLEXWIN and ASDF have now been in place for some time. In the discussion, the authors mention that they are in the process of "adopting EnTK", but it seems like it has not been used for the work presented here.
+}
+
+\response{
+The fact of the matter is that all our codes are under going continual improvements, as documented on GitHub and at CIG.
+In the interest of focusing on the seismology,
+also based on the previous reviews, we do not elaborate on such ``technical'' advances.
+The adoption of EnTK is almost complete and will be the subject of a future publication.
+}
+
+\rev{
+So, just to be clear: I do not want to belittle the authors' work. I would like to ensure that readers understand what the author's work actually was! Seeing what Bozdag et al. (2016) put in place, and recognizing the high level of automation that the authors' method already had some time ago, it simply needs to be explained better why the assimilation of more data was actually a major effort. Or more explicitly: Why exactly is it not just a matter of running ObsPy's automatic downloader and then waiting longer until the calculations finish? 
+
+Personally, I know why it is not that easy. Yet, I doubt that all readers of this manuscript will easily understand this.
+}
+
+\response{
+ASDF was not used during the construction of GLAD-M15.
+Without it, we could not have scaled up from 253 to 1,480 earthquakes.
+Other than the data container,
+we put a lot of effort into developing a new set of python-based data analysis tools based on ASDF.
+The modern design of the software enables us to fully utilize the parallel processing capability provided by ASDF, and allows for easier integration into any type of workflow.
+Extensive usage of content-rich file format, such as JSON and YAML, allows us to store and extract information in a much easier and readable manner.
+
+This is the first time we implemented workflow management tools into our inversion procedure,
+starting from GLAD-M15.
+When the number of earthquakes is scaled up to 1,500, it is inevitable to encounter data corruption issues, mostly caused by hardware failures,
+both during the simulation and processing stages.
+The goal of workflow management is to detect and recover from such failures, providing us with more confidence and resilience when processing large datasets.
+
+All tools are under going continual improvement,
+and we firmly believe all this effort is worthwhile.
+Looking forward, they not only enables us to go from 100s to 1,000s of earthquakes, but also from 1,000s to 10,000s of earthquakes.
+
+We added a brief comment about this to Section~5.
+}
+
+We sincerely hope that based on this response and revision the manuscript is now acceptable for publication in GJI.
+
+\closing{Sincerely,}
+
+\end{letter} 
+
+\end{document}

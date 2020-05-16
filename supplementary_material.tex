@@ -224,7 +224,7 @@ It starts with the selection of earthquakes, as discussed in Section~\ref{sectio
 Given the earthquake selection,
 observed seismographic data and related response information are acquired.
 For a given earthquake,
-the corresponding seismograms and related response information are combined in a single ASDF file~\citep{krischer2016adaptable}.
+the corresponding seismograms and related response information are combined in a single Adaptable Seismic Data Format (ASDF) file~\citep{krischer2016adaptable}.
 For a given earthquake data set, the conversion to ASDF needs to be performed once and for all.
 In the following sections we highlight several important aspects of the workflow.
 
@@ -383,11 +383,16 @@ failure detection and relaunching greatly shortens the overall time to solution.
 \section{Point Spread Function tests}
 
 This section summarizes the complete Point Spread Function (PSF) tests conducted as part of this study, including the tradeoff between parameters.
-Figs.~\ref{fig:psf_yellowstone}--\ref{fig:psf_usa_east} show the results of PSF tests underneath Yellowstone, Easter Island, Afar, ,Sumatra and two additional locations in United States..
-Each figure shows the original Gaussian perturbation in vertically polarized shear wavespeed, $\mathsf{\Delta}\mathsf{m}$\,, in map view and cross section, as well as the action of the Hessian on this model perturbation, $\mathsf{H}\mathsf{\Delta}\mathsf{m}$\,.
+Figs.~\ref{fig:psf_yellowstone}--\ref{fig:psf_usa_east} show the results of PSF tests underneath Yellowstone, Easter Island, Afar, Sumatra, and two additional locations underneath the United States.
+Finally, Fig.~\ref{fig:patern1200} shows the results of a patterned resolution test at a depth of 1,200~km.
+Each figure shows the original Gaussian perturbation in vertically polarized shear wavespeed, $\mathsf{\Delta}\mathsf{m}$\,, as well as the action of the Hessian on this model perturbation, $\mathsf{H}\mathsf{\Delta}\mathsf{m}$\,.
 
-We used different sized Gaussian perturbations in the PSF tests, from 160~to~400~km in diameter depending on the kernel coverage of the selected regions, both in the upper and lower mantle. Although we observe some smearing effects, the Gaussian anomalies are overall well-recovered.
-As expected, our PSF tests are most successful in North America, where we have the best coverage, thanks to USArray. However, it is also encouraging to see good recovery in the lower mantle to assess the resolution of lower-mantle plumes. We observe limited smearing onto other parameters, e.g., we observe a slight tradeoff in radial anisotropy in the upper mantle for the tests performed underneath North America.
+We used different sized Gaussian perturbations in the PSF tests, from 160~to~400~km in diameter depending on the kernel coverage of the selected regions, both in the upper and lower mantle.
+Although we observe some smearing effects, the Gaussian anomalies are overall well-recovered.
+As expected, our PSF tests are most successful in North America, where we have the best coverage, thanks to USArray.
+However, it is also encouraging to see good recovery in the lower mantle to assess the resolution of deep-mantle plumes.
+We observe limited tradeoff with other parameters, e.g., we observe a slight tradeoff in radial anisotropy in the upper mantle for the tests performed underneath North America.
+The alternating pattern of positive and negative 100~km diameter anomalies at 1,200~km depth is reasonably well recovered, both in terms of geometry and in terms of strength.
 
 \begin{figure}
   \centering
@@ -467,6 +472,19 @@ As expected, our PSF tests are most successful in North America, where we have t
   \label{fig:psf_usa_east}
 \end{figure}
 
+\begin{figure}
+  \centering
+  \includegraphics[width=0.95\textwidth]{figures/psf/psf-1200km.pdf}
+  \caption{\small{Patterned PSF test at a depth of 1,200~km,
+  where the model is isotropic.
+    An alternating positive and negative pattern of 100~km diameter Gaussian anomalies in shear wavespeed is placed at a depth of 1,200~km.
+  Left: input pattern for~$\beta$.
+  Middle: recovered pattern for~$\beta$.
+  Right: tradeoff with bulk sound speed~$c$.
+  We conclude that there is little tradeoff between~$\beta$ and~$c$, and that the pattern at this mid-mantle depth is reasonably well recovered, both in terms of geometry and in terms of strength.
+  }}
+  \label{fig:patern1200}
+\end{figure}
 
 \section{Model GLAD-M25}
 \label{section:model}

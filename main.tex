@@ -96,7 +96,7 @@ With these goals in mind,
 in this study we use a GPU-accelerated version of the 3D spectral-element solver
 SPECFEM3D\_GLOBE~\citep{KoTr02a,KoTr02b} on the supercomputers ``Titan'' and ``Summit'' at the Oak Ridge Leadership Computing Facility (OLCF) for global adjoint tomography.
 These simulations accommodate the full 3D complexity of global Earth models,
-including 3D anelastic crust and mantle structure, self-gravitation, rotation, ellipticity, topography \& bathymetry, and the load of the oceans.
+including 3D anelastic crust and mantle structure, self-gravitation, rotation, ellipticity, topography \& bathymetry, and the effect of the oceans based on the ``ocean-load approximation''~\citep{KoTr02b,Zhou2016}.
 No compromises are made with regards to resolving the Earth's crust,
 which is explicitly captured by the spectral-element mesh~\citep{tromp2010a},
 thereby eschewing the need for ubiquitous ``crustal corrections''.
@@ -297,6 +297,8 @@ the variation in the misfit function~(\ref{eq:misfit}) may be expressed as~\cite
 where~$K_c$, $K_{\beta_v}$, $K_{\beta_h}$, and $K_\eta$ denote the four Fr\'echet derivatives,
 which are calculated based on an adjoint-state method~\citep[e.g.,][]{Plessix_2006_RAS,Tromp2005}.
 
+Topography on internal discontinuities, including the Moho,
+the 410, and 660, is inherited from the starting model and not updated as part of the inversion.
 
 \section{Misfit evolution}
 \label{section:misfit_evolution}
@@ -305,6 +307,9 @@ The inversion went through ten iterations in a number of stages, as documented
 in this section. The evolution of the overall misfit function~(\ref{eq:misfit})
 as well as its behavior in the various measurement categories is summarized
 in Fig.~\ref{fig:misfit}.
+
+We take full advantage of the scalability of the Adaptable Seismic Data Format (ASDF)~\cite{krischer2016adaptable},
+and we developed python-based data analysis tools based on ASDF, using content-rich file formats, such as JSON and YAML, to store and extract information.
 
 \begin{figure}
   \centering
@@ -325,7 +330,7 @@ in Fig.~\ref{fig:misfit}.
 
 Starting model GLAD-M15 was constructed using a database of 253 earthquakes.
 For iterations 15--17 of the inversion we used an expanded database of 520 events.
-Our focus was to validate and test our software and workflow before scaling up
+Our focus during this stage was to validate and test our software and workflow management before scaling up
 to a larger database of 1,040 events.
 For these iterations we used three period bands, namely,
 17--40~s, 40--100~s, and 90--250~s,
@@ -454,6 +459,8 @@ We observe that the distributions generally become better centered on zero,
 and that all standard deviations are steadily reduced.
 The inversion is aimed at reducing the overall misfit,
 so there are small tradeoffs between different measurement categories.
+Remaining anomalies are presumably due to a combination of source uncertainty and an incomplete model parameterization,
+including more general anisotropy, topography on internal discontinuities, and attenuation.
 
 \begin{figure}
   \centering
@@ -484,7 +491,7 @@ In lieu of such tests, we previously performed two point-spread function (PSF) a
 for model GLAD-M15~\citep{bozdaug2016global}.
 Here we repeat one of those tests (underneath Yellowstone) to show the improved resolution in GLAD-M25 relative to GLAD-M15,
 and we perform three additional PSF tests: in the lower mantle underneath Afar, in the lower mantle beneath Easter Island, and below the transition zone in Sumatra.
-Two additional PSF tests for anomalies below the US may be found in the SOM.
+Additional PSF tests for two anomalies below the US and for an alternating pattern of 100~km diameter anomalies at 1,200~km depth may be found in the SOM.
 
 A PSF test is based on the relationship
 \begin{equation}
@@ -514,7 +521,7 @@ In each case the Gaussian anomaly is well recovered, with minimal tradeoff with 
   \centering
   \includegraphics[width=\textwidth]{figures/psf/psf_tests.pdf}
   \caption{\small{PSF tests.
-  Each of the four panels labeled (a)--(d) shows a map view (Top Left) and cross section (Top Right) through a Gaussian perturbation, $\mathsf{\Delta}\mathsf{m}$\,, in~$\beta_\mathrm{V}$\,,
+  Each of the four panels labeled (a)--(d) shows a map view (Top Left) and cross section (Top Right) through a Gaussian perturbation, $\mathsf{\Delta}\mathsf{m}$\,, in~$\beta_\mathrm{V}$\, (isotropic shear wavespeed~$\beta$ in the lower mantle),
   and a map view (Bottom Left) and cross section (Bottom Right) through the recovered perturbation, $\mathsf{H}\cdot\mathsf{\Delta}\mathsf{m}$\,, in~$\beta_\mathrm{V}$.
   (a) 100~km diameter negative Gaussian anomaly at a depth of 300~km beneath Yellowstone.
   (b) 400~km diameter negative Gaussian anomaly at a depth of 2,000~km beneath Afar.
@@ -814,7 +821,7 @@ Fig.~\ref{fig:subd}(e) shows subduction beneath the Himalayas.
 All three models show two distinct fast anomalies below 660~km,
 one above 1,000~km and the other, further to the southwest, below 1,000~km.
 Finally, Fig.~\ref{fig:subd}(f) shows subduction beneath the Java portion of the Sunda Arc.
-At this location the slab penetrates into the lower mantle, at which point its spreads out laterally,
+At this location the slab penetrates into the lower mantle, at which point it spreads out laterally,
 in agreement with models GAP-P4 and UU-P07.
 \cite{fukao1992} explained this flattening using a model of~\cite{ringwood1988},
 suggesting that the subducted slab thickened and buckled to form a dense megalith
@@ -846,7 +853,7 @@ Some form of automated parallel workflow management is critical for the global a
 because classical inversion workflows suffer from I/O inefficiencies, lack of fault tolerance, and an inability to work in distributed resource environments~\citep{Lefebvre2018}.
 For these reasons, we are in the process of adopting the Ensemble Tool Kit (EnTK) as our
 workflow management engine~\citep{EnTK2017}.
-This workflow engine can automatically detected job failures,
+This workflow engine can automatically detect job failures,
 both from the high-performance computing (HPC) system and via user-defined functions.
 This facilitates tracking of tasks and semi-automatic job resubmission if necessary.
 These are the attributes required for bringing global FWI to its full potential,
@@ -946,6 +953,7 @@ and attenuation.
 The feasibility of such inversions on a regional scale has already been demonstrated in studies focused on Europe by~\cite{ZhuTromp2013} and \cite{Zhuetal2013}.
 
 \begin{acknowledgments}
+We thank Jeroen Ritsema, Steve Grand, and two anonymous reviewers for detailed comments and suggestions which helped to improve an earlier version of the manuscript.
 This research used resources of the Oak Ridge Leadership Computing Facility,
 which is a DOE Office of Science User Facility supported under contract DE-AC05-00OR22725.
 Additional computational resources were provided by the Princeton Institute
@@ -1162,21 +1170,21 @@ and the normalized power per degree as a function of radius is determined via
     \quad .
     \label{eq:powerdegreeradius}
 \end{equation}
-In Fig.~\ref{fig:powerspectra} we plot the normalized power per degree~$\ell$ for models S362ANI, GLAD-M15, and GLAD-M25,
+In Fig.~\ref{fig:power} we plot the normalized power per degree~$\ell$ for models S362ANI, GLAD-M15, and GLAD-M25,
 and Fig.~\ref{fig:powerspectraradius} shows the normalized power per degree as a function of radius
 for the same set of models.
 
-\begin{figure}
-  \centering
-  \includegraphics[width=0.5\textwidth]{figures/power.pdf}
-  \caption{\small{Normalized power per degree~$\ell$, based on Eqn.~(\ref{eq:powerdegree}), for models S362ANI (red), GLAD-M15 (green), and GLAD-M25 (blue).
-  The calculation includes depths greater than 120~km.
-  Model S362ANI has no power beyond degree~18,
-  and model S40RTS has no power beyond degree~40.
-  (Courtesy of Caio Ciardelli.)
-  }}
-  \label{fig:powerspectra}
-\end{figure}
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=0.5\textwidth]{figures/power.pdf}
+%   \caption{\small{Normalized power per degree~$\ell$, based on Eqn.~(\ref{eq:powerdegree}), for models S362ANI (red), GLAD-M15 (green), and GLAD-M25 (blue).
+%   The calculation includes depths greater than 120~km.
+%   Model S362ANI has no power beyond degree~18,
+%   and model S40RTS has no power beyond degree~40.
+%   (Courtesy of Caio Ciardelli.)
+%   }}
+%   \label{fig:powerspectra}
+% \end{figure}
 % In Fig.~\ref{fig:powerspectra} we plot the normalized power per degree~$\ell$ for models S362ANI, S40RTS, GLAD-M15, and GLAD-M25,
 % and Fig.~\ref{fig:powerspectraradius} shows the normalized power per degree as a function of radius
 % for the same set of models.
